@@ -4,7 +4,7 @@ Tags: rss, feed, atom, mrss, xml
 Requires at least: 6.5
 Tested up to: 6.9
 Requires PHP: 8.3
-Stable tag: 0.1.0
+Stable tag: 0.1.1
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,6 +35,10 @@ The default URL pattern is `/feedwright/{slug}/`. You can change the prefix in F
 Yes. Declare the namespace prefix and URI on the `<rss>` block, then use prefixed tag names (e.g. `media:thumbnail`) on element blocks and attributes.
 
 == Changelog ==
+
+= 0.1.1 =
+* Fix: date bindings (`{{now:r}}`, `{{feed.last_build_date:r}}`, etc.) now always emit RFC 2822 / RFC 3339 with English day and month names regardless of site locale.
+* Fix: `feedwright_feed` permalinks now resolve correctly under all permalink structures (including `/%post_id%`); the Gutenberg URL / slug panel is now visible.
 
 = 0.1.0 =
 * Initial development release.
