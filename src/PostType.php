@@ -34,7 +34,10 @@ final class PostType {
 			self::SLUG,
 			array(
 				'labels'              => $this->labels(),
-				'public'              => false,
+				// public=true so the REST API exposes `viewable=true`, which is
+				// what Gutenberg's URL/Permalink panel checks before showing
+				// the slug input. We then opt back out of the noisy bits.
+				'public'              => true,
 				'publicly_queryable'  => true,
 				'show_ui'             => true,
 				'show_in_rest'        => true,
@@ -44,6 +47,7 @@ final class PostType {
 				'has_archive'         => false,
 				'rewrite'             => false,
 				'exclude_from_search' => true,
+				'show_in_nav_menus'   => false,
 				'capability_type'     => 'post',
 				'capabilities'        => $this->capabilities(),
 				'map_meta_cap'        => true,
