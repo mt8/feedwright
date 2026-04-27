@@ -23,6 +23,7 @@ final class PostType {
 	 */
 	public function register(): void {
 		add_action( 'init', array( $this, 'register_post_type' ) );
+		add_filter( 'post_type_link', array( $this, 'filter_permalink' ), 10, 2 );
 	}
 
 	/**
@@ -33,7 +34,11 @@ final class PostType {
 			self::SLUG,
 			array(
 				'labels'              => $this->labels(),
-				'public'              => false,
+				// public=true so the REST API exposes `viewable=true`, which is
+				// what Gutenberg's URL/Permalink panel checks before showing
+				// the slug input. We then opt back out of the noisy bits.
+				'public'              => true,
+				'publicly_queryable'  => true,
 				'show_ui'             => true,
 				'show_in_rest'        => true,
 				'show_in_menu'        => true,
@@ -42,6 +47,7 @@ final class PostType {
 				'has_archive'         => false,
 				'rewrite'             => false,
 				'exclude_from_search' => true,
+				'show_in_nav_menus'   => false,
 				'capability_type'     => 'post',
 				'capabilities'        => $this->capabilities(),
 				'map_meta_cap'        => true,
@@ -49,6 +55,28 @@ final class PostType {
 				'template_lock'       => false,
 			)
 		);
+	}
+
+	/**
+	 * Replace the canonical permalink for `feedwright_feed` posts with the
+	 * configured public feed URL (`/{base}/{slug}/`).
+	 *
+	 * Without this, `get_permalink()` falls back to `?feedwright_feed=slug`,
+	 * which is the wrong endpoint and is what breaks the editor's "View" link
+	 * and the slug input on permalink structures other than `/%postname%/`.
+	 *
+	 * @param string   $permalink Default permalink computed by core.
+	 * @param \WP_Post $post      Post being linked.
+	 */
+	public function filter_permalink( string $permalink, \WP_Post $post ): string {
+		if ( self::SLUG !== $post->post_type ) {
+			return $permalink;
+		}
+		if ( '' === (string) $post->post_name ) {
+			return $permalink;
+		}
+		$feed_url = \Feedwright\Routing\FeedEndpoint::feed_url( $post->post_name );
+		return '' !== $feed_url ? $feed_url : $permalink;
 	}
 
 	/**

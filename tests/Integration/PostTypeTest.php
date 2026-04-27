@@ -19,11 +19,16 @@ final class PostTypeTest extends WP_UnitTestCase {
 	public function test_post_type_visibility(): void {
 		$pt = get_post_type_object( PostType::SLUG );
 		$this->assertNotNull( $pt );
-		$this->assertFalse( $pt->public );
+		// public=true is required so the REST `viewable` field is exposed and
+		// Gutenberg renders the URL/Permalink panel; we opt back out of the
+		// noisy bits via explicit overrides.
+		$this->assertTrue( $pt->public );
+		$this->assertTrue( $pt->publicly_queryable );
 		$this->assertTrue( $pt->show_ui );
 		$this->assertTrue( $pt->show_in_rest );
 		$this->assertFalse( $pt->has_archive );
 		$this->assertTrue( $pt->exclude_from_search );
+		$this->assertFalse( $pt->show_in_nav_menus );
 	}
 
 	public function test_capabilities_map_to_manage_options(): void {
