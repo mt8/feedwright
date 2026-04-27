@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Feedwright\Bindings\Providers;
 
 use Feedwright\Renderer\Context;
+use Feedwright\Bindings\DateFormatter;
 use Feedwright\Bindings\ProviderInterface;
 
 defined( 'ABSPATH' ) || exit;
@@ -41,7 +42,7 @@ final class NowProvider implements ProviderInterface {
 			return null;
 		}
 		$format = '' === $modifier ? 'c' : $modifier;
-		return (string) wp_date( $format );
+		return DateFormatter::format( time(), $format );
 	}
 
 	/**

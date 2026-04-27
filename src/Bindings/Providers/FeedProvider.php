@@ -11,6 +11,7 @@ namespace Feedwright\Bindings\Providers;
 
 use Feedwright\Renderer\Context;
 use Feedwright\Routing\FeedEndpoint;
+use Feedwright\Bindings\DateFormatter;
 use Feedwright\Bindings\ProviderInterface;
 
 defined( 'ABSPATH' ) || exit;
@@ -86,7 +87,7 @@ final class FeedProvider implements ProviderInterface {
 	 */
 	private function format_date( int $timestamp, string $modifier ): string {
 		$format = '' === $modifier ? 'r' : $modifier;
-		return (string) wp_date( $format, $timestamp );
+		return DateFormatter::format( $timestamp, $format );
 	}
 
 	/**
