@@ -1,0 +1,39 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "landingPage": "/?fw_demo_open_feed_editor=1",
+  "preferredVersions": {
+    "php": "8.3",
+    "wp": "latest"
+  },
+  "features": {
+    "networking": true
+  },
+  "login": true,
+  "steps": [
+    {
+      "step": "installPlugin",
+      "pluginData": {
+        "resource": "url",
+        "url": "https://github.com/mt8/feedwright/releases/latest/download/feedwright.zip"
+      }
+    },
+    {
+      "step": "setSiteOptions",
+      "options": {
+        "permalink_structure": "/%postname%/"
+      }
+    },
+    {
+      "step": "writeFile",
+      "path": "/wordpress/feedwright-seed.php",
+      "data": {
+        "resource": "url",
+        "url": "https://raw.githubusercontent.com/mt8/feedwright/main/playground/seed.php"
+      }
+    },
+    {
+      "step": "wp-cli",
+      "command": "wp eval-file feedwright-seed.php"
+    }
+  ]
+}

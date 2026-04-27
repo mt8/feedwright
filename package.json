@@ -1,0 +1,35 @@
+{
+    "name": "feedwright",
+    "version": "0.1.0",
+    "description": "Edit custom RSS / Atom / XML feeds visually in the WordPress block editor.",
+    "author": "mt8",
+    "license": "GPL-2.0-or-later",
+    "private": true,
+    "homepage": "https://github.com/mt8/feedwright",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mt8/feedwright.git"
+    },
+    "scripts": {
+        "build": "wp-scripts build --webpack-src-dir=blocks --output-path=build",
+        "start": "wp-scripts start --webpack-src-dir=blocks --output-path=build",
+        "format": "wp-scripts format",
+        "lint:js": "wp-scripts lint-js",
+        "lint:css": "wp-scripts lint-style",
+        "wp-env": "wp-env",
+        "test:e2e": "playwright test",
+        "test:e2e:ui": "playwright test --ui",
+        "prepare": "husky"
+    },
+    "devDependencies": {
+        "@playwright/test": "^1.49.0",
+        "@wordpress/e2e-test-utils-playwright": "^1.18.0",
+        "@wordpress/env": "^10.16.0",
+        "@wordpress/scripts": "^30.7.0",
+        "husky": "^9.1.7",
+        "lint-staged": "^15.2.10"
+    },
+    "lint-staged": {
+        "*.php": "composer run phpcs --"
+    }
+}

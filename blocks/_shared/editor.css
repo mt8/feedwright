@@ -1,0 +1,202 @@
+/*
+ * Editor styles for Feedwright blocks. Loaded on the feedwright_feed
+ * block editor screen only.
+ */
+
+/*
+ * Widen the editor canvas. Default WP layout caps top-level blocks at the
+ * theme's content-size (~840px) which is too narrow for the deeply nested
+ * XML structure feed editing produces. Override the layout variables and
+ * the per-block max-width.
+ */
+.editor-styles-wrapper {
+	--wp--style--global--content-size: 85%;
+	--wp--style--global--wide-size: 85%;
+}
+
+/* Nested blocks fill their parent (channel inside rss, etc.). */
+.editor-styles-wrapper .wp-block {
+	max-width: 100%;
+}
+
+/* Top-level block is constrained to 85% and centered. */
+.editor-styles-wrapper .is-root-container > .wp-block {
+	max-width: 85%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Base container shared by every Feedwright block. */
+.feedwright-block {
+	border: 1px solid #d6d6e0;
+	border-radius: 6px;
+	padding: 14px 16px;
+	margin: 14px 0;
+	background: #fff;
+	font-size: 14px;
+	line-height: 1.55;
+}
+
+.feedwright-block .feedwright-block {
+	margin: 10px 0;
+}
+
+.feedwright-block__header {
+	display: flex;
+	align-items: baseline;
+	gap: 12px;
+	padding: 6px 10px;
+	margin: -6px -6px 12px -6px;
+	border-radius: 4px;
+	font-size: 14px;
+	background: #eef2ff;
+	color: #1d4ed8;
+}
+
+.feedwright-block__header strong {
+	font-weight: 600;
+	letter-spacing: 0.02em;
+}
+
+.feedwright-block__header small {
+	color: #6b7280;
+	font-size: 12px;
+}
+
+/* Hierarchy. */
+.feedwright-block-rss {
+	background: #f8fafc;
+	border-color: #c7d2fe;
+}
+
+.feedwright-block-rss > .feedwright-block__header {
+	background: #c7d2fe;
+	color: #1e1b4b;
+}
+
+.feedwright-block-channel {
+	background: #fefce8;
+	border-color: #fde68a;
+}
+
+.feedwright-block-channel > .feedwright-block__header {
+	background: #fde68a;
+	color: #713f12;
+}
+
+.feedwright-block-item-query {
+	background: #ecfdf5;
+	border-color: #a7f3d0;
+}
+
+.feedwright-block-item-query > .feedwright-block__header {
+	background: #a7f3d0;
+	color: #064e3b;
+}
+
+.feedwright-block-item {
+	background: #fdf4ff;
+	border-color: #f5d0fe;
+}
+
+.feedwright-block-item > .feedwright-block__header {
+	background: #f5d0fe;
+	color: #581c87;
+}
+
+/* Element blocks: render the tag preview inline. */
+.feedwright-block-element {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+	padding: 10px 14px;
+	background: #fff;
+	font-family: SFMono-Regular, ui-monospace, Menlo, Consolas, monospace;
+	font-size: 14px;
+	line-height: 1.55;
+}
+
+.feedwright-block-element__open,
+.feedwright-block-element__close {
+	color: #1d4ed8;
+}
+
+.feedwright-block-element__binding {
+	display: inline-block;
+	background: #f1f5f9;
+	color: #b45309;
+	padding: 2px 8px;
+	border-radius: 3px;
+	border: 1px solid #e2e8f0;
+	font-size: 13px;
+}
+
+.feedwright-block-element__value {
+	color: #166534;
+}
+
+.feedwright-block-element__attr-name {
+	color: #7a3e3e;
+}
+
+.feedwright-block-element__attr-value {
+	color: #0a6e0a;
+}
+
+/* children mode: vertical layout with an indented children block. */
+.feedwright-block-element--children {
+	display: block;
+}
+
+.feedwright-block-element--children > .feedwright-block-element__open,
+.feedwright-block-element--children > .feedwright-block-element__close {
+	display: block;
+}
+
+.feedwright-block-element__children {
+	margin: 6px 0 6px 4px;
+	padding-left: 14px;
+	border-left: 2px solid #e5e7eb;
+}
+
+/* Raw block. */
+.feedwright-block-raw {
+	background: #fff7ed;
+	border-color: #fed7aa;
+}
+
+.feedwright-block-raw__value {
+	margin: 6px 0 0 0;
+	padding: 8px 10px;
+	background: #fff;
+	border: 1px solid #fdba74;
+	border-radius: 4px;
+	font-family: SFMono-Regular, ui-monospace, Menlo, Consolas, monospace;
+	font-size: 13px;
+	line-height: 1.55;
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+/* XML comment. */
+.feedwright-block-comment {
+	background: #f1f5f9;
+	border-color: #cbd5e1;
+}
+
+.feedwright-block-comment__value {
+	color: #475569;
+	font-family: SFMono-Regular, ui-monospace, Menlo, Consolas, monospace;
+	font-size: 13px;
+}
+
+/* Inspector tweaks. */
+.feedwright-attribute-row {
+	background: #fafafa;
+}
+
+/* XML preview pane (sidebar). */
+.feedwright-xml-preview {
+	font-family: SFMono-Regular, ui-monospace, Menlo, Consolas, monospace;
+}

@@ -1,0 +1,34 @@
+.claude/commands
+.claude/skills
+
+# Dependencies
+vendor/
+node_modules/
+
+# wp-env
+.wp-env.override.json
+debug.log
+db.sql
+
+# Test cache
+.phpunit.result.cache
+test-results/
+playwright-report/
+blob-report/
+tests/e2e/.auth/
+
+# Build
+build/
+
+# Local-only seeding / scratch
+tmp/
+
+# OS / Editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+.claude/
+
+# Project-local agent / personal notes
+CLAUDE.md

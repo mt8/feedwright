@@ -1,0 +1,93 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get plugin metadata
+        id: meta
+        run: |
+          PLUGIN_SLUG=feedwright
+          VERSION=${GITHUB_REF#refs/tags/}
+          echo "slug=${PLUGIN_SLUG}" >> "$GITHUB_OUTPUT"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Verify version in plugin header
+        run: |
+          HEADER_VERSION=$(grep -oP 'Version:\s*\K[0-9]+\.[0-9]+\.[0-9]+' ${{ steps.meta.outputs.slug }}.php)
+          if [ "$HEADER_VERSION" != "${{ steps.meta.outputs.version }}" ]; then
+            echo "::error::Tag version (${{ steps.meta.outputs.version }}) does not match plugin header version ($HEADER_VERSION)"
+            exit 1
+          fi
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: composer install --no-dev --no-interaction --optimize-autoloader
+      - run: npm run build --if-present
+
+      - name: Create plugin zip
+        run: |
+          SLUG="${{ steps.meta.outputs.slug }}"
+          VERSION="${{ steps.meta.outputs.version }}"
+          rsync -av \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.husky' \
+            --exclude='.claude' \
+            --exclude='node_modules' \
+            --exclude='tests' \
+            --exclude='editor/src' \
+            --exclude='blocks/*/src' \
+            --exclude='.wp-env.json' \
+            --exclude='.wp-env.override.json' \
+            --exclude='.distignore' \
+            --exclude='package.json' \
+            --exclude='package-lock.json' \
+            --exclude='composer.lock' \
+            --exclude='phpcs.xml.dist' \
+            --exclude='phpunit.xml.dist' \
+            --exclude='playwright.config.ts' \
+            --exclude='bin' \
+            --exclude='debug.log' \
+            --exclude='db.sql' \
+            --exclude='docs' \
+            --exclude='CLAUDE.md' \
+            --exclude='.gitignore' \
+            --exclude='.editorconfig' \
+            --exclude='playground' \
+            --exclude='assets' \
+            --exclude='README.md' \
+            --exclude='tmp' \
+            ./ "${SLUG}/"
+          # Produce both versionless (for /releases/latest/download/SLUG.zip
+          # used by the Playground blueprint) and versioned archives.
+          zip -r "${SLUG}.zip" "${SLUG}/"
+          cp "${SLUG}.zip" "${SLUG}-${VERSION}.zip"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ${{ steps.meta.outputs.slug }}.zip
+            ${{ steps.meta.outputs.slug }}-${{ steps.meta.outputs.version }}.zip
+          generate_release_notes: true

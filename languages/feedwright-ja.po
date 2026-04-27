@@ -1,0 +1,878 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Feedwright 0.1.0\n"
+"Report-Msgid-Bugs-To: https://github.com/mt8/Feedwright/issues\n"
+"Last-Translator: mt8\n"
+"Language-Team: Japanese <ja@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-04-27T09:21:18+00:00\n"
+"PO-Revision-Date: 2026-04-27 18:00+0900\n"
+"Language: ja\n"
+"X-Generator: hand-curated\n"
+"X-Domain: feedwright\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. Plugin Name of the plugin
+#: feedwright.php
+#: src/BlockRegistry.php:247
+msgid "Feedwright"
+msgstr ""
+
+#. Author of the plugin
+#: feedwright.php
+msgid "mt8"
+msgstr ""
+
+#: src/BlockRestriction.php:127
+msgid "Feedwright:"
+msgstr "Feedwright:"
+
+#: src/BlockRestriction.php:128
+msgid "Unsupported blocks were detected and will be ignored when rendering this feed:"
+msgstr "未対応のブロックが検出されました。フィード生成時には無視されます:"
+
+#: src/PostType.php:61
+msgctxt "post type general name"
+msgid "Feeds"
+msgstr "フィード"
+
+#: src/PostType.php:62
+msgctxt "post type singular name"
+msgid "Feed"
+msgstr "フィード"
+
+#: src/PostType.php:63
+msgctxt "admin menu"
+msgid "Feedwright"
+msgstr ""
+
+#: src/PostType.php:64
+msgctxt "add new on admin bar"
+msgid "Feed"
+msgstr "フィード"
+
+#: src/PostType.php:65
+msgctxt "feed"
+msgid "Add Feed"
+msgstr "フィードを追加"
+
+#: src/PostType.php:66
+msgid "Add New Feed"
+msgstr "新規フィードを追加"
+
+#: src/PostType.php:67
+msgid "New Feed"
+msgstr "新規フィード"
+
+#: src/PostType.php:68
+msgid "Edit Feed"
+msgstr "フィードを編集"
+
+#: src/PostType.php:69
+msgid "View Feed"
+msgstr "フィードを表示"
+
+#: src/PostType.php:70
+msgid "All Feeds"
+msgstr "すべてのフィード"
+
+#: src/PostType.php:71
+msgid "Search Feeds"
+msgstr "フィードを検索"
+
+#: src/PostType.php:72
+msgid "No feeds found."
+msgstr "フィードが見つかりません。"
+
+#: src/PostType.php:73
+msgid "No feeds found in Trash."
+msgstr "ゴミ箱にフィードはありません。"
+
+#: src/PostType.php:74
+msgid "Feed Image"
+msgstr "フィード画像"
+
+#: src/PostType.php:75
+msgid "Set feed image"
+msgstr "フィード画像を設定"
+
+#: src/PostType.php:76
+msgid "Remove feed image"
+msgstr "フィード画像を削除"
+
+#: src/PostType.php:77
+msgid "Use as feed image"
+msgstr "フィード画像として使用"
+
+#: src/PostType.php:78
+msgid "Feed archives"
+msgstr "フィードアーカイブ"
+
+#: src/PostType.php:79
+msgid "Insert into feed"
+msgstr "フィードに挿入"
+
+#: src/PostType.php:80
+msgid "Uploaded to this feed"
+msgstr "このフィードにアップロード済み"
+
+#: src/PostType.php:81
+msgid "Filter feeds list"
+msgstr "フィード一覧を絞り込み"
+
+#: src/PostType.php:82
+msgid "Feeds list navigation"
+msgstr "フィード一覧ナビゲーション"
+
+#: src/PostType.php:83
+msgid "Feeds list"
+msgstr "フィード一覧"
+
+#: src/REST/BindingIntrospectionController.php:64
+#: src/REST/PreviewController.php:65
+msgid "Authentication required."
+msgstr "認証が必要です。"
+
+#: src/REST/BindingIntrospectionController.php:67
+#: src/REST/PreviewController.php:68
+msgid "Insufficient permissions."
+msgstr "権限が不足しています。"
+
+#: src/REST/PreviewController.php:82
+msgid "Feed post not found."
+msgstr "フィード投稿が見つかりません。"
+
+#: src/Settings.php:97
+#: src/Settings.php:119
+msgid "Feedwright Settings"
+msgstr "Feedwright 設定"
+
+#: src/Settings.php:98
+msgid "Settings"
+msgstr "設定"
+
+#: src/Settings.php:123
+msgid "Permalinks are set to \"Plain\". Pretty rewrite rules will not work; please change your permalink structure for Feedwright to serve feeds."
+msgstr "パーマリンクが「基本」に設定されています。リライトルールが機能しないため、Feedwright でフィードを配信するにはパーマリンク構造を変更してください。"
+
+#: src/Settings.php:135
+msgid "URL Base"
+msgstr "URL ベース"
+
+#. translators: %s: example URL path
+#: src/Settings.php:149
+#, php-format
+msgid "The path prefix for feed URLs. Example: %s"
+msgstr "フィード URL のパス接頭辞。例: %s"
+
+#: src/Settings.php:158
+msgid "Cache TTL (seconds)"
+msgstr "キャッシュ TTL（秒）"
+
+#: src/Settings.php:171
+msgid "Render cache lifetime. 0 disables the cache."
+msgstr "レンダーキャッシュの保持秒数。0 でキャッシュ無効。"
+
+#: src/Settings.php:182
+msgid "Maintenance"
+msgstr "メンテナンス"
+
+#: src/Settings.php:186
+msgid "Clear render cache"
+msgstr "レンダーキャッシュをクリア"
+
+#. translators: %s: conflicting slug
+#: src/Settings.php:215
+#, php-format
+msgid "URL base \"%s\" matches an existing page/post slug. Feedwright will take precedence, but consider renaming."
+msgstr "URL ベース「%s」は既存の固定ページ／投稿スラッグと衝突しています。Feedwright が優先されますが、リネームを検討してください。"
+
+#: src/Settings.php:234
+msgid "URL base cannot be empty."
+msgstr "URL ベースは空にできません。"
+
+#: src/Settings.php:236
+msgid "URL base may only contain lowercase letters, digits, slashes, underscores, and hyphens, and must start and end with a letter or digit."
+msgstr "URL ベースには小文字英数字、スラッシュ、アンダースコア、ハイフンのみ使用でき、先頭と末尾は英数字である必要があります。"
+
+#. translators: %s: reserved path
+#: src/Settings.php:240
+#, php-format
+msgid "URL base cannot start with the reserved path \"%s\"."
+msgstr "URL ベースは予約パス「%s」で始められません。"
+
+#: src/Settings.php:244
+msgid "URL base is invalid."
+msgstr "URL ベースが不正です。"
+
+#: src/Settings.php:340
+msgid "You do not have permission to clear the cache."
+msgstr "キャッシュクリアの権限がありません。"
+
+#: src/Settings.php:346
+msgid "Render cache cleared."
+msgstr "レンダーキャッシュをクリアしました。"
+
+#: blocks/comment/edit.js:16
+msgid "XML Comment"
+msgstr "XML コメント"
+
+#: blocks/comment/edit.js:18
+msgid "Text"
+msgstr "テキスト"
+
+#: blocks/comment/edit.js:21
+msgid "Rendered as <!-- text -->. The string \"--\" is replaced with \"- -\" to satisfy XML rules."
+msgstr "<!-- text --> として出力されます。XML 規則のため文字列「--」は「- -」に置換されます。"
+
+#: blocks/comment/edit.js:28
+msgid "(empty comment)"
+msgstr "(空のコメント)"
+
+#: blocks/element/edit.js:34
+msgid "(no tag)"
+msgstr "(タグなし)"
+
+#: blocks/element/edit.js:81
+msgid "{{...}}"
+msgstr "{{...}}"
+
+#: blocks/element/edit.js:88
+#: blocks/raw/edit.js:48
+msgid "(empty)"
+msgstr "(空)"
+
+#: blocks/element/edit.js:100
+msgid "Element"
+msgstr "要素"
+
+#: blocks/element/edit.js:102
+#: blocks/item-query/edit.js:196
+msgid "Tag name"
+msgstr "タグ名"
+
+#: blocks/element/edit.js:105
+msgid "Use prefix:local for namespaced tags. The prefix must be declared on the rss block."
+msgstr "名前空間付きタグは prefix:local 形式で。プレフィックスは rss ブロックで宣言が必要です。"
+
+#: blocks/element/edit.js:111
+msgid "Tag name is not a valid XML Name."
+msgstr "タグ名が XML Name 規則に違反しています。"
+
+#: blocks/element/edit.js:116
+msgid "Content"
+msgstr "コンテンツ"
+
+#: blocks/element/edit.js:118
+msgid "Content mode"
+msgstr "コンテンツモード"
+
+#: blocks/element/edit.js:126
+msgid "Static value"
+msgstr "静的な値"
+
+#: blocks/element/edit.js:137
+msgid "Binding expression (CDATA)"
+msgstr "バインディング式（CDATA）"
+
+#: blocks/element/edit.js:138
+#: blocks/_shared/AttributeListEditor.jsx:103
+msgid "Binding expression"
+msgstr "バインディング式"
+
+#: blocks/element/edit.js:142
+msgid "Use {{ to insert a binding. Combine free text with multiple bindings."
+msgstr "{{ でバインディングを挿入できます。自由テキストと複数バインディングを組み合わせ可能。"
+
+#: blocks/element/edit.js:149
+msgid "This element will be composed of nested element blocks."
+msgstr "この要素は子の Element ブロックで構成されます。"
+
+#: blocks/element/edit.js:155
+msgid "Self-closing element with attributes only."
+msgstr "属性のみの自己終了要素。"
+
+#: blocks/element/edit.js:160
+#: blocks/_shared/AttributeListEditor.jsx:59
+msgid "Attributes"
+msgstr "属性"
+
+#: blocks/item-query/edit.js:24
+msgid "Publish date"
+msgstr "公開日"
+
+#: blocks/item-query/edit.js:25
+msgid "Modified date"
+msgstr "更新日"
+
+#: blocks/item-query/edit.js:26
+msgid "Title"
+msgstr "タイトル"
+
+#: blocks/item-query/edit.js:27
+msgid "Menu order"
+msgstr "メニュー順"
+
+#: blocks/item-query/edit.js:28
+msgid "Random"
+msgstr "ランダム"
+
+#: blocks/item-query/edit.js:29
+msgid "Comment count"
+msgstr "コメント数"
+
+#: blocks/item-query/edit.js:30
+msgid "Meta value (string)"
+msgstr "メタ値（文字列）"
+
+#: blocks/item-query/edit.js:31
+msgid "Meta value (numeric)"
+msgstr "メタ値（数値）"
+
+#: blocks/item-query/edit.js:32
+msgid "None"
+msgstr "なし"
+
+#. translators: 1: post type list, 2: count, 3: orderBy field, 4: ASC/DESC
+#: blocks/item-query/edit.js:150
+#, js-format
+msgid "Latest %2$d %1$s (%3$s %4$s)"
+msgstr "最新 %2$d 件の %1$s（%3$s %4$s）"
+
+#: blocks/item-query/edit.js:162
+msgid "Basics"
+msgstr "基本"
+
+#: blocks/item-query/edit.js:164
+msgid "Editor label"
+msgstr "エディタラベル"
+
+#: blocks/item-query/edit.js:167
+msgid "Used in the editor only; not emitted in XML."
+msgstr "エディタ表示専用。XML には出力されません。"
+
+#: blocks/item-query/edit.js:172
+msgid "Post types (comma-separated)"
+msgstr "投稿タイプ（カンマ区切り）"
+
+#: blocks/item-query/edit.js:186
+msgid "Posts per page"
+msgstr "1 ページあたりの投稿数"
+
+#: blocks/item-query/edit.js:194
+msgid "Item element name"
+msgstr "item 要素名"
+
+#: blocks/item-query/edit.js:199
+msgid "Default \"item\" (RSS 2.0). Use \"entry\" for Atom, or any prefix:local declared on the rss block."
+msgstr "デフォルトは \"item\"（RSS 2.0）。Atom なら \"entry\"、rss ブロックで宣言した prefix:local も指定可能。"
+
+#: blocks/item-query/edit.js:205
+msgid "Item tag name is not a valid XML Name."
+msgstr "item タグ名が XML Name 規則に違反しています。"
+
+#: blocks/item-query/edit.js:210
+msgid "Sorting"
+msgstr "並び替え"
+
+#: blocks/item-query/edit.js:212
+msgid "Order by"
+msgstr "並び替えキー"
+
+#: blocks/item-query/edit.js:220
+msgid "Order"
+msgstr "順序"
+
+#: blocks/item-query/edit.js:223
+msgid "Descending (newest first)"
+msgstr "降順（新しい順）"
+
+#: blocks/item-query/edit.js:224
+msgid "Ascending (oldest first)"
+msgstr "昇順（古い順）"
+
+#: blocks/item-query/edit.js:230
+msgid "Random ordering is cached together with the rendered XML. Set Cache TTL to 0 in Feedwright settings if you need fresh randomization."
+msgstr "ランダム順序は出力 XML と一緒にキャッシュされます。毎回別の順序にしたい場合は Feedwright 設定でキャッシュ TTL を 0 にしてください。"
+
+#: blocks/item-query/edit.js:235
+msgid "Filtering"
+msgstr "絞り込み"
+
+#: blocks/item-query/edit.js:237
+msgid "Post status"
+msgstr "投稿ステータス"
+
+#: blocks/item-query/edit.js:252
+msgid "Include sticky posts"
+msgstr "先頭固定投稿を含める"
+
+#: blocks/item-query/edit.js:259
+msgid "Taxonomy filter"
+msgstr "タクソノミーフィルタ"
+
+#: blocks/item-query/edit.js:262
+msgid "Taxonomy"
+msgstr "タクソノミー"
+
+#: blocks/item-query/edit.js:265
+msgid "— None —"
+msgstr "— なし —"
+
+#: blocks/item-query/edit.js:277
+msgid "Terms"
+msgstr "ターム"
+
+#: blocks/item-query/edit.js:290
+msgid "No terms with posts yet."
+msgstr "投稿が紐づくタームがまだありません。"
+
+#: blocks/item-query/edit.js:291
+msgid "Select terms…"
+msgstr "タームを選択…"
+
+#: blocks/item-query/edit.js:304
+msgid "Item Query"
+msgstr "アイテムクエリ"
+
+#: blocks/item/edit.js:13
+msgid "Item Template"
+msgstr "アイテムテンプレート"
+
+#: blocks/raw/edit.js:21
+msgid "Raw value"
+msgstr "Raw 値"
+
+#: blocks/raw/edit.js:23
+#: blocks/_shared/AttributeListEditor.jsx:117
+msgid "Value"
+msgstr "値"
+
+#: blocks/raw/edit.js:26
+msgid "Inserted verbatim. Combine with bindings to interpolate runtime values."
+msgstr "そのまま挿入されます。バインディングと組み合わせて実行時の値を埋め込めます。"
+
+#: blocks/raw/edit.js:30
+msgid "Wrap in CDATA"
+msgstr "CDATA で囲む"
+
+#: blocks/raw/edit.js:35
+msgid "Resolve {{bindings}}"
+msgstr "{{bindings}} を解決する"
+
+#: blocks/raw/edit.js:44
+msgid "Raw (CDATA)"
+msgstr "Raw（CDATA）"
+
+#: blocks/raw/edit.js:45
+msgid "Raw"
+msgstr "Raw"
+
+#: blocks/rss/edit.js:22
+msgid "Version"
+msgstr "バージョン"
+
+#: blocks/rss/edit.js:25
+msgid "Currently only RSS 2.0 is rendered."
+msgstr "現状は RSS 2.0 のみ出力可能。"
+
+#: blocks/rss/edit.js:30
+msgid "Namespaces"
+msgstr "名前空間"
+
+#: blocks/rss/edit.js:41
+msgid "version"
+msgstr "version"
+
+#: blocks/rss/edit.js:43
+msgid "namespace(s)"
+msgstr "名前空間"
+
+#: blocks/_shared/AttributeListEditor.jsx:64
+msgid "No attributes set."
+msgstr "属性が設定されていません。"
+
+#: blocks/_shared/AttributeListEditor.jsx:85
+msgid "Name"
+msgstr "名前"
+
+#: blocks/_shared/AttributeListEditor.jsx:94
+msgid "Attribute name is not a valid XML Name."
+msgstr "属性名が XML Name 規則に違反しています。"
+
+#: blocks/_shared/AttributeListEditor.jsx:99
+msgid "Value mode"
+msgstr "値モード"
+
+#: blocks/_shared/AttributeListEditor.jsx:102
+msgid "Static text"
+msgstr "静的テキスト"
+
+#: blocks/_shared/AttributeListEditor.jsx:110
+msgid "Value (binding)"
+msgstr "値（バインディング）"
+
+#: blocks/_shared/AttributeListEditor.jsx:133
+msgid "Up"
+msgstr "上へ"
+
+#: blocks/_shared/AttributeListEditor.jsx:141
+msgid "Down"
+msgstr "下へ"
+
+#: blocks/_shared/AttributeListEditor.jsx:150
+#: blocks/_shared/NamespaceEditor.jsx:100
+msgid "Remove"
+msgstr "削除"
+
+#: blocks/_shared/AttributeListEditor.jsx:158
+msgid "+ Add attribute"
+msgstr "+ 属性を追加"
+
+#: blocks/_shared/BindingInput.jsx:199
+msgid "Type {{ to insert a binding"
+msgstr "{{ を入力してバインディングを挿入"
+
+#: blocks/_shared/BindingInput.jsx:206
+msgid "Binding suggestions"
+msgstr "バインディング候補"
+
+#: blocks/_shared/BindingInput.jsx:219
+msgid "Format suggestions"
+msgstr "フォーマット候補"
+
+#: blocks/_shared/BindingInput.jsx:232
+msgid "Processor suggestions"
+msgstr "プロセッサ候補"
+
+#: blocks/_shared/modifier-suggestions.js:24
+msgid "RFC 2822 (Mon, 27 Apr 2026 10:00:00 +0900)"
+msgstr "RFC 2822 (Mon, 27 Apr 2026 10:00:00 +0900)"
+
+#: blocks/_shared/modifier-suggestions.js:25
+msgid "ISO 8601 (2026-04-27T10:00:00+09:00)"
+msgstr "ISO 8601 (2026-04-27T10:00:00+09:00)"
+
+#: blocks/_shared/modifier-suggestions.js:26
+msgid "Unix timestamp"
+msgstr "Unix タイムスタンプ"
+
+#: blocks/_shared/modifier-suggestions.js:27
+msgid "Date (2026-04-27)"
+msgstr "日付 (2026-04-27)"
+
+#: blocks/_shared/modifier-suggestions.js:28
+msgid "Date + time (2026-04-27 10:00:00)"
+msgstr "日付＋時刻 (2026-04-27 10:00:00)"
+
+#: blocks/_shared/modifier-suggestions.js:29
+msgid "Slash date (2026/04/27)"
+msgstr "スラッシュ区切り日付 (2026/04/27)"
+
+#: blocks/_shared/modifier-suggestions.js:35
+msgid "thumbnail (default 150×150)"
+msgstr "thumbnail（デフォルト 150×150）"
+
+#: blocks/_shared/modifier-suggestions.js:36
+msgid "medium (default 300px wide)"
+msgstr "medium（デフォルト幅 300px）"
+
+#: blocks/_shared/modifier-suggestions.js:37
+msgid "medium_large (default 768px wide)"
+msgstr "medium_large（デフォルト幅 768px）"
+
+#: blocks/_shared/modifier-suggestions.js:38
+msgid "large (default 1024px wide)"
+msgstr "large（デフォルト幅 1024px）"
+
+#: blocks/_shared/modifier-suggestions.js:39
+msgid "full (original size)"
+msgstr "full（オリジナルサイズ）"
+
+#: blocks/_shared/modifier-suggestions.js:45
+msgid "slug (slugs joined by \", \")"
+msgstr "slug（スラッグを「, 」で結合）"
+
+#: blocks/_shared/modifier-suggestions.js:46
+msgid "separator: | (names joined by |)"
+msgstr "区切り文字: |（名称を | で結合）"
+
+#: blocks/_shared/modifier-suggestions.js:47
+msgid "slug + separator |"
+msgstr "slug + 区切り文字 |"
+
+#: blocks/_shared/modifier-suggestions.js:48
+msgid "separator: \", \" (default)"
+msgstr "区切り文字: \", \"（デフォルト）"
+
+#: blocks/_shared/NamespaceEditor.jsx:43
+msgid "XML Namespaces"
+msgstr "XML 名前空間"
+
+#: blocks/_shared/NamespaceEditor.jsx:46
+msgid "Declared on the <rss> element. Each prefix can be used as <prefix:tag> in elements and attributes."
+msgstr "<rss> 要素で宣言します。各プレフィックスは要素や属性で <prefix:tag> として利用可能。"
+
+#: blocks/_shared/NamespaceEditor.jsx:54
+msgid "No namespaces declared."
+msgstr "名前空間が宣言されていません。"
+
+#: blocks/_shared/NamespaceEditor.jsx:74
+msgid "Prefix"
+msgstr "プレフィックス"
+
+#: blocks/_shared/NamespaceEditor.jsx:81
+msgid "URI"
+msgstr "URI"
+
+#: blocks/_shared/NamespaceEditor.jsx:90
+msgid "Prefix must start with a letter and contain only letters, digits, dots, dashes, or underscores."
+msgstr "プレフィックスは英字で始まり、英数字・ドット・ハイフン・アンダースコアのみ使用可能です。"
+
+#: blocks/_shared/NamespaceEditor.jsx:108
+msgid "+ Add namespace"
+msgstr "+ 名前空間を追加"
+
+#: blocks/_shared/processor-suggestions.js:14
+msgid "truncate — first N characters"
+msgstr "truncate — 先頭 N 文字に切り詰め"
+
+#: blocks/_shared/processor-suggestions.js:20
+msgid "allow_tags — keep only listed HTML tags"
+msgstr "allow_tags — 指定 HTML タグのみ残す"
+
+#: blocks/_shared/processor-suggestions.js:26
+msgid "strip_tags — remove all HTML"
+msgstr "strip_tags — すべての HTML を除去"
+
+#: blocks/_shared/processor-suggestions.js:31
+msgid "map — translate value via key=val pairs (* for fallback)"
+msgstr "map — key=val ペアで値を変換（* はフォールバック）"
+
+#: blocks/_shared/XmlPreviewPanel.jsx:123
+msgid "XML preview is only available for Feedwright feed posts."
+msgstr "XML プレビューは Feedwright フィード投稿でのみ利用可能です。"
+
+#: blocks/_shared/XmlPreviewPanel.jsx:131
+msgid "Auto-update preview after editing"
+msgstr "編集後にプレビューを自動更新"
+
+#: blocks/_shared/XmlPreviewPanel.jsx:140
+msgid "Fetching…"
+msgstr "取得中…"
+
+#: blocks/_shared/XmlPreviewPanel.jsx:143
+msgid "Refresh preview"
+msgstr "プレビューを更新"
+
+#: blocks/_shared/XmlPreviewPanel.jsx:155
+msgid "Renderer warnings"
+msgstr "レンダラー警告"
+
+#: blocks/_shared/XmlPreviewPanel.jsx:186
+msgid "Open public URL"
+msgstr "公開 URL を開く"
+
+#: blocks/_shared/XmlPreviewPanel.jsx:206
+msgid "Feedwright XML Preview"
+msgstr "Feedwright XML プレビュー"
+
+#: blocks/channel/block.json
+msgctxt "block description"
+msgid "RSS channel container."
+msgstr "RSS チャンネルコンテナ。"
+
+#: blocks/channel/block.json
+msgctxt "block keyword"
+msgid "channel"
+msgstr "channel"
+
+#: blocks/channel/block.json
+#: blocks/rss/block.json
+msgctxt "block keyword"
+msgid "feed"
+msgstr "feed"
+
+#: blocks/channel/block.json
+#: blocks/rss/block.json
+msgctxt "block keyword"
+msgid "rss"
+msgstr "rss"
+
+#: blocks/comment/block.json
+msgctxt "block title"
+msgid "XML Comment"
+msgstr "XML コメント"
+
+#: blocks/comment/block.json
+msgctxt "block description"
+msgid "Insert an XML comment <!-- ... --> in the rendered feed."
+msgstr "出力フィードに XML コメント <!-- ... --> を挿入。"
+
+#: blocks/comment/block.json
+msgctxt "block keyword"
+msgid "comment"
+msgstr "comment"
+
+#: blocks/comment/block.json
+#: blocks/element/block.json
+msgctxt "block keyword"
+msgid "xml"
+msgstr "xml"
+
+#: blocks/comment/block.json
+msgctxt "block keyword"
+msgid "note"
+msgstr "note"
+
+#: blocks/element/block.json
+msgctxt "block title"
+msgid "Element"
+msgstr "要素"
+
+#: blocks/element/block.json
+msgctxt "block description"
+msgid "Custom XML element with optional namespace, attributes, and binding-bound content."
+msgstr "名前空間、属性、バインディング連動コンテンツを持つカスタム XML 要素。"
+
+#: blocks/element/block.json
+msgctxt "block keyword"
+msgid "element"
+msgstr "element"
+
+#: blocks/element/block.json
+msgctxt "block keyword"
+msgid "tag"
+msgstr "tag"
+
+#: blocks/item-query/block.json
+msgctxt "block title"
+msgid "Item Query"
+msgstr "アイテムクエリ"
+
+#: blocks/item-query/block.json
+msgctxt "block description"
+msgid "Query posts and expand each result inside the channel as an <item>."
+msgstr "投稿を検索し、結果ごとにチャンネル内で <item> として展開します。"
+
+#: blocks/item-query/block.json
+msgctxt "block keyword"
+msgid "query"
+msgstr "query"
+
+#: blocks/item-query/block.json
+msgctxt "block keyword"
+msgid "posts"
+msgstr "posts"
+
+#: blocks/item-query/block.json
+msgctxt "block keyword"
+msgid "items"
+msgstr "items"
+
+#: blocks/item/block.json
+msgctxt "block title"
+msgid "Item Template"
+msgstr "アイテムテンプレート"
+
+#: blocks/item/block.json
+msgctxt "block description"
+msgid "Template applied to each result of the parent Item Query."
+msgstr "親アイテムクエリの各結果に適用されるテンプレート。"
+
+#: blocks/item/block.json
+msgctxt "block keyword"
+msgid "item"
+msgstr "item"
+
+#: blocks/item/block.json
+msgctxt "block keyword"
+msgid "template"
+msgstr "template"
+
+#: blocks/item/block.json
+msgctxt "block keyword"
+msgid "post"
+msgstr "post"
+
+#: blocks/raw/block.json
+msgctxt "block title"
+msgid "Raw"
+msgstr "Raw"
+
+#: blocks/raw/block.json
+msgctxt "block description"
+msgid "Inject a raw string or CDATA-wrapped value inside an Element block."
+msgstr "Element ブロック内に文字列または CDATA で囲んだ値を直接挿入。"
+
+#: blocks/raw/block.json
+msgctxt "block keyword"
+msgid "raw"
+msgstr "raw"
+
+#: blocks/raw/block.json
+msgctxt "block keyword"
+msgid "cdata"
+msgstr "cdata"
+
+#: blocks/raw/block.json
+msgctxt "block keyword"
+msgid "literal"
+msgstr "literal"
+
+#: blocks/rss/block.json
+msgctxt "block description"
+msgid "RSS feed root element."
+msgstr "RSS フィードのルート要素。"
+
+#: blocks/rss/block.json
+msgctxt "block keyword"
+msgid "root"
+msgstr "root"
+
+#: blocks/element/edit.js:22
+msgid "children"
+msgstr "子要素"
+
+#: blocks/element/edit.js:23
+msgid "static text"
+msgstr "静的テキスト"
+
+#: blocks/element/edit.js:24
+msgid "binding"
+msgstr "バインディング"
+
+#: blocks/element/edit.js:25
+msgid "binding (CDATA)"
+msgstr "バインディング（CDATA）"
+
+#: blocks/element/edit.js:26
+msgid "empty (self-closing)"
+msgstr "空（自己終了）"
+
+#: blocks/channel/block.json
+msgctxt "block title"
+msgid "<channel>"
+msgstr ""
+
+#: blocks/rss/block.json
+msgctxt "block title"
+msgid "<rss>"
+msgstr ""
+
+#: blocks/item-query/edit.js:297
+msgid "Only terms with at least one post are listed."
+msgstr "投稿が 1 件以上紐づくタームのみ表示。"
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+#: feedwright.php
+msgid "https://github.com/mt8/feedwright"
+msgstr ""
+
+#. Description of the plugin
+#: feedwright.php
+msgid "Edit custom RSS / Atom / XML feeds visually in the WordPress block editor."
+msgstr ""

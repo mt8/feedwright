@@ -1,0 +1,26 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "feedwright/item",
+	"version": "0.1.0",
+	"title": "Item Template",
+	"category": "feedwright",
+	"icon": "media-document",
+	"description": "Template applied to each result of the parent Item Query.",
+	"keywords": [ "item", "template", "post" ],
+	"textdomain": "feedwright",
+	"parent": [ "feedwright/item-query" ],
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"multiple": false,
+		"inserter": false
+	},
+	"attributes": {
+		"inItemContext": { "type": "boolean", "default": true }
+	},
+	"providesContext": {
+		"feedwright/inItemContext": "inItemContext"
+	},
+	"editorScript": "file:./index.js"
+}

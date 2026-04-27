@@ -1,0 +1,21 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "feedwright/comment",
+	"version": "0.1.0",
+	"title": "XML Comment",
+	"category": "feedwright",
+	"icon": "format-status",
+	"description": "Insert an XML comment <!-- ... --> in the rendered feed.",
+	"keywords": [ "comment", "xml", "note" ],
+	"textdomain": "feedwright",
+	"ancestor": [ "feedwright/rss" ],
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+	"attributes": {
+		"text": { "type": "string", "default": "" }
+	},
+	"editorScript": "file:./index.js"
+}

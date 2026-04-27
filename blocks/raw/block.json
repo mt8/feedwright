@@ -1,0 +1,23 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "feedwright/raw",
+	"version": "0.1.0",
+	"title": "Raw",
+	"category": "feedwright",
+	"icon": "editor-code",
+	"description": "Inject a raw string or CDATA-wrapped value inside an Element block.",
+	"keywords": [ "raw", "cdata", "literal" ],
+	"textdomain": "feedwright",
+	"parent": [ "feedwright/element" ],
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+	"attributes": {
+		"value": { "type": "string", "default": "" },
+		"asCdata": { "type": "boolean", "default": false },
+		"interpolate": { "type": "boolean", "default": true }
+	},
+	"editorScript": "file:./index.js"
+}

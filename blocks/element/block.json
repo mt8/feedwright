@@ -1,0 +1,37 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "feedwright/element",
+	"version": "0.1.0",
+	"title": "Element",
+	"category": "feedwright",
+	"icon": "editor-code",
+	"description": "Custom XML element with optional namespace, attributes, and binding-bound content.",
+	"keywords": [ "element", "xml", "tag" ],
+	"textdomain": "feedwright",
+	"ancestor": [ "feedwright/rss" ],
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+	"attributes": {
+		"tagName": { "type": "string", "default": "" },
+		"namespace": { "type": "string", "default": "" },
+		"attributes": {
+			"type": "array",
+			"default": []
+		},
+		"contentMode": {
+			"type": "string",
+			"default": "static",
+			"enum": [ "children", "static", "binding", "cdata-binding", "empty" ]
+		},
+		"staticValue": { "type": "string", "default": "" },
+		"bindingExpression": { "type": "string", "default": "" }
+	},
+	"providesContext": {
+		"feedwright/inItemContext": "feedwright/inItemContext"
+	},
+	"usesContext": [ "feedwright/inItemContext" ],
+	"editorScript": "file:./index.js"
+}

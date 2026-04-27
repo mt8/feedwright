@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "feedwright/item-query",
+	"version": "0.1.0",
+	"title": "Item Query",
+	"category": "feedwright",
+	"icon": "search",
+	"description": "Query posts and expand each result inside the channel as an <item>.",
+	"keywords": [ "query", "posts", "items" ],
+	"textdomain": "feedwright",
+	"parent": [ "feedwright/channel" ],
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"multiple": true
+	},
+	"attributes": {
+		"label": { "type": "string", "default": "" },
+		"itemTagName": { "type": "string", "default": "item" },
+		"postType": { "type": "array", "default": [ "post" ] },
+		"postsPerPage": { "type": "number", "default": 20 },
+		"orderBy": { "type": "string", "default": "date" },
+		"order": { "type": "string", "default": "DESC" },
+		"postStatus": { "type": "array", "default": [ "publish" ] },
+		"taxQuery": { "type": "array", "default": [] },
+		"metaQuery": { "type": "array", "default": [] },
+		"dateQuery": { "type": "object", "default": {} },
+		"excludeIds": { "type": "array", "default": [] },
+		"includeStickyPosts": { "type": "boolean", "default": false }
+	},
+	"providesContext": {
+		"feedwright/inItemContext": "feedwright/inItemContext"
+	},
+	"editorScript": "file:./index.js"
+}
