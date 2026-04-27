@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Feedwright\Bindings\Providers;
 
 use Feedwright\Renderer\Context;
+use Feedwright\Bindings\DateFormatter;
 use Feedwright\Bindings\ProviderInterface;
 
 defined( 'ABSPATH' ) || exit;
@@ -79,7 +80,7 @@ final class PostRawProvider implements ProviderInterface {
 			if ( false === $date_time ) {
 				return $raw;
 			}
-			return (string) wp_date( $modifier, $date_time->getTimestamp(), $timezone );
+			return DateFormatter::format( $date_time->getTimestamp(), $modifier, $timezone );
 		}
 
 		return null;

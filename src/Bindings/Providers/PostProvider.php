@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Feedwright\Bindings\Providers;
 
 use Feedwright\Renderer\Context;
+use Feedwright\Bindings\DateFormatter;
 use Feedwright\Bindings\ProviderInterface;
 
 defined( 'ABSPATH' ) || exit;
@@ -50,9 +51,15 @@ final class PostProvider implements ProviderInterface {
 			case 'post_excerpt':
 				return (string) get_the_excerpt( $post );
 			case 'post_date':
-				return (string) get_the_date( '' === $modifier ? 'c' : $modifier, $post );
+				return DateFormatter::format(
+					(int) get_post_time( 'U', true, $post ),
+					'' === $modifier ? 'c' : $modifier
+				);
 			case 'post_modified':
-				return (string) get_the_modified_date( '' === $modifier ? 'c' : $modifier, $post );
+				return DateFormatter::format(
+					(int) get_post_modified_time( 'U', true, $post ),
+					'' === $modifier ? 'c' : $modifier
+				);
 			case 'post_status':
 				return (string) get_post_status( $post );
 			case 'post_name':
