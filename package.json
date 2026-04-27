@@ -1,6 +1,6 @@
 {
     "name": "feedwright",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Edit custom RSS / Atom / XML feeds visually in the WordPress block editor.",
     "author": "mt8",
     "license": "GPL-2.0-or-later",
