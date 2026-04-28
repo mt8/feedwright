@@ -74,6 +74,7 @@ final class Plugin {
 				new Bindings\Providers\PostRawProvider(),
 				new Bindings\Providers\PostMetaProvider(),
 				new Bindings\Providers\PostTermProvider(),
+				new Bindings\Providers\PostTermMetaProvider(),
 				new Bindings\Providers\AuthorProvider(),
 			)
 		);
