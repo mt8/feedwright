@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-28T09:23:24+00:00\n"
+"POT-Creation-Date: 2026-04-28T09:42:42+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: feedwright\n"
@@ -260,66 +260,67 @@ msgstr ""
 msgid "(no tag)"
 msgstr ""
 
-#: blocks/element/edit.js:81
+#: blocks/element/edit.js:80
+#: blocks/element/edit.js:91
 msgid "{{...}}"
 msgstr ""
 
-#: blocks/element/edit.js:88
+#: blocks/element/edit.js:102
 #: blocks/raw/edit.js:48
 msgid "(empty)"
 msgstr ""
 
-#: blocks/element/edit.js:100
+#: blocks/element/edit.js:114
 msgid "Element"
 msgstr ""
 
-#: blocks/element/edit.js:102
+#: blocks/element/edit.js:116
 #: blocks/item-query/edit.js:196
 msgid "Tag name"
 msgstr ""
 
-#: blocks/element/edit.js:105
+#: blocks/element/edit.js:119
 msgid "Use prefix:local for namespaced tags. The prefix must be declared on the rss block."
 msgstr ""
 
-#: blocks/element/edit.js:111
+#: blocks/element/edit.js:125
 msgid "Tag name is not a valid XML Name."
 msgstr ""
 
-#: blocks/element/edit.js:116
+#: blocks/element/edit.js:130
 msgid "Content"
 msgstr ""
 
-#: blocks/element/edit.js:118
+#: blocks/element/edit.js:132
 msgid "Content mode"
 msgstr ""
 
-#: blocks/element/edit.js:126
+#: blocks/element/edit.js:140
 msgid "Static value"
 msgstr ""
 
-#: blocks/element/edit.js:137
+#: blocks/element/edit.js:151
 msgid "Binding expression (CDATA)"
 msgstr ""
 
-#: blocks/element/edit.js:138
+#: blocks/element/edit.js:152
 #: blocks/_shared/AttributeListEditor.jsx:103
 msgid "Binding expression"
 msgstr ""
 
-#: blocks/element/edit.js:142
+#: blocks/element/edit.js:156
 msgid "Use {{ to insert a binding. Combine free text with multiple bindings."
 msgstr ""
 
-#: blocks/element/edit.js:149
+#: blocks/element/edit.js:163
 msgid "This element will be composed of nested element blocks."
 msgstr ""
 
-#: blocks/element/edit.js:155
+#: blocks/element/edit.js:169
 msgid "Self-closing element with attributes only."
 msgstr ""
 
-#: blocks/element/edit.js:160
+#: blocks/element/edit.js:174
 #: blocks/_shared/AttributeListEditor.jsx:59
 msgid "Attributes"
 msgstr ""
@@ -771,6 +772,14 @@ msgstr ""
 
 #: blocks/_shared/processor-suggestions.js:31
 msgid "map — translate value via key=val pairs (* for fallback)"
+msgstr ""
+
+#: blocks/_shared/processor-suggestions.js:37
+msgid "first — take the first segment of a separator-joined string"
+msgstr ""
+
+#: blocks/_shared/processor-suggestions.js:43
+msgid "default — replace empty input with a literal value"
 msgstr ""
 
 #: blocks/channel/block.json
