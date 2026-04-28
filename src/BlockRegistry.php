@@ -31,6 +31,7 @@ final class BlockRegistry {
 		'item',
 		'sub-query',
 		'sub-item',
+		'when',
 		'raw',
 		'comment',
 	);

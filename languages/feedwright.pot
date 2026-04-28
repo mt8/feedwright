@@ -9,14 +9,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-28T10:21:09+00:00\n"
+"POT-Creation-Date: 2026-04-28T10:39:48+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: feedwright\n"
 
 #. Plugin Name of the plugin
 #: feedwright.php
-#: src/BlockRegistry.php:249
+#: src/BlockRegistry.php:250
 msgid "Feedwright"
 msgstr ""
 
@@ -379,11 +379,13 @@ msgstr ""
 
 #: blocks/item-query/edit.js:168
 #: blocks/sub-query/edit.js:85
+#: blocks/when/edit.js:36
 msgid "Editor label"
 msgstr ""
 
 #: blocks/item-query/edit.js:171
 #: blocks/sub-query/edit.js:88
+#: blocks/when/edit.js:39
 msgid "Used in the editor only; not emitted in XML."
 msgstr ""
 
@@ -490,7 +492,7 @@ msgstr ""
 msgid "Item Query"
 msgstr ""
 
-#: blocks/item/edit.js:17
+#: blocks/item/edit.js:18
 msgid "Item Template"
 msgstr ""
 
@@ -559,7 +561,7 @@ msgstr ""
 msgid "namespace(s)"
 msgstr ""
 
-#: blocks/sub-item/edit.js:13
+#: blocks/sub-item/edit.js:18
 msgid "Sub Item Template"
 msgstr ""
 
@@ -619,6 +621,34 @@ msgstr ""
 
 #: blocks/sub-query/edit.js:201
 msgid "Sub Query"
+msgstr ""
+
+#: blocks/when/edit.js:29
+msgid "(no expression)"
+msgstr ""
+
+#: blocks/when/edit.js:34
+msgid "Condition"
+msgstr ""
+
+#: blocks/when/edit.js:44
+msgid "Expression"
+msgstr ""
+
+#: blocks/when/edit.js:47
+msgid "Inner blocks render only when this expression resolves to a non-empty string. Use the map / default / first processors to shape the truthiness."
+msgstr ""
+
+#: blocks/when/edit.js:51
+msgid "Negate (render when empty instead)"
+msgstr ""
+
+#: blocks/when/edit.js:57
+msgid "No expression set: under default behavior nothing is rendered. Add an expression, or toggle Negate to render unconditionally."
+msgstr ""
+
+#: blocks/when/edit.js:64
+msgid "When"
 msgstr ""
 
 #: blocks/_shared/AttributeListEditor.jsx:64
@@ -990,4 +1020,34 @@ msgstr ""
 #: blocks/sub-query/block.json
 msgctxt "block keyword"
 msgid "loop"
+msgstr ""
+
+#: blocks/when/block.json
+msgctxt "block title"
+msgid "When (conditional)"
+msgstr ""
+
+#: blocks/when/block.json
+msgctxt "block description"
+msgid "Render the inner blocks only when a binding expression resolves non-empty (or empty under negate)."
+msgstr ""
+
+#: blocks/when/block.json
+msgctxt "block keyword"
+msgid "when"
+msgstr ""
+
+#: blocks/when/block.json
+msgctxt "block keyword"
+msgid "if"
+msgstr ""
+
+#: blocks/when/block.json
+msgctxt "block keyword"
+msgid "conditional"
+msgstr ""
+
+#: blocks/when/block.json
+msgctxt "block keyword"
+msgid "filter"
 msgstr ""

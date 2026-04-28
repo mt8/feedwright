@@ -14,7 +14,7 @@ import {
 import BindingInput from '../_shared/BindingInput';
 import AttributeListEditor from '../_shared/AttributeListEditor';
 
-const CHILD_ALLOWED = [ 'feedwright/raw', 'feedwright/element' ];
+const CHILD_ALLOWED = [ 'feedwright/raw', 'feedwright/element', 'feedwright/when' ];
 
 const XML_NAME_REGEX = /^[A-Za-z_][A-Za-z0-9._-]*(:[A-Za-z_][A-Za-z0-9._-]*)?$/;
 

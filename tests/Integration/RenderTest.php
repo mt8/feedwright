@@ -862,6 +862,105 @@ final class RenderTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( 'Ancient Live', $xml );
 	}
 
+	public function test_when_block_emits_children_when_expression_resolves_non_empty(): void {
+		self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'Has Title' ) );
+
+		$inner = '<!-- wp:feedwright/element {"tagName":"deleted","contentMode":"empty"} /-->';
+		// Expression resolves to the post title (non-empty) -> children render.
+		$when_attrs = wp_json_encode( array( 'expression' => '{{post.post_title}}' ) );
+		$content    = '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
+			. '<!-- wp:feedwright/item-query {"postsPerPage":1} --><!-- wp:feedwright/item -->'
+			. "<!-- wp:feedwright/when {$when_attrs} -->{$inner}<!-- /wp:feedwright/when -->"
+			. '<!-- /wp:feedwright/item --><!-- /wp:feedwright/item-query -->'
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		$this->assertStringContainsString( '<deleted/>', $xml );
+	}
+
+	public function test_when_block_skips_children_when_expression_resolves_empty(): void {
+		self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'Live Post' ) );
+
+		$inner = '<!-- wp:feedwright/element {"tagName":"deleted","contentMode":"empty"} /-->';
+		// 'publish' does not equal 'trash', so map returns empty -> no render.
+		$when_attrs = wp_json_encode(
+			array( 'expression' => '{{post_raw.post_status|map:trash=1,*=}}' )
+		);
+		$content = '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
+			. '<!-- wp:feedwright/item-query {"postsPerPage":1} --><!-- wp:feedwright/item -->'
+			. "<!-- wp:feedwright/when {$when_attrs} -->{$inner}<!-- /wp:feedwright/when -->"
+			. '<!-- /wp:feedwright/item --><!-- /wp:feedwright/item-query -->'
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		$this->assertStringNotContainsString( '<deleted/>', $xml );
+	}
+
+	public function test_when_block_negate_inverts_the_gate(): void {
+		self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'Live Post' ) );
+
+		$inner = '<!-- wp:feedwright/element {"tagName":"title","contentMode":"binding","bindingExpression":"{{post.post_title}}"} /-->';
+		// Same expression as the previous test (resolves empty for publish)
+		// but with negate=true -> children DO render.
+		$when_attrs = wp_json_encode(
+			array(
+				'expression' => '{{post_raw.post_status|map:trash=1,*=}}',
+				'negate'     => true,
+			)
+		);
+		$content = '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
+			. '<!-- wp:feedwright/item-query {"postsPerPage":1} --><!-- wp:feedwright/item -->'
+			. "<!-- wp:feedwright/when {$when_attrs} -->{$inner}<!-- /wp:feedwright/when -->"
+			. '<!-- /wp:feedwright/item --><!-- /wp:feedwright/item-query -->'
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		$this->assertStringContainsString( '<title>Live Post</title>', $xml );
+	}
+
+	public function test_when_block_works_at_channel_scope(): void {
+		// `when` placed directly inside <channel> is gated against
+		// channel-context bindings (option / feed / now). Item bindings
+		// resolve empty there, so this only verifies channel-scoped use.
+		update_option( 'blogname', 'Site Name' );
+
+		$inner = '<!-- wp:feedwright/element {"tagName":"hint","contentMode":"static","staticValue":"channel-only"} /-->';
+		$when_attrs = wp_json_encode( array( 'expression' => '{{option.blogname}}' ) );
+		$content = '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
+			. "<!-- wp:feedwright/when {$when_attrs} -->{$inner}<!-- /wp:feedwright/when -->"
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		$this->assertStringContainsString( '<hint>channel-only</hint>', $xml );
+	}
+
+	public function test_when_blocks_can_nest(): void {
+		self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'Nested' ) );
+
+		$inner       = '<!-- wp:feedwright/element {"tagName":"out","contentMode":"binding","bindingExpression":"{{post.post_title}}"} /-->';
+		$inner_when  = wp_json_encode( array( 'expression' => '{{post.post_title}}' ) );
+		$outer_when  = wp_json_encode( array( 'expression' => '{{post.ID}}' ) );
+		$outer_inner = "<!-- wp:feedwright/when {$inner_when} -->{$inner}<!-- /wp:feedwright/when -->";
+		$content     = '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
+			. '<!-- wp:feedwright/item-query {"postsPerPage":1} --><!-- wp:feedwright/item -->'
+			. "<!-- wp:feedwright/when {$outer_when} -->{$outer_inner}<!-- /wp:feedwright/when -->"
+			. '<!-- /wp:feedwright/item --><!-- /wp:feedwright/item-query -->'
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		$this->assertStringContainsString( '<out>Nested</out>', $xml );
+	}
+
 	public function test_no_rss_block_returns_error_xml(): void {
 		$post_id = self::factory()->post->create(
 			array(

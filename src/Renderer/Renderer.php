@@ -134,7 +134,9 @@ final class Renderer {
 
 		$element_renderer   = new ElementRenderer( $this->resolver );
 		$sub_query_renderer = new SubQueryRenderer( $element_renderer );
+		$when_renderer      = new WhenRenderer( $element_renderer, $this->resolver );
 		$element_renderer->set_sub_query_renderer( $sub_query_renderer );
+		$element_renderer->set_when_renderer( $when_renderer );
 		$item_renderer = new ItemQueryRenderer( $element_renderer );
 
 		foreach ( (array) ( $channel_block['innerBlocks'] ?? array() ) as $child ) {
@@ -152,6 +154,11 @@ final class Renderer {
 				case 'feedwright/item-query':
 					foreach ( $item_renderer->render( $child, $ctx ) as $item_node ) {
 						$channel_el->appendChild( $item_node );
+					}
+					break;
+				case 'feedwright/when':
+					foreach ( $when_renderer->render( $child, $ctx ) as $when_node ) {
+						$channel_el->appendChild( $when_node );
 					}
 					break;
 				case 'feedwright/comment':

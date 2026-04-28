@@ -16,7 +16,7 @@ msgstr ""
 
 #. Plugin Name of the plugin
 #: feedwright.php
-#: src/BlockRegistry.php:249
+#: src/BlockRegistry.php:250
 msgid "Feedwright"
 msgstr ""
 
@@ -348,11 +348,13 @@ msgstr "基本"
 
 #: blocks/item-query/edit.js:168
 #: blocks/sub-query/edit.js:85
+#: blocks/when/edit.js:36
 msgid "Editor label"
 msgstr "エディタラベル"
 
 #: blocks/item-query/edit.js:171
 #: blocks/sub-query/edit.js:88
+#: blocks/when/edit.js:39
 msgid "Used in the editor only; not emitted in XML."
 msgstr "エディタ表示専用。XML には出力されません。"
 
@@ -447,7 +449,7 @@ msgstr "タームを選択…"
 msgid "Item Query"
 msgstr "アイテムクエリ"
 
-#: blocks/item/edit.js:17
+#: blocks/item/edit.js:18
 msgid "Item Template"
 msgstr "アイテムテンプレート"
 
@@ -861,7 +863,7 @@ msgstr ""
 msgid "Edit custom RSS / Atom / XML feeds visually in the WordPress block editor."
 msgstr ""
 
-#: blocks/sub-item/edit.js:13
+#: blocks/sub-item/edit.js:18
 msgid "Sub Item Template"
 msgstr "サブアイテムテンプレート"
 
@@ -991,3 +993,61 @@ msgstr "ゴミ箱の投稿は直近 N 日以内に変更されたものだけ含
 #: blocks/item-query/edit.js:258
 msgid "0 = no time limit. Caps trash entries to recently-deleted ones; published posts are unaffected."
 msgstr "0 で無制限。ゴミ箱の投稿のみ直近に削除されたものに絞り、公開済みの投稿には影響しません。"
+
+#: blocks/when/edit.js:29
+msgid "(no expression)"
+msgstr "(条件式なし)"
+
+#: blocks/when/edit.js:34
+msgid "Condition"
+msgstr "条件"
+
+#: blocks/when/edit.js:44
+msgid "Expression"
+msgstr "条件式"
+
+#: blocks/when/edit.js:47
+msgid "Inner blocks render only when this expression resolves to a non-empty string. Use the map / default / first processors to shape the truthiness."
+msgstr "条件式が空でない文字列に解決されたときだけ子ブロックが出力されます。map / default / first プロセッサで真偽の整形が可能です。"
+
+#: blocks/when/edit.js:51
+msgid "Negate (render when empty instead)"
+msgstr "判定を反転（空のときに出力）"
+
+#: blocks/when/edit.js:57
+msgid "No expression set: under default behavior nothing is rendered. Add an expression, or toggle Negate to render unconditionally."
+msgstr "条件式が未設定です。デフォルト動作では何も出力されません。条件式を入力するか、無条件出力にしたい場合は反転トグルを ON にしてください。"
+
+#: blocks/when/edit.js:64
+msgid "When"
+msgstr "When"
+
+#: blocks/when/block.json
+msgctxt "block title"
+msgid "When (conditional)"
+msgstr "When（条件出力）"
+
+#: blocks/when/block.json
+msgctxt "block description"
+msgid "Render the inner blocks only when a binding expression resolves non-empty (or empty under negate)."
+msgstr "バインディング式が空でない値に解決されたとき（反転時は空のとき）にだけ子ブロックを出力します。"
+
+#: blocks/when/block.json
+msgctxt "block keyword"
+msgid "when"
+msgstr "when"
+
+#: blocks/when/block.json
+msgctxt "block keyword"
+msgid "if"
+msgstr "if"
+
+#: blocks/when/block.json
+msgctxt "block keyword"
+msgid "conditional"
+msgstr "条件"
+
+#: blocks/when/block.json
+msgctxt "block keyword"
+msgid "filter"
+msgstr "フィルタ"

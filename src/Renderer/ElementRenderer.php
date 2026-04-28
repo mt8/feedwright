@@ -37,6 +37,14 @@ final class ElementRenderer {
 	private ?SubQueryRenderer $sub_query_renderer = null;
 
 	/**
+	 * When-renderer used to gate `feedwright/when` children. Lazily injected
+	 * for the same reason as the sub-query renderer.
+	 *
+	 * @var WhenRenderer|null
+	 */
+	private ?WhenRenderer $when_renderer = null;
+
+	/**
 	 * Wire the element renderer with the configured binding resolver.
 	 *
 	 * @param Resolver $resolver Binding resolver to use for `{{...}}` substitution.
@@ -53,6 +61,16 @@ final class ElementRenderer {
 	 */
 	public function set_sub_query_renderer( SubQueryRenderer $renderer ): void {
 		$this->sub_query_renderer = $renderer;
+	}
+
+	/**
+	 * Inject the when renderer. Setter-based for the same reason as the
+	 * sub-query renderer (WhenRenderer needs us to render its inner blocks).
+	 *
+	 * @param WhenRenderer $renderer When renderer.
+	 */
+	public function set_when_renderer( WhenRenderer $renderer ): void {
+		$this->when_renderer = $renderer;
 	}
 
 	/**
@@ -184,6 +202,12 @@ final class ElementRenderer {
 					return array();
 				}
 				return $this->sub_query_renderer->render( $block, $ctx );
+			case 'feedwright/when':
+				if ( null === $this->when_renderer ) {
+					\Feedwright\Plugin::log( 'feedwright/when encountered without a when renderer wired in.' );
+					return array();
+				}
+				return $this->when_renderer->render( $block, $ctx );
 		}
 		return array();
 	}
