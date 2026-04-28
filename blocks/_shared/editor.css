@@ -132,6 +132,24 @@
 	font-size: 13px;
 }
 
+/* cdata-binding mode: visually wrap the expression with <![CDATA[ ... ]]>
+   so the editor mirrors what the renderer will emit. */
+.feedwright-block-element__binding--cdata {
+	background: #eef2ff;
+	border-color: #c7d2fe;
+}
+
+.feedwright-block-element__cdata-marker {
+	color: #4338ca;
+	opacity: 0.75;
+	font-size: 12px;
+	user-select: none;
+}
+
+.feedwright-block-element__cdata-body {
+	margin: 0 6px;
+}
+
 .feedwright-block-element__value {
 	color: #166534;
 }
