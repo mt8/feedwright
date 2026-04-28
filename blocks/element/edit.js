@@ -75,10 +75,24 @@ export default function Edit( { attributes, setAttributes, context } ) {
 			);
 			break;
 		case 'binding':
-		case 'cdata-binding':
 			preview = (
 				<code className="feedwright-block-element__binding">
 					{ bindingExpression || __( '{{...}}', 'feedwright' ) }
+				</code>
+			);
+			break;
+		case 'cdata-binding':
+			preview = (
+				<code className="feedwright-block-element__binding feedwright-block-element__binding--cdata">
+					<span className="feedwright-block-element__cdata-marker">
+						&lt;![CDATA[
+					</span>
+					<span className="feedwright-block-element__cdata-body">
+						{ bindingExpression || __( '{{...}}', 'feedwright' ) }
+					</span>
+					<span className="feedwright-block-element__cdata-marker">
+						]]&gt;
+					</span>
 				</code>
 			);
 			break;
