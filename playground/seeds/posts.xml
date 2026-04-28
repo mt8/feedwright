@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Sample post fixtures for the Feedwright Playground demo.
+  Parsed by seed-shared.php on Playground startup.
+
+  Each <post> attributes:
+    category  (string)        - category slug from <terms> below
+    status    (publish|trash) - trashed posts demonstrate <mdf:deleted/>
+    date      (Y-m-d H:i:s)   - publish date (UTC)
+    tags      (csv)           - tag names
+    image_id  (string)        - Unsplash photo ID (used as both featured image
+                                and figure embed at top of body). The full URL
+                                is built as
+                                  https://images.unsplash.com/{image_id}?w=1200&q=80&fit=crop
+
+  Total: 30 posts (6 per category × 5 categories), 2 trashed.
+-->
+<feedwright-demo>
+  <terms>
+    <category slug="news"      name="News"      mediba_id="101"/>
+    <category slug="tech"      name="Tech"      mediba_id="202"/>
+    <category slug="lifestyle" name="Lifestyle" mediba_id="91"/>
+    <category slug="sports"    name="Sports"    mediba_id="503"/>
+    <category slug="business"  name="Business"  mediba_id="201"/>
+  </terms>
+
+  <posts>
+    <!-- ===== Tech (6) ===== -->
+    <post category="tech" status="publish" date="2026-04-27 09:00:00" tags="wordpress,editor,feature" image_id="photo-1555066931-4365d14bab8c">
+      <title>WordPress 6.9 highlights for editors</title>
+      <excerpt>A quick tour of what WordPress 6.9 brings to people who live in the block editor.</excerpt>
+      <content><![CDATA[<p>WordPress 6.9 doubles down on the Block Bindings API, making dynamic data inserts feel native to the editor. The biggest change is improved <strong>Synced Patterns</strong>, which makes shipping the same template to multiple sites genuinely practical.</p>
+<h2>What is new</h2>
+<ul><li>Block Bindings supports custom sources with type hints</li><li>Synced Patterns can now opt into per-instance attribute overrides</li><li>Site Editor stability improvements across the board</li></ul>
+<p>Existing themes built on the block editor inherit most of these without code changes.</p>]]></content>
+    </post>
+    <post category="tech" status="publish" date="2026-04-25 14:30:00" tags="analysis,opinion" image_id="photo-1628258334105-2a0b3d6efee1">
+      <title>Edge functions are not the database problem you think</title>
+      <excerpt>Latency at the edge is great. Joining tables there is not.</excerpt>
+      <content><![CDATA[<p>Putting compute next to the user makes round-trips fast. The catch most teams hit is data: when your authoritative store is one region away, the edge runtime ends up acting like a slow cache layer.</p>
+<p>This piece walks through three concrete failure modes our team encountered.</p>]]></content>
+    </post>
+    <post category="tech" status="trash" date="2026-04-22 16:00:00" tags="wordpress,editor,feed" image_id="photo-1542831371-29b0f74f9713">
+      <title>Editing RSS in the block editor: why bother?</title>
+      <excerpt>Stop hand-writing XML — start composing it.</excerpt>
+      <content><![CDATA[<p>For years, custom RSS / Atom feeds have meant a theme template or an MU plugin. Feedwright treats the feed itself as a block tree.</p>
+<p>This article walks through the design rationale and the operational wins of treating XML as a composable artifact.</p>]]></content>
+    </post>
+    <post category="tech" status="publish" date="2026-04-20 11:00:00" tags="ai,startup,funding" image_id="photo-1498050108023-c5249f4df085">
+      <title>AI infrastructure startup raises Series B at unicorn valuation</title>
+      <excerpt>Investors back inference-cost-optimization play; founders cite enterprise demand.</excerpt>
+      <content><![CDATA[<p>The Series B round, led by a multi-stage growth fund, values the inference-orchestration startup at over $1B. The product reduces per-query costs for large-language-model deployments by intelligently routing across providers.</p>
+<p>Enterprise pilots have shown 30–50% cost reductions on production workloads, according to the company.</p>]]></content>
+    </post>
+    <post category="tech" status="publish" date="2026-04-17 10:30:00" tags="hardware,review" image_id="photo-1488590528505-98d2b5aba04b">
+      <title>Apple chip transition: what year three looks like</title>
+      <excerpt>Three years into the Apple silicon transition, the developer story is settled.</excerpt>
+      <content><![CDATA[<p>Native ARM builds are now the default across major IDE and toolchain ecosystems. Rosetta 2 remains relevant for legacy binaries but is rarely a friction point in greenfield development.</p>
+<p>Battery-life and thermal characteristics continue to set the bar for the laptop class.</p>]]></content>
+    </post>
+    <post category="tech" status="publish" date="2026-04-15 14:00:00" tags="cloud,analysis" image_id="photo-1509966756634-9c23dd6e6815">
+      <title>Cloud cost report: spot instances are back in fashion</title>
+      <excerpt>Teams that mastered checkpointing are seeing 60–80% savings on batch workloads.</excerpt>
+      <content><![CDATA[<p>The renewed interest is driven by tooling: managed orchestrators now handle preemption gracefully, removing most of the historical operational burden.</p>
+<p>Reserved instances still beat spot for steady-state services, but the overlap on flexible workloads is narrowing.</p>]]></content>
+    </post>
+
+    <!-- ===== News (6) ===== -->
+    <post category="news" status="publish" date="2026-04-26 12:30:00" tags="breaking,analysis" image_id="photo-1631519952398-5b1d76b946e8">
+      <title>Local council passes climate adaptation budget</title>
+      <excerpt>12 billion yen earmarked over the next three years for flood defenses.</excerpt>
+      <content><![CDATA[<p>The prefectural assembly approved an expanded climate adaptation budget yesterday, with funds earmarked for river infrastructure, urban heat-island measures, and community evacuation planning.</p>
+<p>Critics argue the timeline does not match the pace of observed weather extremes.</p>]]></content>
+    </post>
+    <post category="news" status="publish" date="2026-04-24 11:00:00" tags="feature,education" image_id="photo-1566378246598-5b11a0d486cc">
+      <title>Public statement: media literacy curriculum update</title>
+      <excerpt>The board released a revised K–12 syllabus reflecting AI-era information practices.</excerpt>
+      <content><![CDATA[<p>The new curriculum places emphasis on source verification, generative-content disclosure norms, and cross-referencing across multiple outlets. Teacher training rolls out in phases starting fall.</p>]]></content>
+    </post>
+    <post category="news" status="publish" date="2026-04-21 12:30:00" tags="feed,guide" image_id="photo-1495020689067-958852a7765e">
+      <title>Five things to get right when shaping a SmartNews feed</title>
+      <excerpt>The pitfalls when serving a SmartFormat-compliant feed from WordPress.</excerpt>
+      <content><![CDATA[<p>SmartNews delivery is more than RSS 2.0. Things like <code>snf:logo</code>, <code>snf:analytics</code>, and well-formed <code>media:thumbnail</code> entries are what separate "works" from "reliable".</p>
+<p>This piece walks through five mistakes editors run into when assembling a SmartFormat feed with Feedwright.</p>]]></content>
+    </post>
+    <post category="news" status="publish" date="2026-04-19 09:00:00" tags="politics,analysis" image_id="photo-1504711434969-e33886168f5c">
+      <title>Election results: turnout up in suburban districts</title>
+      <excerpt>Aggregate turnout exceeded the prior cycle by 4 percentage points.</excerpt>
+      <content><![CDATA[<p>Suburban districts saw the largest gains, particularly among voters aged 25–34. Analysts attribute the shift to expanded early-voting hours and online voter education campaigns.</p>]]></content>
+    </post>
+    <post category="news" status="publish" date="2026-04-16 14:30:00" tags="press,statement" image_id="photo-1623039405147-547794f92e9e">
+      <title>Press conference: rail operator outlines safety overhaul</title>
+      <excerpt>New procedures focus on signal-system inspection and communication protocols.</excerpt>
+      <content><![CDATA[<p>The operator outlined a 12-month implementation roadmap, with the first phase covering all metropolitan-area lines. Independent auditors will review progress quarterly.</p>]]></content>
+    </post>
+    <post category="news" status="publish" date="2026-04-13 10:00:00" tags="international,summit" image_id="photo-1624269305548-1527ef905ff6">
+      <title>Trade summit recap: digital services agreement signed</title>
+      <excerpt>Five countries finalize a framework on cross-border data flows.</excerpt>
+      <content><![CDATA[<p>The framework establishes mutual recognition of data-protection standards and removes select tariffs on digital services. Critics say enforcement language remains weak.</p>]]></content>
+    </post>
+
+    <!-- ===== Lifestyle (6) ===== -->
+    <post category="lifestyle" status="publish" date="2026-04-23 09:30:00" tags="feature,review" image_id="photo-1542372147193-a7aca54189cd">
+      <title>A weekend in the inland coffee belt</title>
+      <excerpt>Three roasters, two markets, one excellent walking route.</excerpt>
+      <content><![CDATA[<p>Saturday morning belongs to the small roastery on the corner of the third street, where they pull a soft-roast Ethiopia that tastes like blueberry jam. From there it is a 20-minute walk along the canal to the farmer's market.</p>]]></content>
+    </post>
+    <post category="lifestyle" status="publish" date="2026-04-20 18:45:00" tags="wordpress,rss,guide" image_id="photo-1453614512568-c4024d13c247">
+      <title>Bindings make WordPress data fluent for syndication</title>
+      <excerpt>No SSG, no headless setup — just expression syntax against post data.</excerpt>
+      <content><![CDATA[<p>With <code>{{post.post_title}}</code>-style expressions in place, you can pipe CMS data straight into XML output. That is a chunk of the SSG playbook brought back to WordPress.</p>]]></content>
+    </post>
+    <post category="lifestyle" status="publish" date="2026-04-18 08:00:00" tags="review" image_id="photo-1509042239860-f550ce710b93">
+      <title>Slow morning recipes: three things you can make in 15 minutes</title>
+      <excerpt>Avocado toast variants, lazy oats, and the world's easiest pancakes.</excerpt>
+      <content><![CDATA[<p>Some mornings, breakfast needs to be both delicious and unintrusive. These three recipes use ingredients you almost certainly already have, and none of them require active attention beyond about three minutes.</p>]]></content>
+    </post>
+    <post category="lifestyle" status="publish" date="2026-04-15 11:00:00" tags="travel,kyoto" image_id="photo-1521017432531-fbd92d768814">
+      <title>Kyoto in late April: a quieter cherry blossom alternative</title>
+      <excerpt>Skip the headline locations and find unhurried spots in the eastern hills.</excerpt>
+      <content><![CDATA[<p>The eastern hill area opens earlier than the headline blossom locations and quiets down by mid-morning. A loop combining a small temple, a back-street teahouse, and a riverside path makes for a satisfying half-day.</p>]]></content>
+    </post>
+    <post category="lifestyle" status="publish" date="2026-04-12 17:00:00" tags="review,books" image_id="photo-1697379607691-acf51e365497">
+      <title>Weekend reading list: five short novels under 250 pages</title>
+      <excerpt>Each pick fits a single weekend and rewards a slow re-read.</excerpt>
+      <content><![CDATA[<p>Short novels are the cleanest demonstration of disciplined storytelling. These five titles range from translated literary fiction to a contemporary mystery, and none of them outstay their welcome.</p>]]></content>
+    </post>
+    <post category="lifestyle" status="publish" date="2026-04-10 09:00:00" tags="garden,starter,guide" image_id="photo-1511081692775-05d0f180a065">
+      <title>Starting a balcony herb garden the lazy way</title>
+      <excerpt>Three pots, six herbs, zero pretension.</excerpt>
+      <content><![CDATA[<p>You do not need a yard, an irrigation plan, or a Pinterest board. You need three pots, decent drainage, and a sunny corner. The herbs that survive my mistakes: basil, oregano, mint, parsley, chives, and thyme.</p>]]></content>
+    </post>
+
+    <!-- ===== Sports (6) ===== -->
+    <post category="sports" status="publish" date="2026-04-26 16:00:00" tags="breaking" image_id="photo-1565483276060-e6730c0cc6a1">
+      <title>Marathon: course record falls in cool, dry conditions</title>
+      <excerpt>A new national record by 47 seconds, set on the second half of the course.</excerpt>
+      <content><![CDATA[<p>Conditions were nearly ideal: 12°C at the start, light tailwind on the back stretch, dry pavement throughout. The lead pack stayed together through 30 km before the eventual winner pushed the pace down a sub-3:00/km closing kilometer.</p>]]></content>
+    </post>
+    <post category="sports" status="publish" date="2026-04-22 11:00:00" tags="analysis,feature" image_id="photo-1590372447928-33080a2b401a">
+      <title>Baseball preview: pitching depth will define this season</title>
+      <excerpt>Two teams enter spring with serious questions in their starting rotations.</excerpt>
+      <content><![CDATA[<p>The off-season trade activity reshuffled bullpen depth across the league, but the bigger question is whether the top of the rotations can carry their teams through July without rest-day inflation.</p>]]></content>
+    </post>
+    <post category="sports" status="trash" date="2026-04-19 15:00:00" tags="opinion" image_id="photo-1520470082789-e347ad8b1944">
+      <title>Soccer: home form keeps midtable side in playoff race</title>
+      <excerpt>Five wins out of seven at home over the last two months.</excerpt>
+      <content><![CDATA[<p>Despite a thin away record, consistent home performances have kept the midtable contender within touching distance of the final playoff slot. Manager interviewed post-match credited rotation discipline.</p>]]></content>
+    </post>
+    <post category="sports" status="publish" date="2026-04-16 13:00:00" tags="tennis,recap" image_id="photo-1522778526097-ce0a22ceb253">
+      <title>Tennis tournament recap: a generational shift on clay</title>
+      <excerpt>Three semifinalists were under 23 — a first for this event in a decade.</excerpt>
+      <content><![CDATA[<p>The top half of the draw produced two surprise semifinalists; the bottom half held to seedings. The eventual final hinged on a third-set tiebreak that swung on a single line call.</p>]]></content>
+    </post>
+    <post category="sports" status="publish" date="2026-04-13 18:00:00" tags="olympics,qualifier" image_id="photo-1569863959165-56dae551d4fc">
+      <title>Olympic qualifier: cycling team posts national record in pursuit</title>
+      <excerpt>Sub-3:50 at altitude — the fastest mark in the country's history at this altitude.</excerpt>
+      <content><![CDATA[<p>The team-pursuit squad set their fastest mark of the season under cool, low-humidity conditions. The qualifying time secures provisional Olympic-spot eligibility pending final committee confirmation.</p>]]></content>
+    </post>
+    <post category="sports" status="publish" date="2026-04-09 20:00:00" tags="swimming,record" image_id="photo-1608154119029-53f3c6ad12e4">
+      <title>Swimming: 200m freestyle national record falls by 0.34s</title>
+      <excerpt>The previous record had stood for nearly four years.</excerpt>
+      <content><![CDATA[<p>The race was decided in the final 25 meters; the winning swimmer's split was the fastest ever recorded at the venue. The new record sets up an interesting selection debate ahead of the international meet.</p>]]></content>
+    </post>
+
+    <!-- ===== Business (6) ===== -->
+    <post category="business" status="publish" date="2026-04-25 10:00:00" tags="analysis,feature" image_id="photo-1541746972996-4e0b0f43e02a">
+      <title>Q1 earnings: enterprise SaaS guidance held flat</title>
+      <excerpt>Most large vendors maintained full-year forecasts despite mixed regional softness.</excerpt>
+      <content><![CDATA[<p>The earnings reports across enterprise SaaS this quarter were largely consistent with prior guidance. NRR ticked down 1–2 points at most names; expansion was offset by churn in the SMB tier.</p>]]></content>
+    </post>
+    <post category="business" status="publish" date="2026-04-24 14:00:00" tags="breaking" image_id="photo-1568992687947-868a62a9f521">
+      <title>M&amp;A: regional bank merger clears antitrust review</title>
+      <excerpt>Deal expected to close in the third quarter pending shareholder approval.</excerpt>
+      <content><![CDATA[<p>The combined entity would be the third-largest by deposits in the region. Branch network consolidation is expected over the following 12 months.</p>]]></content>
+    </post>
+    <post category="business" status="publish" date="2026-04-19 21:30:00" tags="analysis" image_id="photo-1553877522-43269d4ea984">
+      <title>Currency: yen weakens past intervention thresholds</title>
+      <excerpt>Verbal intervention from monetary authorities followed within hours.</excerpt>
+      <content><![CDATA[<p>The currency move overnight pushed the yen past widely-watched levels for the first time in 2026. Officials reiterated that they would respond to disorderly movements, without committing to a specific defense level.</p>]]></content>
+    </post>
+    <post category="business" status="publish" date="2026-04-16 12:00:00" tags="markets,roundup" image_id="photo-1600880292203-757bb62b4baf">
+      <title>Stock market roundup: defensives lead a mixed session</title>
+      <excerpt>Healthcare and utilities held up; cyclicals underperformed broadly.</excerpt>
+      <content><![CDATA[<p>The session was characterized by sector rotation rather than directional conviction. Volume was thin into a long weekend; bond yields ticked higher in afternoon trading.</p>]]></content>
+    </post>
+    <post category="business" status="publish" date="2026-04-12 11:00:00" tags="real-estate,trends" image_id="photo-1497366754035-f200968a6e72">
+      <title>Real estate: office vacancy stabilizes in Tier 1 markets</title>
+      <excerpt>Subleases finally working through the pipeline; new supply remains constrained.</excerpt>
+      <content><![CDATA[<p>The most-watched markets are seeing vacancy stabilize at elevated but plateaued levels. Conversion proposals — office to residential — continue to face zoning friction in older districts.</p>]]></content>
+    </post>
+    <post category="business" status="publish" date="2026-04-08 15:30:00" tags="startups,funding" image_id="photo-1497215842964-222b430dc094">
+      <title>Climate tech funding hits a four-quarter high</title>
+      <excerpt>Seed and Series A rounds drove most of the increase.</excerpt>
+      <content><![CDATA[<p>Funding into climate-adjacent startups rebounded this quarter, with the bulk of activity concentrated at early stages. Battery, grid software, and industrial decarbonization remain the focus areas.</p>]]></content>
+    </post>
+  </posts>
+</feedwright-demo>
