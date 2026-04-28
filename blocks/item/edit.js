@@ -4,6 +4,7 @@ import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 const ALLOWED_CHILDREN = [
 	'feedwright/element',
 	'feedwright/sub-query',
+	'feedwright/when',
 	'feedwright/comment',
 ];
 

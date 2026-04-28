@@ -48,6 +48,10 @@ final class BlockRegistrationTest extends WP_UnitTestCase {
 		$sub_item = $registry->get_registered( 'feedwright/sub-item' );
 		$this->assertNotFalse( $sub_item );
 		$this->assertSame( array( 'feedwright/sub-query' ), $sub_item->parent );
+
+		$when = $registry->get_registered( 'feedwright/when' );
+		$this->assertNotFalse( $when );
+		$this->assertSame( array( 'feedwright/rss' ), $when->ancestor );
 	}
 
 	public function test_inserter_is_restricted_to_feedwright_blocks_for_feed_post(): void {

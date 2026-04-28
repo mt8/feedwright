@@ -132,6 +132,9 @@ feedwright/
 │   ├── element/
 │   ├── item-query/
 │   ├── item/
+│   ├── sub-query/
+│   ├── sub-item/
+│   ├── when/
 │   ├── raw/
 │   └── comment/
 ├── editor/                          Editor extensions (shared UI)
@@ -904,6 +907,57 @@ Template applied to each related post returned by `feedwright/sub-query`. Childr
 }
 ```
 
+### 12.6.3 `feedwright/when`
+
+Conditional wrapper. Renders its inner blocks only when the configured binding expression resolves to a non-empty string. Useful for the "include `<mdf:deleted/>` only when post status is trash, otherwise include the regular elements" pattern, or generally for any "emit X iff Y" construction.
+
+#### attributes
+
+```json
+{
+  "label":      { "type": "string",  "default": "" },
+  "expression": { "type": "string",  "default": "" },
+  "negate":     { "type": "boolean", "default": false }
+}
+```
+
+- `expression`: any binding string. Resolved through the standard `Resolver`. The gate is `'' !== resolved`. Combine with `map` / `default` / `first` processors to shape truthiness (e.g. `{{post_raw.post_status|map:trash=1,*=}}` to gate on trash status).
+- `negate`: invert the gate. With `negate = true`, inner blocks render when the expression resolves to empty.
+- `label`: editor-only display label, never emitted in XML.
+
+#### block.json
+
+```json
+{
+  "apiVersion": 3,
+  "name": "feedwright/when",
+  "title": "When (conditional)",
+  "category": "feedwright",
+  "icon": "filter",
+  "ancestor": [ "feedwright/rss" ],
+  "supports": { "html": false, "reusable": false, "multiple": true }
+}
+```
+
+Allowed children: `feedwright/element`, `feedwright/raw`, `feedwright/comment`, `feedwright/sub-query`, `feedwright/when` (nesting OK).
+
+Allowed parents (via `ancestor`): anywhere under `<rss>`. In practice this means inside `feedwright/channel`, `feedwright/item`, `feedwright/sub-item`, or inside an `feedwright/element` whose `contentMode` is `children`.
+
+#### Worked example: mediba `<mdf:deleted/>`
+
+```html
+<!-- wp:feedwright/when {"expression":"{{post_raw.post_status|map:trash=1,*=}}"} -->
+  <!-- wp:feedwright/element {"tagName":"mdf:deleted","contentMode":"empty"} /-->
+<!-- /wp:feedwright/when -->
+
+<!-- wp:feedwright/when {"expression":"{{post_raw.post_status|map:trash=1,*=}}","negate":true} -->
+  <!-- wp:feedwright/element {"tagName":"title","contentMode":"binding","bindingExpression":"{{post.post_title}}"} /-->
+  <!-- wp:feedwright/element {"tagName":"description","contentMode":"cdata-binding","bindingExpression":"{{post.post_content}}"} /-->
+<!-- /wp:feedwright/when -->
+```
+
+Combine with `item-query` `postStatus = ['publish', 'trash']` and `trashWithinDays > 0` to bound the deleted-notification window.
+
 ### 12.7 `feedwright/raw`
 
 Escape hatch. In principle the element block's cdata-binding mode is enough, but this exists for extreme cases.
@@ -1189,6 +1243,35 @@ To allow a single child block to expand to multiple nodes (sub-query), `ElementR
 #### Performance
 
 Each outer item triggers one extra `WP_Query` (N+1). Defaults set `update_post_meta_cache = false` to keep the cost bounded; the rendered XML is cached at the feed level by `RenderCache`. Spec-imposed caps (3 / 5 / 10) are applied **after** the query via `feedwright/sub_query/hard_max`, since most aggregator specs cap related links per item rather than per feed.
+
+### 13.6.2 WhenRenderer
+
+Single responsibility: gate a sub-tree on a binding expression.
+
+```php
+public function render( array $block, Context $ctx ): array {
+    $expression = $block['attrs']['expression'] ?? '';
+    $negate     = ! empty( $block['attrs']['negate'] );
+
+    $value = '' === $expression ? '' : $this->resolver->resolve( $expression, $ctx );
+    $gate  = '' !== $value;
+    if ( $negate ) $gate = ! $gate;
+
+    if ( ! $gate ) return [];
+
+    $nodes = [];
+    foreach ( $block['innerBlocks'] as $child ) {
+        foreach ( $this->element_renderer->render_child( $child, $ctx ) as $n ) {
+            $nodes[] = $n;
+        }
+    }
+    return $nodes;
+}
+```
+
+The "non-empty string" truthiness rule is intentional and works well with the existing processor chain — `map`, `default`, `first` all produce strings. For more elaborate predicates (numeric comparisons etc.), users compose them via processors rather than introducing a new condition DSL.
+
+`feedwright/when` does not switch context; it inherits the current item / sub-item / channel scope from its position in the block tree. Item-level expressions inside a channel-scoped `when` will resolve to empty because there is no current post — that is the correct degraded behavior, not an error.
 
 ### 13.7 Sanitization
 
