@@ -48,7 +48,6 @@ final class Plugin {
 
 		$resolver = self::build_resolver();
 		( new Routing\FeedEndpoint( $resolver ) )->register();
-		( new REST\PreviewController() )->register();
 		( new REST\BindingIntrospectionController() )->register();
 	}
 

@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Feedwright 0.1.2\n"
+"Project-Id-Version: Feedwright 0.1.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/feedwright\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-28T06:26:55+00:00\n"
+"POT-Creation-Date: 2026-04-28T09:23:24+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: feedwright\n"
@@ -142,17 +142,11 @@ msgid "Feeds list"
 msgstr ""
 
 #: src/REST/BindingIntrospectionController.php:64
-#: src/REST/PreviewController.php:65
 msgid "Authentication required."
 msgstr ""
 
 #: src/REST/BindingIntrospectionController.php:67
-#: src/REST/PreviewController.php:68
 msgid "Insufficient permissions."
-msgstr ""
-
-#: src/REST/PreviewController.php:82
-msgid "Feed post not found."
 msgstr ""
 
 #: src/Settings.php:97
@@ -777,34 +771,6 @@ msgstr ""
 
 #: blocks/_shared/processor-suggestions.js:31
 msgid "map — translate value via key=val pairs (* for fallback)"
-msgstr ""
-
-#: blocks/_shared/XmlPreviewPanel.jsx:123
-msgid "XML preview is only available for Feedwright feed posts."
-msgstr ""
-
-#: blocks/_shared/XmlPreviewPanel.jsx:131
-msgid "Auto-update preview after editing"
-msgstr ""
-
-#: blocks/_shared/XmlPreviewPanel.jsx:140
-msgid "Fetching…"
-msgstr ""
-
-#: blocks/_shared/XmlPreviewPanel.jsx:143
-msgid "Refresh preview"
-msgstr ""
-
-#: blocks/_shared/XmlPreviewPanel.jsx:155
-msgid "Renderer warnings"
-msgstr ""
-
-#: blocks/_shared/XmlPreviewPanel.jsx:186
-msgid "Open public URL"
-msgstr ""
-
-#: blocks/_shared/XmlPreviewPanel.jsx:206
-msgid "Feedwright XML Preview"
 msgstr ""
 
 #: blocks/channel/block.json

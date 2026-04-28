@@ -7,7 +7,6 @@
 
 namespace Feedwright\Tests\Integration;
 
-use Feedwright\PostType;
 use WP_REST_Request;
 use WP_UnitTestCase;
 
@@ -25,66 +24,11 @@ final class RestControllersTest extends WP_UnitTestCase {
 		return $id;
 	}
 
-	private function as_editor(): int {
-		$id = self::factory()->user->create( array( 'role' => 'editor' ) );
-		wp_set_current_user( $id );
-		return $id;
-	}
-
-	private function make_feed_post( string $status = 'publish' ): \WP_Post {
-		$content = '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
-			. '<!-- wp:feedwright/element {"tagName":"title","contentMode":"binding","bindingExpression":"{{option.blogname}}"} /-->'
-			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
-
-		$id = self::factory()->post->create(
-			array(
-				'post_type'    => PostType::SLUG,
-				'post_status'  => $status,
-				'post_content' => $content,
-			)
-		);
-		return get_post( $id );
-	}
-
-	public function test_preview_returns_xml_and_warnings_for_admin(): void {
+	public function test_preview_endpoint_no_longer_registered(): void {
+		// XmlPreviewPanel was removed; the standard editor preview / publish
+		// flow replaces it. Confirm /feedwright/v1/preview/{id} 404s.
 		$this->as_admin();
-		$post     = $this->make_feed_post();
-		$response = rest_do_request( new WP_REST_Request( 'GET', '/feedwright/v1/preview/' . $post->ID ) );
-
-		$this->assertSame( 200, $response->get_status() );
-		$data = $response->get_data();
-		$this->assertArrayHasKey( 'xml', $data );
-		$this->assertArrayHasKey( 'warnings', $data );
-		$this->assertStringContainsString( '<rss', $data['xml'] );
-		$this->assertStringContainsString( '<title>', $data['xml'] );
-	}
-
-	public function test_preview_works_for_draft_status(): void {
-		$this->as_admin();
-		$post     = $this->make_feed_post( 'draft' );
-		$response = rest_do_request( new WP_REST_Request( 'GET', '/feedwright/v1/preview/' . $post->ID ) );
-		$this->assertSame( 200, $response->get_status() );
-		$this->assertStringContainsString( '<rss', $response->get_data()['xml'] );
-	}
-
-	public function test_preview_rejects_editor_role(): void {
-		$this->as_editor();
-		$post     = $this->make_feed_post();
-		$response = rest_do_request( new WP_REST_Request( 'GET', '/feedwright/v1/preview/' . $post->ID ) );
-		$this->assertSame( 403, $response->get_status() );
-	}
-
-	public function test_preview_rejects_anonymous(): void {
-		wp_set_current_user( 0 );
-		$post     = $this->make_feed_post();
-		$response = rest_do_request( new WP_REST_Request( 'GET', '/feedwright/v1/preview/' . $post->ID ) );
-		$this->assertSame( 401, $response->get_status() );
-	}
-
-	public function test_preview_404_for_wrong_post_type(): void {
-		$this->as_admin();
-		$id       = self::factory()->post->create( array( 'post_type' => 'post' ) );
-		$response = rest_do_request( new WP_REST_Request( 'GET', '/feedwright/v1/preview/' . $id ) );
+		$response = rest_do_request( new WP_REST_Request( 'GET', '/feedwright/v1/preview/1' ) );
 		$this->assertSame( 404, $response->get_status() );
 	}
 
