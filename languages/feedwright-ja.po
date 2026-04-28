@@ -1051,3 +1051,11 @@ msgstr "条件"
 msgctxt "block keyword"
 msgid "filter"
 msgstr "フィルタ"
+
+#: blocks/_shared/processor-suggestions.js:49
+msgid "eq — keep value when it equals the argument, else empty"
+msgstr "eq — 引数と一致するときだけ値を残す、違えば空"
+
+#: blocks/_shared/processor-suggestions.js:55
+msgid "in — keep value when it appears in the comma-separated list, else empty"
+msgstr "in — カンマ区切りリストのいずれかと一致するときだけ値を残す、違えば空"

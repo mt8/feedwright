@@ -1254,7 +1254,9 @@ public function render( array $block, Context $ctx ): array {
     $negate     = ! empty( $block['attrs']['negate'] );
 
     $value = '' === $expression ? '' : $this->resolver->resolve( $expression, $ctx );
-    $gate  = '' !== $value;
+    // Whitespace-only counts as empty so a stray trailing space doesn't
+    // flip the gate to always-true.
+    $gate  = '' !== trim( $value );
     if ( $negate ) $gate = ! $gate;
 
     if ( ! $gate ) return [];
@@ -1269,7 +1271,7 @@ public function render( array $block, Context $ctx ): array {
 }
 ```
 
-The "non-empty string" truthiness rule is intentional and works well with the existing processor chain — `map`, `default`, `first` all produce strings. For more elaborate predicates (numeric comparisons etc.), users compose them via processors rather than introducing a new condition DSL.
+The "non-empty string" truthiness rule is intentional and works well with the existing processor chain — `map`, `default`, `first`, `eq`, `in` all produce strings. For more elaborate predicates (numeric comparisons etc.), users compose them via processors rather than introducing a new condition DSL. The check uses `trim()` so whitespace-only output is treated as empty (a common typo class — trailing space on the expression).
 
 `feedwright/when` does not switch context; it inherits the current item / sub-item / channel scope from its position in the block tree. Item-level expressions inside a channel-scoped `when` will resolve to empty because there is no current post — that is the correct degraded behavior, not an error.
 
@@ -1597,6 +1599,8 @@ You can append `|name:arg` to the end of a binding to apply transforms to the re
 | `map` | `key=val,*=fallback` | If the input matches `key`, return that line's `val`. `*` is the fallback if no key matches. If neither matches nor `*` exists, returns empty string. The first `=` separates key and val, so `=` may appear in val. Useful for conditionals such as mapping `post_status` to a numeric `<media:status>` flag (publish=1 / removed=0): `{{post_raw.post_status\|map:publish=1,*=0}}` |
 | `first` | separator (default `, `) | Returns the first segment of a separator-joined string. Pairs naturally with `post_term.{taxonomy}` (which joins multi-term posts with `", "`) before piping into `map`. Example: `{{post_term.category\|first\|map:Tech=10,News=20}}`. The separator argument cannot contain `\|` (pipe-syntax conflict) or `}`; to split on `\|`, change the upstream binding to emit a different separator via its modifier first |
 | `default` | replacement value | Returns the literal argument when the input is the empty string; otherwise passes the input through unchanged. Differs from `map`'s `*` in that it triggers only on empty input — `"0"` and other falsy-looking strings pass through. Idiomatic with `post_term_meta`: `{{post_term_meta.category._mediba_category_id\|default:99}}` |
+| `eq` | comparison value | Equality gate: returns the input unchanged when it equals the argument, empty string otherwise. Argument is trimmed. Composes naturally with `feedwright/when` (which treats non-empty as truthy). Example: `{{post_raw.post_status\|eq:trash}}` |
+| `in` | comma-separated list | Multi-value equality gate: returns the input when it appears in the list, empty string otherwise. Each list entry is trimmed. Example: `{{post_raw.post_status\|in:trash,draft}}` |
 
 Unknown processor names log a warning and pass the input through unchanged.
 

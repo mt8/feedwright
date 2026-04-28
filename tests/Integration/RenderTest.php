@@ -942,6 +942,52 @@ final class RenderTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( '<hint>channel-only</hint>', $xml );
 	}
 
+	public function test_when_block_treats_whitespace_only_value_as_empty(): void {
+		// Stray trailing space in the expression used to flip the gate to
+		// always-true: '{{...|eq:trash}} ' resolved to ' ' (a space) for
+		// non-trash posts, which was non-empty. Ensure trim() makes it empty.
+		self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'Live Post' ) );
+
+		$inner      = '<!-- wp:feedwright/element {"tagName":"deleted","contentMode":"empty"} /-->';
+		$when_attrs = wp_json_encode(
+			// Expression resolves to "" + " " for publish; whitespace-only.
+			array( 'expression' => '{{post_raw.post_status|eq:trash}} ' )
+		);
+		$content = '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
+			. '<!-- wp:feedwright/item-query {"postsPerPage":1} --><!-- wp:feedwright/item -->'
+			. "<!-- wp:feedwright/when {$when_attrs} -->{$inner}<!-- /wp:feedwright/when -->"
+			. '<!-- /wp:feedwright/item --><!-- /wp:feedwright/item-query -->'
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		$this->assertStringNotContainsString( '<deleted/>', $xml );
+	}
+
+	public function test_when_block_uses_eq_processor_for_status_match(): void {
+		// Sanity: the recommended idiom `{{post_raw.post_status|eq:trash}}`
+		// gates correctly on a single trashed post amid live ones.
+		self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'Live' ) );
+		$dead = self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'Dead' ) );
+		wp_trash_post( $dead );
+
+		$inner      = '<!-- wp:feedwright/element {"tagName":"deleted","contentMode":"empty"} /-->';
+		$when_attrs = wp_json_encode( array( 'expression' => '{{post_raw.post_status|eq:trash}}' ) );
+		$query_attrs = wp_json_encode( array( 'postsPerPage' => 10, 'postStatus' => array( 'publish', 'trash' ) ) );
+		$content     = '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
+			. "<!-- wp:feedwright/item-query {$query_attrs} --><!-- wp:feedwright/item -->"
+			. "<!-- wp:feedwright/when {$when_attrs} -->{$inner}<!-- /wp:feedwright/when -->"
+			. '<!-- /wp:feedwright/item --><!-- /wp:feedwright/item-query -->'
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		// Exactly one <deleted/> for the trashed post; live post gets none.
+		$this->assertSame( 1, substr_count( $xml, '<deleted/>' ) );
+	}
+
 	public function test_when_blocks_can_nest(): void {
 		self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'Nested' ) );
 
