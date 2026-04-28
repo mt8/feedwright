@@ -8,10 +8,14 @@ registerBlockType( metadata.name, {
 	edit: Edit,
 	save: () => <InnerBlocks.Content />,
 	__experimentalLabel: ( attributes, { context } ) => {
-		if ( context === 'list-view' && attributes?.tagName ) {
-			return `<${ attributes.tagName }>`;
+		if ( context !== 'list-view' ) {
+			return undefined;
 		}
-		return undefined;
+		const tag =
+			typeof attributes?.tagName === 'string'
+				? attributes.tagName.trim()
+				: '';
+		return tag || undefined;
 	},
 } );
 
