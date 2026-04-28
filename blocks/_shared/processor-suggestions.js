@@ -32,6 +32,18 @@ const PROCESSORS = [
 		takesArg: true,
 		argHint: 'publish=1,*=0',
 	},
+	{
+		name: 'first',
+		label: __( 'first — take the first segment of a separator-joined string', 'feedwright' ),
+		takesArg: true,
+		argHint: ', ',
+	},
+	{
+		name: 'default',
+		label: __( 'default — replace empty input with a literal value', 'feedwright' ),
+		takesArg: true,
+		argHint: '99',
+	},
 ];
 
 /**

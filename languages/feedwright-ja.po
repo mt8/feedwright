@@ -229,66 +229,67 @@ msgstr "(空のコメント)"
 msgid "(no tag)"
 msgstr "(タグなし)"
 
-#: blocks/element/edit.js:81
+#: blocks/element/edit.js:80
+#: blocks/element/edit.js:91
 msgid "{{...}}"
 msgstr "{{...}}"
 
-#: blocks/element/edit.js:88
+#: blocks/element/edit.js:102
 #: blocks/raw/edit.js:48
 msgid "(empty)"
 msgstr "(空)"
 
-#: blocks/element/edit.js:100
+#: blocks/element/edit.js:114
 msgid "Element"
 msgstr "要素"
 
-#: blocks/element/edit.js:102
+#: blocks/element/edit.js:116
 #: blocks/item-query/edit.js:196
 msgid "Tag name"
 msgstr "タグ名"
 
-#: blocks/element/edit.js:105
+#: blocks/element/edit.js:119
 msgid "Use prefix:local for namespaced tags. The prefix must be declared on the rss block."
 msgstr "名前空間付きタグは prefix:local 形式で。プレフィックスは rss ブロックで宣言が必要です。"
 
-#: blocks/element/edit.js:111
+#: blocks/element/edit.js:125
 msgid "Tag name is not a valid XML Name."
 msgstr "タグ名が XML Name 規則に違反しています。"
 
-#: blocks/element/edit.js:116
+#: blocks/element/edit.js:130
 msgid "Content"
 msgstr "コンテンツ"
 
-#: blocks/element/edit.js:118
+#: blocks/element/edit.js:132
 msgid "Content mode"
 msgstr "コンテンツモード"
 
-#: blocks/element/edit.js:126
+#: blocks/element/edit.js:140
 msgid "Static value"
 msgstr "静的な値"
 
-#: blocks/element/edit.js:137
+#: blocks/element/edit.js:151
 msgid "Binding expression (CDATA)"
 msgstr "バインディング式（CDATA）"
 
-#: blocks/element/edit.js:138
+#: blocks/element/edit.js:152
 #: blocks/_shared/AttributeListEditor.jsx:103
 msgid "Binding expression"
 msgstr "バインディング式"
 
-#: blocks/element/edit.js:142
+#: blocks/element/edit.js:156
 msgid "Use {{ to insert a binding. Combine free text with multiple bindings."
 msgstr "{{ でバインディングを挿入できます。自由テキストと複数バインディングを組み合わせ可能。"
 
-#: blocks/element/edit.js:149
+#: blocks/element/edit.js:163
 msgid "This element will be composed of nested element blocks."
 msgstr "この要素は子の Element ブロックで構成されます。"
 
-#: blocks/element/edit.js:155
+#: blocks/element/edit.js:169
 msgid "Self-closing element with attributes only."
 msgstr "属性のみの自己終了要素。"
 
-#: blocks/element/edit.js:160
+#: blocks/element/edit.js:174
 #: blocks/_shared/AttributeListEditor.jsx:59
 msgid "Attributes"
 msgstr "属性"
@@ -974,3 +975,11 @@ msgstr "Compat — 整形済み出力、引用符はそのまま"
 #: blocks/rss/edit.js:46
 msgid "Strict matches the requirements of most aggregator submission specs: no inter-element whitespace, and quotation marks in regular text are entity-encoded. CDATA-binding elements keep their CDATA wrapper in both modes — that is the spec-blessed way to embed HTML in body fields."
 msgstr "Strict はほとんどのアグリゲータ提出仕様の要件（要素間の空白なし、テキスト中の引用符を実体参照化）に合致します。CDATA バインディング要素はどちらのモードでも CDATA でラップされ続けます — これが本文フィールドに HTML を埋め込む仕様準拠の方法です。"
+
+#: blocks/_shared/processor-suggestions.js:37
+msgid "first — take the first segment of a separator-joined string"
+msgstr "first — 区切り文字で連結された文字列の最初の要素を取り出す"
+
+#: blocks/_shared/processor-suggestions.js:43
+msgid "default — replace empty input with a literal value"
+msgstr "default — 入力が空のときに literal で値を置き換える"
