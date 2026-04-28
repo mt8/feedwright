@@ -1,1 +1,78 @@
-{"translation-revision-date":"2026-04-27 18:00+0900","generator":"WP-CLI\/2.12.0","source":"blocks\/element\/edit.js","domain":"messages","locale_data":{"messages":{"":{"domain":"messages","lang":"ja","plural-forms":"nplurals=1; plural=0;"},"(no tag)":["(\u30bf\u30b0\u306a\u3057)"],"{{...}}":["{{...}}"],"(empty)":["(\u7a7a)"],"Element":["\u8981\u7d20"],"Tag name":["\u30bf\u30b0\u540d"],"Use prefix:local for namespaced tags. The prefix must be declared on the rss block.":["\u540d\u524d\u7a7a\u9593\u4ed8\u304d\u30bf\u30b0\u306f prefix:local \u5f62\u5f0f\u3067\u3002\u30d7\u30ec\u30d5\u30a3\u30c3\u30af\u30b9\u306f rss \u30d6\u30ed\u30c3\u30af\u3067\u5ba3\u8a00\u304c\u5fc5\u8981\u3067\u3059\u3002"],"Tag name is not a valid XML Name.":["\u30bf\u30b0\u540d\u304c XML Name \u898f\u5247\u306b\u9055\u53cd\u3057\u3066\u3044\u307e\u3059\u3002"],"Content":["\u30b3\u30f3\u30c6\u30f3\u30c4"],"Content mode":["\u30b3\u30f3\u30c6\u30f3\u30c4\u30e2\u30fc\u30c9"],"Static value":["\u9759\u7684\u306a\u5024"],"Binding expression (CDATA)":["\u30d0\u30a4\u30f3\u30c7\u30a3\u30f3\u30b0\u5f0f\uff08CDATA\uff09"],"Binding expression":["\u30d0\u30a4\u30f3\u30c7\u30a3\u30f3\u30b0\u5f0f"],"Use {{ to insert a binding. Combine free text with multiple bindings.":["{{ \u3067\u30d0\u30a4\u30f3\u30c7\u30a3\u30f3\u30b0\u3092\u633f\u5165\u3067\u304d\u307e\u3059\u3002\u81ea\u7531\u30c6\u30ad\u30b9\u30c8\u3068\u8907\u6570\u30d0\u30a4\u30f3\u30c7\u30a3\u30f3\u30b0\u3092\u7d44\u307f\u5408\u308f\u305b\u53ef\u80fd\u3002"],"This element will be composed of nested element blocks.":["\u3053\u306e\u8981\u7d20\u306f\u5b50\u306e Element \u30d6\u30ed\u30c3\u30af\u3067\u69cb\u6210\u3055\u308c\u307e\u3059\u3002"],"Self-closing element with attributes only.":["\u5c5e\u6027\u306e\u307f\u306e\u81ea\u5df1\u7d42\u4e86\u8981\u7d20\u3002"],"Attributes":["\u5c5e\u6027"],"children":["\u5b50\u8981\u7d20"],"static text":["\u9759\u7684\u30c6\u30ad\u30b9\u30c8"],"binding":["\u30d0\u30a4\u30f3\u30c7\u30a3\u30f3\u30b0"],"binding (CDATA)":["\u30d0\u30a4\u30f3\u30c7\u30a3\u30f3\u30b0\uff08CDATA\uff09"],"empty (self-closing)":["\u7a7a\uff08\u81ea\u5df1\u7d42\u4e86\uff09"]}}}
+{
+    "translation-revision-date": "2026-04-27 18:00+0900",
+    "generator": "WP-CLI\/2.12.0",
+    "source": "blocks\/element\/edit.js",
+    "domain": "messages",
+    "locale_data": {
+        "messages": {
+            "": {
+                "domain": "messages",
+                "lang": "ja",
+                "plural-forms": "nplurals=1; plural=0;"
+            },
+            "(no tag)": [
+                "(\u30bf\u30b0\u306a\u3057)"
+            ],
+            "{{...}}": [
+                "{{...}}"
+            ],
+            "(empty)": [
+                "(\u7a7a)"
+            ],
+            "Element": [
+                "\u8981\u7d20"
+            ],
+            "Tag name": [
+                "\u30bf\u30b0\u540d"
+            ],
+            "Use prefix:local for namespaced tags. The prefix must be declared on the rss block.": [
+                "\u540d\u524d\u7a7a\u9593\u4ed8\u304d\u30bf\u30b0\u306f prefix:local \u5f62\u5f0f\u3067\u3002\u30d7\u30ec\u30d5\u30a3\u30c3\u30af\u30b9\u306f rss \u30d6\u30ed\u30c3\u30af\u3067\u5ba3\u8a00\u304c\u5fc5\u8981\u3067\u3059\u3002"
+            ],
+            "Tag name is not a valid XML Name.": [
+                "\u30bf\u30b0\u540d\u304c XML Name \u898f\u5247\u306b\u9055\u53cd\u3057\u3066\u3044\u307e\u3059\u3002"
+            ],
+            "Content": [
+                "\u30b3\u30f3\u30c6\u30f3\u30c4"
+            ],
+            "Content mode": [
+                "\u30b3\u30f3\u30c6\u30f3\u30c4\u30e2\u30fc\u30c9"
+            ],
+            "Static value": [
+                "\u9759\u7684\u306a\u5024"
+            ],
+            "Binding expression (CDATA)": [
+                "\u30d0\u30a4\u30f3\u30c7\u30a3\u30f3\u30b0\u5f0f\uff08CDATA\uff09"
+            ],
+            "Binding expression": [
+                "\u30d0\u30a4\u30f3\u30c7\u30a3\u30f3\u30b0\u5f0f"
+            ],
+            "Use {{ to insert a binding. Combine free text with multiple bindings.": [
+                "{{ \u3067\u30d0\u30a4\u30f3\u30c7\u30a3\u30f3\u30b0\u3092\u633f\u5165\u3067\u304d\u307e\u3059\u3002\u81ea\u7531\u30c6\u30ad\u30b9\u30c8\u3068\u8907\u6570\u30d0\u30a4\u30f3\u30c7\u30a3\u30f3\u30b0\u3092\u7d44\u307f\u5408\u308f\u305b\u53ef\u80fd\u3002"
+            ],
+            "This element will be composed of nested element blocks.": [
+                "\u3053\u306e\u8981\u7d20\u306f\u5b50\u306e Element \u30d6\u30ed\u30c3\u30af\u3067\u69cb\u6210\u3055\u308c\u307e\u3059\u3002"
+            ],
+            "Self-closing element with attributes only.": [
+                "\u5c5e\u6027\u306e\u307f\u306e\u81ea\u5df1\u7d42\u4e86\u8981\u7d20\u3002"
+            ],
+            "Attributes": [
+                "\u5c5e\u6027"
+            ],
+            "children": [
+                "\u5b50\u8981\u7d20"
+            ],
+            "static text": [
+                "\u9759\u7684\u30c6\u30ad\u30b9\u30c8"
+            ],
+            "binding": [
+                "\u30d0\u30a4\u30f3\u30c7\u30a3\u30f3\u30b0"
+            ],
+            "binding (CDATA)": [
+                "\u30d0\u30a4\u30f3\u30c7\u30a3\u30f3\u30b0\uff08CDATA\uff09"
+            ],
+            "empty (self-closing)": [
+                "\u7a7a\uff08\u81ea\u5df1\u7d42\u4e86\uff09"
+            ]
+        }
+    }
+}

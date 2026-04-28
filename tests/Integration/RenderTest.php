@@ -342,6 +342,179 @@ final class RenderTest extends WP_UnitTestCase {
 		$this->assertStringNotContainsString( '&lt;em&gt;', $xml );
 	}
 
+	/**
+	 * Compose a feed whose item template embeds a sub-query whose sub-item
+	 * template emits one element bound to a related post field.
+	 */
+	private function build_sub_query_feed(
+		array $sub_query_attrs,
+		string $sub_item_inner = '<!-- wp:feedwright/element {"tagName":"related","contentMode":"binding","bindingExpression":"{{post.post_title}}"} /-->'
+	): string {
+		$sub_query_json = wp_json_encode( $sub_query_attrs );
+
+		$item_inner = '<!-- wp:feedwright/element {"tagName":"title","contentMode":"binding","bindingExpression":"{{post.post_title}}"} /-->'
+			. "<!-- wp:feedwright/sub-query {$sub_query_json} -->"
+			. '<!-- wp:feedwright/sub-item -->'
+			. $sub_item_inner
+			. '<!-- /wp:feedwright/sub-item -->'
+			. '<!-- /wp:feedwright/sub-query -->';
+
+		$item_query_attrs = wp_json_encode( array( 'postsPerPage' => 10, 'orderBy' => 'title', 'order' => 'ASC' ) );
+
+		return '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
+			. "<!-- wp:feedwright/item-query {$item_query_attrs} --><!-- wp:feedwright/item -->"
+			. $item_inner
+			. '<!-- /wp:feedwright/item --><!-- /wp:feedwright/item-query -->'
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+	}
+
+	public function test_sub_query_taxonomy_emits_related_titles_and_excludes_self(): void {
+		$term = self::factory()->category->create( array( 'name' => 'Tech', 'slug' => 'tech' ) );
+		$one  = self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'Tech One' ) );
+		$two  = self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'Tech Two' ) );
+		$lone = self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'Lonely' ) );
+
+		wp_set_post_terms( $one, array( $term ), 'category', false );
+		wp_set_post_terms( $two, array( $term ), 'category', false );
+
+		$feed_post = $this->make_feed_post(
+			$this->build_sub_query_feed(
+				array(
+					'relationMode'  => 'taxonomy',
+					'taxonomy'      => 'category',
+					'postsPerPage'  => 5,
+					'excludeCurrent' => true,
+				)
+			)
+		);
+
+		$xml = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		// Outer item titles for all three.
+		$this->assertStringContainsString( '<title>Tech One</title>', $xml );
+		$this->assertStringContainsString( '<title>Tech Two</title>', $xml );
+		$this->assertStringContainsString( '<title>Lonely</title>', $xml );
+
+		// Each Tech item should reference the *other* Tech post via <related>.
+		$this->assertStringContainsString( '<related>Tech Two</related>', $xml );
+		$this->assertStringContainsString( '<related>Tech One</related>', $xml );
+
+		// Lonely has no shared term -> no <related> output for it.
+		// Sub-query for Lonely should produce zero nodes (the only <related>
+		// occurrences come from the two Tech items referencing each other).
+		$this->assertSame( 2, substr_count( $xml, '<related>' ), 'Lonely item should emit no related nodes' );
+
+		// Self-reference must never appear.
+		$this->assertStringNotContainsString( '<related>Tech One</related><related>Tech One</related>', $xml );
+		// Save outer post IDs for downstream debugging if this fails.
+		unset( $one, $two, $lone );
+	}
+
+	public function test_sub_query_manual_mode_orders_by_post_in(): void {
+		$first  = self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'First Pick' ) );
+		$second = self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'Second Pick' ) );
+		self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'Outer' ) );
+
+		$feed_post = $this->make_feed_post(
+			$this->build_sub_query_feed(
+				array(
+					'relationMode' => 'manual',
+					'manualIds'    => array( $second, $first ),
+					'postsPerPage' => 5,
+				)
+			)
+		);
+
+		$xml = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		// Manual mode preserves the order specified in manualIds.
+		$pos_second = strpos( $xml, '<related>Second Pick</related>' );
+		$pos_first  = strpos( $xml, '<related>First Pick</related>' );
+		$this->assertNotFalse( $pos_second );
+		$this->assertNotFalse( $pos_first );
+		$this->assertLessThan( $pos_first, $pos_second, 'Manual order (second, first) must be preserved.' );
+	}
+
+	public function test_sub_query_taxonomy_mode_ignores_flat_taxonomies(): void {
+		// post_tag is non-hierarchical; sharing the same tag must NOT produce
+		// related nodes — flat taxonomies are user-typed free input.
+		$one = self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'Tagged One' ) );
+		$two = self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'Tagged Two' ) );
+		wp_set_post_terms( $one, array( 'shared' ), 'post_tag', false );
+		wp_set_post_terms( $two, array( 'shared' ), 'post_tag', false );
+
+		$feed_post = $this->make_feed_post(
+			$this->build_sub_query_feed(
+				array(
+					'relationMode'  => 'taxonomy',
+					'taxonomy'      => 'post_tag',
+					'postsPerPage'  => 5,
+					'excludeCurrent' => true,
+				)
+			)
+		);
+
+		$xml = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		$this->assertStringContainsString( '<title>Tagged One</title>', $xml );
+		$this->assertStringContainsString( '<title>Tagged Two</title>', $xml );
+		// Sub-query is skipped wholesale → no <related> nodes anywhere.
+		$this->assertSame( 0, substr_count( $xml, '<related>' ) );
+	}
+
+	public function test_sub_query_hard_max_filter_caps_results(): void {
+		$term  = self::factory()->category->create( array( 'name' => 'Many', 'slug' => 'many' ) );
+		$ids   = array();
+		$ids[] = self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'M1' ) );
+		$ids[] = self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'M2' ) );
+		$ids[] = self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'M3' ) );
+		$ids[] = self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'M4' ) );
+		foreach ( $ids as $id ) {
+			wp_set_post_terms( $id, array( $term ), 'category', false );
+		}
+
+		$cap = static fn ( int $max ): int => 1;
+		add_filter( 'feedwright/sub_query/hard_max', $cap );
+
+		try {
+			$feed_post = $this->make_feed_post(
+				$this->build_sub_query_feed(
+					array(
+						'relationMode'  => 'taxonomy',
+						'taxonomy'      => 'category',
+						'postsPerPage'  => 50,
+						'excludeCurrent' => true,
+					)
+				)
+			);
+
+			$xml = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+			// Each of the 4 outer items should emit at most 1 <related> node.
+			$this->assertSame( 4, substr_count( $xml, '<related>' ), 'hard_max=1 must cap each sub-query at one node' );
+		} finally {
+			remove_filter( 'feedwright/sub_query/hard_max', $cap );
+		}
+	}
+
+	public function test_sub_query_outside_item_context_emits_no_nodes(): void {
+		// Place sub-query directly in <channel> (no item ancestor) and verify it
+		// degrades to zero nodes without crashing the renderer.
+		$sub_query_attrs = wp_json_encode( array( 'relationMode' => 'manual', 'manualIds' => array( 1 ) ) );
+		$content         = '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
+			. "<!-- wp:feedwright/sub-query {$sub_query_attrs} --><!-- wp:feedwright/sub-item -->"
+			. '<!-- wp:feedwright/element {"tagName":"x","contentMode":"binding","bindingExpression":"{{post.post_title}}"} /-->'
+			. '<!-- /wp:feedwright/sub-item --><!-- /wp:feedwright/sub-query -->'
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$result    = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post );
+
+		// Renderer treats sub-query at channel level as an unsupported block, so
+		// channel ends up empty and a warning is recorded.
+		$this->assertStringContainsString( '<channel/>', $result['xml'] );
+	}
+
 	public function test_no_rss_block_returns_error_xml(): void {
 		$post_id = self::factory()->post->create(
 			array(

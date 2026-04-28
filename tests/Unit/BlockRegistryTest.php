@@ -12,13 +12,13 @@ use PHPUnit\Framework\TestCase;
 
 final class BlockRegistryTest extends TestCase {
 
-	public function test_block_dirs_contains_seven_entries(): void {
-		$this->assertCount( 7, BlockRegistry::BLOCK_DIRS );
+	public function test_block_dirs_contains_nine_entries(): void {
+		$this->assertCount( 9, BlockRegistry::BLOCK_DIRS );
 	}
 
 	public function test_block_names_are_namespaced(): void {
 		$names = BlockRegistry::block_names();
-		$this->assertCount( 7, $names );
+		$this->assertCount( 9, $names );
 		foreach ( $names as $name ) {
 			$this->assertStringStartsWith( 'feedwright/', $name );
 		}
@@ -32,6 +32,8 @@ final class BlockRegistryTest extends TestCase {
 			'feedwright/element',
 			'feedwright/item-query',
 			'feedwright/item',
+			'feedwright/sub-query',
+			'feedwright/sub-item',
 			'feedwright/raw',
 			'feedwright/comment',
 		) as $expected ) {

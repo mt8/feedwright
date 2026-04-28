@@ -16,7 +16,7 @@ use WP_UnitTestCase;
 
 final class BlockRegistrationTest extends WP_UnitTestCase {
 
-	public function test_all_seven_blocks_are_registered(): void {
+	public function test_all_blocks_are_registered(): void {
 		$registry = WP_Block_Type_Registry::get_instance();
 		foreach ( BlockRegistry::block_names() as $name ) {
 			$this->assertNotFalse(
@@ -40,6 +40,14 @@ final class BlockRegistrationTest extends WP_UnitTestCase {
 		$element = $registry->get_registered( 'feedwright/element' );
 		$this->assertNotFalse( $element );
 		$this->assertSame( array( 'feedwright/rss' ), $element->ancestor );
+
+		$sub_query = $registry->get_registered( 'feedwright/sub-query' );
+		$this->assertNotFalse( $sub_query );
+		$this->assertSame( array( 'feedwright/item' ), $sub_query->ancestor );
+
+		$sub_item = $registry->get_registered( 'feedwright/sub-item' );
+		$this->assertNotFalse( $sub_item );
+		$this->assertSame( array( 'feedwright/sub-query' ), $sub_item->parent );
 	}
 
 	public function test_inserter_is_restricted_to_feedwright_blocks_for_feed_post(): void {

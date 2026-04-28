@@ -117,8 +117,10 @@ final class Renderer {
 		$channel_el = $dom->createElement( 'channel' );
 		$rss_el->appendChild( $channel_el );
 
-		$element_renderer = new ElementRenderer( $this->resolver );
-		$item_renderer    = new ItemQueryRenderer( $element_renderer );
+		$element_renderer   = new ElementRenderer( $this->resolver );
+		$sub_query_renderer = new SubQueryRenderer( $element_renderer );
+		$element_renderer->set_sub_query_renderer( $sub_query_renderer );
+		$item_renderer = new ItemQueryRenderer( $element_renderer );
 
 		foreach ( (array) ( $channel_block['innerBlocks'] ?? array() ) as $child ) {
 			if ( ! is_array( $child ) ) {

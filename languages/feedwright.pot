@@ -2,21 +2,21 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Feedwright 0.1.0\n"
+"Project-Id-Version: Feedwright 0.1.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/feedwright\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-27T10:54:40+00:00\n"
+"POT-Creation-Date: 2026-04-28T00:34:44+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: feedwright\n"
 
 #. Plugin Name of the plugin
 #: feedwright.php
-#: src/BlockRegistry.php:247
+#: src/BlockRegistry.php:249
 msgid "Feedwright"
 msgstr ""
 
@@ -44,100 +44,100 @@ msgstr ""
 msgid "Unsupported blocks were detected and will be ignored when rendering this feed:"
 msgstr ""
 
-#: src/PostType.php:61
+#: src/PostType.php:89
 msgctxt "post type general name"
 msgid "Feeds"
 msgstr ""
 
-#: src/PostType.php:62
+#: src/PostType.php:90
 msgctxt "post type singular name"
 msgid "Feed"
 msgstr ""
 
-#: src/PostType.php:63
+#: src/PostType.php:91
 msgctxt "admin menu"
 msgid "Feedwright"
 msgstr ""
 
-#: src/PostType.php:64
+#: src/PostType.php:92
 msgctxt "add new on admin bar"
 msgid "Feed"
 msgstr ""
 
-#: src/PostType.php:65
+#: src/PostType.php:93
 msgctxt "feed"
 msgid "Add Feed"
 msgstr ""
 
-#: src/PostType.php:66
+#: src/PostType.php:94
 msgid "Add New Feed"
 msgstr ""
 
-#: src/PostType.php:67
+#: src/PostType.php:95
 msgid "New Feed"
 msgstr ""
 
-#: src/PostType.php:68
+#: src/PostType.php:96
 msgid "Edit Feed"
 msgstr ""
 
-#: src/PostType.php:69
+#: src/PostType.php:97
 msgid "View Feed"
 msgstr ""
 
-#: src/PostType.php:70
+#: src/PostType.php:98
 msgid "All Feeds"
 msgstr ""
 
-#: src/PostType.php:71
+#: src/PostType.php:99
 msgid "Search Feeds"
 msgstr ""
 
-#: src/PostType.php:72
+#: src/PostType.php:100
 msgid "No feeds found."
 msgstr ""
 
-#: src/PostType.php:73
+#: src/PostType.php:101
 msgid "No feeds found in Trash."
 msgstr ""
 
-#: src/PostType.php:74
+#: src/PostType.php:102
 msgid "Feed Image"
 msgstr ""
 
-#: src/PostType.php:75
+#: src/PostType.php:103
 msgid "Set feed image"
 msgstr ""
 
-#: src/PostType.php:76
+#: src/PostType.php:104
 msgid "Remove feed image"
 msgstr ""
 
-#: src/PostType.php:77
+#: src/PostType.php:105
 msgid "Use as feed image"
 msgstr ""
 
-#: src/PostType.php:78
+#: src/PostType.php:106
 msgid "Feed archives"
 msgstr ""
 
-#: src/PostType.php:79
+#: src/PostType.php:107
 msgid "Insert into feed"
 msgstr ""
 
-#: src/PostType.php:80
+#: src/PostType.php:108
 msgid "Uploaded to this feed"
 msgstr ""
 
-#: src/PostType.php:81
+#: src/PostType.php:109
 msgid "Filter feeds list"
 msgstr ""
 
-#: src/PostType.php:82
+#: src/PostType.php:110
 msgid "Feeds list navigation"
 msgstr ""
 
-#: src/PostType.php:83
+#: src/PostType.php:111
 msgid "Feeds list"
 msgstr ""
 
@@ -331,26 +331,32 @@ msgid "Attributes"
 msgstr ""
 
 #: blocks/item-query/edit.js:24
+#: blocks/sub-query/edit.js:28
 msgid "Publish date"
 msgstr ""
 
 #: blocks/item-query/edit.js:25
+#: blocks/sub-query/edit.js:29
 msgid "Modified date"
 msgstr ""
 
 #: blocks/item-query/edit.js:26
+#: blocks/sub-query/edit.js:30
 msgid "Title"
 msgstr ""
 
 #: blocks/item-query/edit.js:27
+#: blocks/sub-query/edit.js:31
 msgid "Menu order"
 msgstr ""
 
 #: blocks/item-query/edit.js:28
+#: blocks/sub-query/edit.js:32
 msgid "Random"
 msgstr ""
 
 #: blocks/item-query/edit.js:29
+#: blocks/sub-query/edit.js:33
 msgid "Comment count"
 msgstr ""
 
@@ -377,14 +383,17 @@ msgid "Basics"
 msgstr ""
 
 #: blocks/item-query/edit.js:164
+#: blocks/sub-query/edit.js:85
 msgid "Editor label"
 msgstr ""
 
 #: blocks/item-query/edit.js:167
+#: blocks/sub-query/edit.js:88
 msgid "Used in the editor only; not emitted in XML."
 msgstr ""
 
 #: blocks/item-query/edit.js:172
+#: blocks/sub-query/edit.js:142
 msgid "Post types (comma-separated)"
 msgstr ""
 
@@ -405,22 +414,27 @@ msgid "Item tag name is not a valid XML Name."
 msgstr ""
 
 #: blocks/item-query/edit.js:210
+#: blocks/sub-query/edit.js:179
 msgid "Sorting"
 msgstr ""
 
 #: blocks/item-query/edit.js:212
+#: blocks/sub-query/edit.js:181
 msgid "Order by"
 msgstr ""
 
 #: blocks/item-query/edit.js:220
+#: blocks/sub-query/edit.js:189
 msgid "Order"
 msgstr ""
 
 #: blocks/item-query/edit.js:223
+#: blocks/sub-query/edit.js:192
 msgid "Descending (newest first)"
 msgstr ""
 
 #: blocks/item-query/edit.js:224
+#: blocks/sub-query/edit.js:193
 msgid "Ascending (oldest first)"
 msgstr ""
 
@@ -445,6 +459,7 @@ msgid "Taxonomy filter"
 msgstr ""
 
 #: blocks/item-query/edit.js:262
+#: blocks/sub-query/edit.js:101
 msgid "Taxonomy"
 msgstr ""
 
@@ -472,7 +487,7 @@ msgstr ""
 msgid "Item Query"
 msgstr ""
 
-#: blocks/item/edit.js:13
+#: blocks/item/edit.js:17
 msgid "Item Template"
 msgstr ""
 
@@ -523,6 +538,68 @@ msgstr ""
 
 #: blocks/rss/edit.js:43
 msgid "namespace(s)"
+msgstr ""
+
+#: blocks/sub-item/edit.js:13
+msgid "Sub Item Template"
+msgstr ""
+
+#: blocks/sub-query/edit.js:23
+msgid "Same taxonomy term (hierarchical only)"
+msgstr ""
+
+#: blocks/sub-query/edit.js:24
+msgid "Manual ID list"
+msgstr ""
+
+#. translators: 1: relation mode, 2: max count
+#: blocks/sub-query/edit.js:75
+#, js-format
+msgid "%1$s · up to %2$d related"
+msgstr ""
+
+#: blocks/sub-query/edit.js:83
+msgid "Relation"
+msgstr ""
+
+#: blocks/sub-query/edit.js:93
+msgid "Match by"
+msgstr ""
+
+#: blocks/sub-query/edit.js:104
+msgid "— Select —"
+msgstr ""
+
+#: blocks/sub-query/edit.js:116
+msgid "No hierarchical taxonomy is registered for the chosen post type."
+msgstr ""
+
+#: blocks/sub-query/edit.js:123
+msgid "Post IDs (comma-separated)"
+msgstr ""
+
+#: blocks/sub-query/edit.js:133
+msgid "Order is preserved (post__in)."
+msgstr ""
+
+#: blocks/sub-query/edit.js:140
+msgid "Limits"
+msgstr ""
+
+#: blocks/sub-query/edit.js:156
+msgid "Max posts per item"
+msgstr ""
+
+#: blocks/sub-query/edit.js:165
+msgid "Exclude the current item"
+msgstr ""
+
+#: blocks/sub-query/edit.js:171
+msgid "Spec-mandated caps (e.g. 3 / 5) should be enforced via the feedwright/sub_query/hard_max filter."
+msgstr ""
+
+#: blocks/sub-query/edit.js:201
+msgid "Sub Query"
 msgstr ""
 
 #: blocks/_shared/AttributeListEditor.jsx:64
@@ -798,6 +875,7 @@ msgid "Query posts and expand each result inside the channel as an <item>."
 msgstr ""
 
 #: blocks/item-query/block.json
+#: blocks/sub-query/block.json
 msgctxt "block keyword"
 msgid "query"
 msgstr ""
@@ -828,6 +906,7 @@ msgid "item"
 msgstr ""
 
 #: blocks/item/block.json
+#: blocks/sub-item/block.json
 msgctxt "block keyword"
 msgid "template"
 msgstr ""
@@ -875,4 +954,41 @@ msgstr ""
 #: blocks/rss/block.json
 msgctxt "block keyword"
 msgid "root"
+msgstr ""
+
+#: blocks/sub-item/block.json
+msgctxt "block title"
+msgid "Sub Item Template"
+msgstr ""
+
+#: blocks/sub-item/block.json
+msgctxt "block description"
+msgid "Template applied to each related post returned by the parent Sub Query."
+msgstr ""
+
+#: blocks/sub-item/block.json
+#: blocks/sub-query/block.json
+msgctxt "block keyword"
+msgid "sub"
+msgstr ""
+
+#: blocks/sub-item/block.json
+#: blocks/sub-query/block.json
+msgctxt "block keyword"
+msgid "related"
+msgstr ""
+
+#: blocks/sub-query/block.json
+msgctxt "block title"
+msgid "Sub Query"
+msgstr ""
+
+#: blocks/sub-query/block.json
+msgctxt "block description"
+msgid "Inside an item template, expand related posts into N sibling nodes."
+msgstr ""
+
+#: blocks/sub-query/block.json
+msgctxt "block keyword"
+msgid "loop"
 msgstr ""

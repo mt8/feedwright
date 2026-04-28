@@ -29,6 +29,8 @@ final class BlockRegistry {
 		'element',
 		'item-query',
 		'item',
+		'sub-query',
+		'sub-item',
 		'raw',
 		'comment',
 	);

@@ -1,0 +1,42 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "feedwright/sub-query",
+	"version": "0.1.0",
+	"title": "Sub Query",
+	"category": "feedwright",
+	"icon": "networking",
+	"description": "Inside an item template, expand related posts into N sibling nodes.",
+	"keywords": [ "related", "sub", "loop", "query" ],
+	"textdomain": "feedwright",
+	"ancestor": [ "feedwright/item" ],
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"multiple": true
+	},
+	"attributes": {
+		"label": { "type": "string", "default": "" },
+		"relationMode": {
+			"type": "string",
+			"default": "taxonomy",
+			"enum": [ "taxonomy", "manual" ]
+		},
+		"taxonomy": { "type": "string", "default": "" },
+		"manualIds": {
+			"type": "array",
+			"default": []
+		},
+		"postType": { "type": "array", "default": [ "post" ] },
+		"postStatus": { "type": "array", "default": [ "publish" ] },
+		"postsPerPage": { "type": "number", "default": 3 },
+		"orderBy": { "type": "string", "default": "date" },
+		"order": { "type": "string", "default": "DESC" },
+		"excludeCurrent": { "type": "boolean", "default": true }
+	},
+	"providesContext": {
+		"feedwright/inItemContext": "feedwright/inItemContext"
+	},
+	"usesContext": [ "feedwright/inItemContext" ],
+	"editorScript": "file:./index.js"
+}
