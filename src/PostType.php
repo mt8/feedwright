@@ -65,6 +65,13 @@ final class PostType {
 	 * which is the wrong endpoint and is what breaks the editor's "View" link
 	 * and the slug input on permalink structures other than `/%postname%/`.
 	 *
+	 * In admin contexts (editor / list table / admin bar) for users that can
+	 * `manage_options`, append `?pretty=1` so clicking "Feed を表示" opens the
+	 * formatted variant. Front-end and REST contexts are unaffected — the
+	 * canonical sharing URL stays clean. Even if a `?pretty=1` URL leaks to a
+	 * non-admin, `Routing\FeedEndpoint::is_pretty_request()` rejects them and
+	 * the response is the standard minified XML.
+	 *
 	 * @param string   $permalink Default permalink computed by core.
 	 * @param \WP_Post $post      Post being linked.
 	 */
@@ -76,7 +83,13 @@ final class PostType {
 			return $permalink;
 		}
 		$feed_url = \Feedwright\Routing\FeedEndpoint::feed_url( $post->post_name );
-		return '' !== $feed_url ? $feed_url : $permalink;
+		if ( '' === $feed_url ) {
+			return $permalink;
+		}
+		if ( is_admin() && current_user_can( 'manage_options' ) ) {
+			$feed_url = add_query_arg( 'pretty', '1', $feed_url );
+		}
+		return $feed_url;
 	}
 
 	/**

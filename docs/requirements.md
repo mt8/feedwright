@@ -1666,7 +1666,7 @@ Edits the `attributes` array on the `element` block.
 
 `feedwright_feed` registers with `public=true` / `publicly_queryable=true`, so the standard Gutenberg preview / publish flow handles XML previewing without a custom sidebar:
 
-- The editor's "View" / "Preview" buttons resolve via `PostType::filter_permalink`, which redirects to `/{base}/{slug}/`.
+- The editor's "View" / "Preview" buttons resolve via `PostType::filter_permalink`, which redirects to `/{base}/{slug}/`. In admin contexts (`is_admin()` true) for users that can `manage_options`, the filter additionally appends `?pretty=1` so the formatted variant opens by default — front-end and REST contexts get the canonical clean URL.
 - Published posts are served by `Routing\FeedEndpoint::maybe_serve_feed` as production XML (with `?pretty=1` available to admins / `WP_DEBUG` for human inspection).
 - Drafts / non-published posts return 404 from the public URL — preview UX for unpublished feeds is intentionally left to the standard WordPress preview path that consumers can opt into via filters.
 

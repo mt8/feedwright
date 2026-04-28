@@ -63,6 +63,83 @@ final class PostTypeTest extends WP_UnitTestCase {
 		$this->assertSame( PostType::SLUG, get_post_type( $post_id ) );
 	}
 
+	private function make_feed_post(): int {
+		return self::factory()->post->create(
+			array(
+				'post_type'   => PostType::SLUG,
+				'post_title'  => 'Permalink test feed',
+				'post_name'   => 'permalink-test',
+				'post_status' => 'publish',
+			)
+		);
+	}
+
+	public function test_filter_permalink_appends_pretty_for_admin_in_admin_context(): void {
+		$admin = self::factory()->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $admin );
+		$post_id = $this->make_feed_post();
+
+		set_current_screen( 'edit.php' );
+		try {
+			$url = get_permalink( $post_id );
+			$this->assertStringContainsString( '/feedwright/permalink-test/', $url );
+			$this->assertStringContainsString( 'pretty=1', $url );
+		} finally {
+			set_current_screen( 'front' );
+		}
+	}
+
+	public function test_filter_permalink_omits_pretty_in_frontend_context(): void {
+		// Admin user but front-end context: pretty must NOT be appended (this
+		// is the URL that gets shared / embedded by the theme).
+		$admin = self::factory()->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $admin );
+		$post_id = $this->make_feed_post();
+
+		set_current_screen( 'front' );
+		$url = get_permalink( $post_id );
+		$this->assertStringContainsString( '/feedwright/permalink-test/', $url );
+		$this->assertStringNotContainsString( 'pretty=1', $url );
+	}
+
+	public function test_filter_permalink_omits_pretty_for_non_admin_users(): void {
+		// Editor in admin context (e.g. comments screen) — still no pretty,
+		// since they do not have manage_options.
+		$editor = self::factory()->user->create( array( 'role' => 'editor' ) );
+		wp_set_current_user( $editor );
+		$post_id = $this->make_feed_post();
+
+		set_current_screen( 'edit.php' );
+		try {
+			$url = get_permalink( $post_id );
+			$this->assertStringContainsString( '/feedwright/permalink-test/', $url );
+			$this->assertStringNotContainsString( 'pretty=1', $url );
+		} finally {
+			set_current_screen( 'front' );
+		}
+	}
+
+	public function test_filter_permalink_does_not_touch_other_post_types(): void {
+		$admin = self::factory()->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $admin );
+		$other = self::factory()->post->create(
+			array(
+				'post_type'   => 'post',
+				'post_status' => 'publish',
+				'post_title'  => 'Regular post',
+				'post_name'   => 'regular',
+			)
+		);
+
+		set_current_screen( 'edit.php' );
+		try {
+			$url = get_permalink( $other );
+			$this->assertStringNotContainsString( 'pretty=1', $url, 'pretty must not leak onto unrelated post types' );
+		} finally {
+			set_current_screen( 'front' );
+		}
+	}
+
 	public function test_default_template_has_minimum_skeleton(): void {
 		$post_type  = new PostType();
 		$template   = $post_type->default_template();
