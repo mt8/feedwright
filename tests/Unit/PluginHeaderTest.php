@@ -36,7 +36,7 @@ final class PluginHeaderTest extends TestCase {
 	public function test_plugin_header_metadata(): void {
 		$header = $this->read_header();
 		$this->assertSame( 'Feedwright', $header['Plugin Name'] ?? '' );
-		$this->assertSame( '0.2.0', $header['Version'] ?? '' );
+		$this->assertSame( '0.2.1', $header['Version'] ?? '' );
 		$this->assertSame( '8.3', $header['Requires PHP'] ?? '' );
 		$this->assertSame( '6.5', $header['Requires at least'] ?? '' );
 		$this->assertSame( 'feedwright', $header['Text Domain'] ?? '' );
