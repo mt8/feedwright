@@ -44,6 +44,8 @@ final class Resolver {
 			'allow_tags' => array( self::class, 'process_allow_tags' ),
 			'strip_tags' => array( self::class, 'process_strip_tags' ),
 			'map'        => array( self::class, 'process_map' ),
+			'first'      => array( self::class, 'process_first' ),
+			'default'    => array( self::class, 'process_default' ),
 		);
 
 		if ( function_exists( 'apply_filters' ) ) {
@@ -222,6 +224,44 @@ final class Resolver {
 	public static function process_strip_tags( string $value, string $arg ): string {
 		unset( $arg );
 		return wp_strip_all_tags( $value );
+	}
+
+	/**
+	 * Take the first segment of a separator-joined string.
+	 *
+	 * Default separator is `, ` (matching `PostTermProvider`'s default join);
+	 * pass any other character as the argument. The argument cannot contain
+	 * `|` (pipe-syntax conflict — splits the processor chain) or `}` (ends
+	 * the binding). To split on `|`, change the upstream binding to emit a
+	 * different separator first via the modifier (e.g. `{{post_term.category::,}}`).
+	 *
+	 * Examples:
+	 *   {{post_term.category|first}}             -> "Tech" from "Tech, News"
+	 *   {{post_term.category::;|first:;}}        -> "Tech" from "Tech;News"
+	 *
+	 * @param string $value Input value.
+	 * @param string $arg   Separator (default ", ").
+	 */
+	public static function process_first( string $value, string $arg ): string {
+		$separator = '' === $arg ? ', ' : $arg;
+		$pos       = strpos( $value, $separator );
+		return false === $pos ? $value : substr( $value, 0, $pos );
+	}
+
+	/**
+	 * Replace an empty string input with the literal argument.
+	 *
+	 * Differs from `map`'s `*` fallback in that it triggers only on empty
+	 * input — any non-empty value passes through unchanged.
+	 *
+	 * Examples:
+	 *   {{post_term_meta.category._mediba_id|default:99}}  -> "99" if unset
+	 *
+	 * @param string $value Input value.
+	 * @param string $arg   Replacement when $value is empty.
+	 */
+	public static function process_default( string $value, string $arg ): string {
+		return '' === $value ? $arg : $value;
 	}
 
 	/**

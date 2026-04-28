@@ -515,6 +515,120 @@ final class RenderTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( '<channel/>', $result['xml'] );
 	}
 
+	public function test_post_term_meta_binding_resolves_first_term_meta(): void {
+		// Aggregator category-mapping pattern: assign a CP-side numeric ID to
+		// each WP category once via term meta, then bind to it from the feed.
+		$cat = self::factory()->category->create( array( 'name' => 'Helpful', 'slug' => 'helpful' ) );
+		add_term_meta( $cat, '_mediba_category_id', '91', true );
+
+		$post_id = self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'Tip Article' ) );
+		wp_set_post_terms( $post_id, array( $cat ), 'category', false );
+
+		$el      = '<!-- wp:feedwright/element {"tagName":"category","contentMode":"binding","bindingExpression":"{{post_term_meta.category._mediba_category_id|default:99}}"} /-->';
+		$content = '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
+			. '<!-- wp:feedwright/item-query {"postsPerPage":5} --><!-- wp:feedwright/item -->'
+			. $el
+			. '<!-- /wp:feedwright/item --><!-- /wp:feedwright/item-query -->'
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		$this->assertStringContainsString( '<category>91</category>', $xml );
+	}
+
+	public function test_post_term_meta_falls_back_via_default_processor_when_meta_unset(): void {
+		// Term exists but no meta value -> default processor supplies fallback.
+		$cat = self::factory()->category->create( array( 'name' => 'Plain', 'slug' => 'plain' ) );
+		// No add_term_meta() call here.
+
+		$post_id = self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'Plain Article' ) );
+		wp_set_post_terms( $post_id, array( $cat ), 'category', false );
+
+		$el      = '<!-- wp:feedwright/element {"tagName":"category","contentMode":"binding","bindingExpression":"{{post_term_meta.category._mediba_category_id|default:99}}"} /-->';
+		$content = '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
+			. '<!-- wp:feedwright/item-query {"postsPerPage":5} --><!-- wp:feedwright/item -->'
+			. $el
+			. '<!-- /wp:feedwright/item --><!-- /wp:feedwright/item-query -->'
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		$this->assertStringContainsString( '<category>99</category>', $xml );
+	}
+
+	public function test_post_term_meta_uses_first_term_when_multiple_assigned(): void {
+		// Two categories on the same post; the provider returns the first
+		// term's meta. wp_set_post_terms ordering / get_the_terms ordering are
+		// stable for a given config, so we just verify whichever wins maps to
+		// its own term meta value (not the other one's).
+		$cat_a = self::factory()->category->create( array( 'name' => 'A', 'slug' => 'a' ) );
+		$cat_b = self::factory()->category->create( array( 'name' => 'B', 'slug' => 'b' ) );
+		add_term_meta( $cat_a, '_aggregator_id', 'A_ID', true );
+		add_term_meta( $cat_b, '_aggregator_id', 'B_ID', true );
+
+		$post_id = self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'Multi Cat' ) );
+		wp_set_post_terms( $post_id, array( $cat_a, $cat_b ), 'category', false );
+
+		$el      = '<!-- wp:feedwright/element {"tagName":"category","contentMode":"binding","bindingExpression":"{{post_term_meta.category._aggregator_id}}"} /-->';
+		$content = '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
+			. '<!-- wp:feedwright/item-query {"postsPerPage":5} --><!-- wp:feedwright/item -->'
+			. $el
+			. '<!-- /wp:feedwright/item --><!-- /wp:feedwright/item-query -->'
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		// Output is exactly one of the two term meta values (whichever
+		// get_the_terms() returns first), not a join of both.
+		$this->assertMatchesRegularExpression( '#<category>(A_ID|B_ID)</category>#', $xml );
+		$this->assertStringNotContainsString( 'A_IDB_ID', $xml );
+		$this->assertStringNotContainsString( 'A_ID, B_ID', $xml );
+	}
+
+	public function test_post_term_meta_returns_empty_when_post_has_no_terms(): void {
+		$post_id = self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'No Cat' ) );
+		wp_set_post_terms( $post_id, array(), 'category', false );
+
+		$el      = '<!-- wp:feedwright/element {"tagName":"category","contentMode":"binding","bindingExpression":"{{post_term_meta.category._mediba_category_id|default:99}}"} /-->';
+		$content = '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
+			. '<!-- wp:feedwright/item-query {"postsPerPage":5} --><!-- wp:feedwright/item -->'
+			. $el
+			. '<!-- /wp:feedwright/item --><!-- /wp:feedwright/item-query -->'
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		$this->assertStringContainsString( '<category>99</category>', $xml );
+	}
+
+	public function test_first_then_map_inline_pattern_for_category_id(): void {
+		// Inline alternative: WP term name -> aggregator ID via |first|map.
+		// Used when there are too few categories to bother with term meta.
+		$tech = self::factory()->category->create( array( 'name' => 'Tech', 'slug' => 'tech' ) );
+		$news = self::factory()->category->create( array( 'name' => 'News', 'slug' => 'news' ) );
+
+		$post_id = self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'Inline Map' ) );
+		wp_set_post_terms( $post_id, array( $tech, $news ), 'category', false );
+
+		$el      = '<!-- wp:feedwright/element {"tagName":"category","contentMode":"binding","bindingExpression":"{{post_term.category|first|map:Tech=10,News=20|default:99}}"} /-->';
+		$content = '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
+			. '<!-- wp:feedwright/item-query {"postsPerPage":5} --><!-- wp:feedwright/item -->'
+			. $el
+			. '<!-- /wp:feedwright/item --><!-- /wp:feedwright/item-query -->'
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		// Whichever term comes first must map to its own ID; never both joined.
+		$this->assertMatchesRegularExpression( '#<category>(10|20)</category>#', $xml );
+		$this->assertStringNotContainsString( '<category>99</category>', $xml );
+	}
+
 	public function test_no_rss_block_returns_error_xml(): void {
 		$post_id = self::factory()->post->create(
 			array(

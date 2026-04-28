@@ -114,6 +114,7 @@ feedwright/
 │   │       ├── PostRawProvider.php
 │   │       ├── PostMetaProvider.php
 │   │       ├── PostTermProvider.php
+│   │       ├── PostTermMetaProvider.php
 │   │       └── AuthorProvider.php
 │   ├── Query/
 │   │   └── ArgsBuilder.php
@@ -1393,6 +1394,24 @@ Examples:
 - `{{post_term.category::|}}` → `"News|Tech"`
 - `{{post_term.post_tag:slug::, }}` → `"japan, ai"`
 
+#### `post_term_meta.*` — term meta of the first matching term (only inside item context)
+
+Path format: `{taxonomy}.{meta_key}`. Returns `get_term_meta()` (single value) of the first term `get_the_terms()` returns for the post in `{taxonomy}`. Powers the aggregator category-mapping pattern: each WP term carries an aggregator-side ID (e.g. mediba category ID, SmartNews channel ID) as term meta, and the binding surfaces it without per-feed configuration.
+
+| Binding | Value |
+|---|---|
+| `post_term_meta.{taxonomy}.{meta_key}` | first term's `get_term_meta(... , true)` value |
+
+Examples:
+- `{{post_term_meta.category._mediba_category_id}}` → `"91"` if the first category has that meta set, else `""`
+- `{{post_term_meta.category._mediba_category_id|default:99}}` → `"99"` when meta is unset
+- `{{post_term.category|first|map:お役立ち=91,芸能=92|default:99}}` — alternative inline pattern when the mapping is small enough to hand-author
+
+Returns empty string when:
+- the post has no terms in the taxonomy
+- the meta key is unset on the first term
+- the meta value is an array (only scalar meta is supported)
+
 #### `author.*` — post author (only inside item context)
 
 Resolves through `get_the_author_meta()` using `$post->post_author` as the ID.
@@ -1481,6 +1500,8 @@ You can append `|name:arg` to the end of a binding to apply transforms to the re
 | `allow_tags` | comma-separated tag names | Allow only listed tags via `wp_kses`, no attributes. Empty argument strips all tags |
 | `strip_tags` | (ignored) | Strip all tags via `wp_strip_all_tags` |
 | `map` | `key=val,*=fallback` | If the input matches `key`, return that line's `val`. `*` is the fallback if no key matches. If neither matches nor `*` exists, returns empty string. The first `=` separates key and val, so `=` may appear in val. Useful for conditionals such as mapping `post_status` to a numeric `<media:status>` flag (publish=1 / removed=0): `{{post_raw.post_status\|map:publish=1,*=0}}` |
+| `first` | separator (default `, `) | Returns the first segment of a separator-joined string. Pairs naturally with `post_term.{taxonomy}` (which joins multi-term posts with `", "`) before piping into `map`. Example: `{{post_term.category\|first\|map:Tech=10,News=20}}`. The separator argument cannot contain `\|` (pipe-syntax conflict) or `}`; to split on `\|`, change the upstream binding to emit a different separator via its modifier first |
+| `default` | replacement value | Returns the literal argument when the input is the empty string; otherwise passes the input through unchanged. Differs from `map`'s `*` in that it triggers only on empty input — `"0"` and other falsy-looking strings pass through. Idiomatic with `post_term_meta`: `{{post_term_meta.category._mediba_category_id\|default:99}}` |
 
 Unknown processor names log a warning and pass the input through unchanged.
 
@@ -1508,6 +1529,7 @@ $providers = apply_filters( 'feedwright/binding_providers', [
     new Providers\PostRawProvider(),
     new Providers\PostMetaProvider(),
     new Providers\PostTermProvider(),
+    new Providers\PostTermMetaProvider(),
     new Providers\AuthorProvider(),
 ] );
 ```

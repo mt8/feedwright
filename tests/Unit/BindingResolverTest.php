@@ -203,4 +203,71 @@ final class BindingResolverTest extends TestCase {
 		// map then truncate (no-op since '1' is already 1 char).
 		$this->assertSame( '1', $r->resolve( '{{foo.k|map:publish=1,*=0|truncate:5}}', $this->ctx() ) );
 	}
+
+	public function test_first_processor_default_separator(): void {
+		$r = new Resolver();
+		$r->add( new FakeProvider( 'foo', array( 'k' => 'Tech, News, Sports' ) ) );
+		$this->assertSame( 'Tech', $r->resolve( '{{foo.k|first}}', $this->ctx() ) );
+	}
+
+	public function test_first_processor_custom_separator(): void {
+		// '|' cannot be used as the separator argument (pipe-syntax conflict);
+		// any other character works. Stick to ';' / ',' / '::' etc.
+		$r = new Resolver();
+		$r->add( new FakeProvider( 'foo', array( 'k' => 'Tech;News;Sports' ) ) );
+		$this->assertSame( 'Tech', $r->resolve( '{{foo.k|first:;}}', $this->ctx() ) );
+	}
+
+	public function test_first_processor_passes_through_when_no_separator(): void {
+		$r = new Resolver();
+		$r->add( new FakeProvider( 'foo', array( 'k' => 'OnlyOne' ) ) );
+		$this->assertSame( 'OnlyOne', $r->resolve( '{{foo.k|first}}', $this->ctx() ) );
+	}
+
+	public function test_first_processor_on_empty_returns_empty(): void {
+		$r = new Resolver();
+		$r->add( new FakeProvider( 'foo', array( 'k' => '' ) ) );
+		$this->assertSame( '', $r->resolve( '{{foo.k|first}}', $this->ctx() ) );
+	}
+
+	public function test_default_processor_replaces_empty(): void {
+		$r = new Resolver();
+		$r->add( new FakeProvider( 'foo', array( 'k' => '' ) ) );
+		$this->assertSame( '99', $r->resolve( '{{foo.k|default:99}}', $this->ctx() ) );
+	}
+
+	public function test_default_processor_passes_through_non_empty(): void {
+		$r = new Resolver();
+		$r->add( new FakeProvider( 'foo', array( 'k' => '42' ) ) );
+		$this->assertSame( '42', $r->resolve( '{{foo.k|default:99}}', $this->ctx() ) );
+	}
+
+	public function test_default_processor_does_not_replace_zero_string(): void {
+		// "0" is non-empty, so default must not replace it.
+		$r = new Resolver();
+		$r->add( new FakeProvider( 'foo', array( 'k' => '0' ) ) );
+		$this->assertSame( '0', $r->resolve( '{{foo.k|default:99}}', $this->ctx() ) );
+	}
+
+	public function test_first_then_map_then_default_chain(): void {
+		// Realistic aggregator pattern: pick the first taxonomy term, look it
+		// up in the inline map, fall back when nothing matches.
+		$r = new Resolver();
+		$r->add( new FakeProvider( 'foo', array( 'k' => 'お役立ち, 芸能' ) ) );
+		$this->assertSame(
+			'91',
+			$r->resolve( '{{foo.k|first|map:お役立ち=91,芸能=92|default:99}}', $this->ctx() )
+		);
+	}
+
+	public function test_chain_falls_through_to_default_when_map_missing(): void {
+		$r = new Resolver();
+		$r->add( new FakeProvider( 'foo', array( 'k' => 'マイナー, 芸能' ) ) );
+		// "マイナー" not in map, no `*` fallback in map => map returns '' =>
+		// default kicks in.
+		$this->assertSame(
+			'99',
+			$r->resolve( '{{foo.k|first|map:お役立ち=91,芸能=92|default:99}}', $this->ctx() )
+		);
+	}
 }
