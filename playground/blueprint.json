@@ -24,6 +24,8 @@
       }
     },
 
+    { "step": "mkdir", "path": "/wordpress/seeds" },
+
     {
       "step": "writeFile",
       "path": "/wordpress/seeds/posts.xml",
