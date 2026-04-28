@@ -1,10 +1,21 @@
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InnerBlocks, InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, TextControl } from '@wordpress/components';
+import { PanelBody, TextControl, RadioControl } from '@wordpress/components';
 import NamespaceEditor from '../_shared/NamespaceEditor';
 
 const ALLOWED_CHILDREN = [ 'feedwright/channel' ];
 const TEMPLATE = [ [ 'feedwright/channel' ] ];
+
+const OUTPUT_MODE_OPTIONS = [
+	{
+		label: __( 'Strict (recommended) — minified, entity-encoded, no CDATA', 'feedwright' ),
+		value: 'strict',
+	},
+	{
+		label: __( 'Compat — pretty-formatted, CDATA preserved', 'feedwright' ),
+		value: 'compat',
+	},
+];
 
 export default function Edit( { attributes, setAttributes } ) {
 	const blockProps = useBlockProps( {
@@ -13,6 +24,7 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	const namespaces = Array.isArray( attributes.namespaces ) ? attributes.namespaces : [];
 	const namespaceCount = namespaces.length;
+	const outputMode = attributes.outputMode === 'compat' ? 'compat' : 'strict';
 
 	return (
 		<div { ...blockProps }>
@@ -25,6 +37,13 @@ export default function Edit( { attributes, setAttributes } ) {
 						help={ __( 'Currently only RSS 2.0 is rendered.', 'feedwright' ) }
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
+					/>
+					<RadioControl
+						label={ __( 'Output mode', 'feedwright' ) }
+						selected={ outputMode }
+						options={ OUTPUT_MODE_OPTIONS }
+						onChange={ ( next ) => setAttributes( { outputMode: next } ) }
+						help={ __( 'Strict matches the requirements of most aggregator submission specs (no inter-element whitespace, all five XML entities encoded). Switch to Compat only if a downstream consumer requires CDATA or pretty XML.', 'feedwright' ) }
 					/>
 				</PanelBody>
 				<PanelBody title={ __( 'Namespaces', 'feedwright' ) } initialOpen={ true }>

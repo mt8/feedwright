@@ -136,20 +136,20 @@ final class ElementRenderer {
 			case 'static':
 				$value = (string) ( $attrs['staticValue'] ?? '' );
 				if ( '' !== $value ) {
-					$element->appendChild( $ctx->dom()->createTextNode( Sanitize::xml_chars( $value ) ) );
+					Sanitize::append_text_node( $element, $value, $ctx->output_mode() );
 				}
 				break;
 
 			case 'binding':
 				$value = $this->resolver->resolve( (string) ( $attrs['bindingExpression'] ?? '' ), $ctx );
 				if ( '' !== $value ) {
-					$element->appendChild( $ctx->dom()->createTextNode( Sanitize::xml_chars( $value ) ) );
+					Sanitize::append_text_node( $element, $value, $ctx->output_mode() );
 				}
 				break;
 
 			case 'cdata-binding':
 				$value = $this->resolver->resolve( (string) ( $attrs['bindingExpression'] ?? '' ), $ctx );
-				$element->appendChild( $ctx->dom()->createCDATASection( Sanitize::xml_chars( $value ) ) );
+				Sanitize::append_cdata_or_text( $element, $value, $ctx->output_mode() );
 				break;
 
 			case 'empty':
@@ -189,7 +189,11 @@ final class ElementRenderer {
 	}
 
 	/**
-	 * Render a `feedwright/raw` block as a text/CDATA node.
+	 * Render a `feedwright/raw` block as a text / CDATA / fragment node.
+	 *
+	 * Strict mode collapses CDATA into entity-encoded text and may need
+	 * multiple child nodes (text + entity references), so we wrap them in a
+	 * DocumentFragment to keep the single-node return contract callers expect.
 	 *
 	 * @param array<string,mixed> $block Parsed raw block.
 	 * @param Context             $ctx   Render context.
@@ -203,11 +207,29 @@ final class ElementRenderer {
 		if ( $interpolate ) {
 			$value = $this->resolver->resolve( $value, $ctx );
 		}
-		$value = Sanitize::xml_chars( $value );
 
+		$mode = $ctx->output_mode();
+		$dom  = $ctx->dom();
+
+		if ( Sanitize::MODE_STRICT === $mode ) {
+			$nodes = Sanitize::build_text_nodes( $dom, $value, $mode );
+			if ( empty( $nodes ) ) {
+				return null;
+			}
+			if ( 1 === count( $nodes ) ) {
+				return $nodes[0];
+			}
+			$fragment = $dom->createDocumentFragment();
+			foreach ( $nodes as $node ) {
+				$fragment->appendChild( $node );
+			}
+			return $fragment;
+		}
+
+		$clean = Sanitize::xml_chars( $value );
 		return $as_cdata
-			? $ctx->dom()->createCDATASection( $value )
-			: $ctx->dom()->createTextNode( $value );
+			? $dom->createCDATASection( $clean )
+			: $dom->createTextNode( $clean );
 	}
 
 	/**

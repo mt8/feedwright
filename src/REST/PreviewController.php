@@ -83,7 +83,9 @@ final class PreviewController {
 		}
 
 		$resolver = Plugin::build_resolver();
-		$result   = ( new Renderer( $resolver ) )->render( $post );
+		// Preview pane is for human inspection: render formatted regardless of
+		// the feed's outputMode setting.
+		$result = ( new Renderer( $resolver ) )->render( $post, true );
 
 		return new WP_REST_Response(
 			array(

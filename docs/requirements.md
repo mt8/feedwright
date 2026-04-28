@@ -531,6 +531,11 @@ add_filter( 'block_categories_all', function ( $categories, $context ) {
       "default": [
         { "prefix": "content", "uri": "http://purl.org/rss/1.0/modules/content/" }
       ]
+    },
+    "outputMode": {
+      "type": "string",
+      "default": "strict",
+      "enum": [ "strict", "compat" ]
     }
   },
   "supports": {
@@ -554,6 +559,9 @@ add_filter( 'block_categories_all', function ( $categories, $context ) {
 
 - Inspector contains a "Namespaces" list editor (add/remove prefix / uri pairs)
 - Version is read-only (room to support RSS 1.0 / Atom in the future)
+- "Output mode" radio (default `strict`):
+  - **strict** — minified XML, all five XML entities (`& < > " '`) encoded, `cdata-binding` element mode is downgraded to entity-encoded text. Matches the requirements of most aggregator submission specs (no inter-element whitespace, no CDATA, all quotes entity-encoded).
+  - **compat** — original behavior: `formatOutput=true` (pretty-formatted), CDATA preserved, only `& < >` escaped. Use only when a downstream consumer requires the legacy form.
 
 #### Default save lock
 
@@ -1194,8 +1202,21 @@ Each outer item triggers one extra `WP_Query` (N+1). Defaults set `update_post_m
 ### 13.7 Sanitization
 
 - `is_valid_xml_name`: `XML 1.0` Name production. `/^[A-Za-z_][A-Za-z0-9._-]*(:[A-Za-z_][A-Za-z0-9._-]*)?$/`
-- `sanitize_xml_chars`: strips control characters via `preg_replace( '/[\x00-\x08\x0B\x0C\x0E-\x1F]/u', '', $s )`
-- DOMDocument auto-escapes, so do not manually escape `&`, `<`, `>`
+- `xml_chars`: strips control characters via `preg_replace( '/[\x00-\x08\x0B\x0C\x0E-\x1F]/u', '', $s )`
+- `normalize_mode( string $mode )`: coerces an arbitrary string to `strict` (default) or `compat`
+- `build_text_nodes( DOMDocument $dom, string $value, string $mode ): array<DOMNode>`:
+  - **compat**: returns a single `DOMText` (DOMDocument auto-escapes only `& < >`)
+  - **strict**: splits on `'` and `"` and returns alternating `DOMText` / `DOMEntityReference` nodes (`apos` / `quot`). The 5 predefined XML entities are always available without a DTD; libxml emits them verbatim through `saveXML()`. `& < >` continue to be auto-escaped.
+- `append_text_node( DOMElement $element, string $value, string $mode )`: convenience wrapper that calls `build_text_nodes` and appends each result.
+- `append_cdata_or_text( DOMElement $element, string $value, string $mode )`: in compat appends a `CDATASection`; in strict downgrades to entity-encoded text via `append_text_node`.
+
+#### Output mode resolution
+
+`Renderer::render_uncached()` reads `outputMode` from the rss block's attributes (default `strict`), passes it through `Sanitize::normalize_mode()`, and stores it on `Context`. `ElementRenderer` and `render_raw()` consult `$ctx->output_mode()` to pick the right sanitizer call. `DOMDocument::formatOutput` is also tied to the mode: `compat || pretty` enables formatting; otherwise it stays off (minified production output).
+
+#### Pretty override
+
+The `?fw_pretty=1` query parameter on the public feed URL toggles `formatOutput=true` regardless of the feed's `outputMode`. It is gated to logged-in admins (`current_user_can('manage_options')`) or builds with `WP_DEBUG=true`, to avoid leaking the formatted variant to scrapers. Pretty responses bypass the render cache and emit `Cache-Control: no-store`. The REST preview endpoint and the in-editor "View Feed" preview also force pretty mode internally.
 
 ### 13.8 Acceptance criteria
 

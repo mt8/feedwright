@@ -106,8 +106,29 @@ final class FeedEndpoint {
 			exit;
 		}
 
-		( new Renderer( $this->resolver ) )->render_to_output( $post );
+		( new Renderer( $this->resolver ) )->render_to_output( $post, $this->is_pretty_request() );
 		exit;
+	}
+
+	/**
+	 * Whether the caller asked for a human-readable (formatted) feed.
+	 *
+	 * Gated to logged-in admins (or `WP_DEBUG` builds) to avoid leaking the
+	 * pretty variant to scrapers — production output stays minified.
+	 */
+	private function is_pretty_request(): bool {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only debug flag.
+		if ( ! isset( $_GET['fw_pretty'] ) ) {
+			return false;
+		}
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( '1' !== sanitize_text_field( wp_unslash( (string) $_GET['fw_pretty'] ) ) ) {
+			return false;
+		}
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			return true;
+		}
+		return is_user_logged_in() && current_user_can( 'manage_options' );
 	}
 
 	/**
@@ -168,7 +189,8 @@ final class FeedEndpoint {
 		}
 
 		nocache_headers();
-		( new Renderer( $this->resolver ) )->render_to_output( $post );
+		// Preview is for human inspection: always pretty-print.
+		( new Renderer( $this->resolver ) )->render_to_output( $post, true );
 	}
 
 	/**
