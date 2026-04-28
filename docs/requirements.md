@@ -121,7 +121,6 @@ feedwright/
 │   ├── Cache/
 │   │   └── RenderCache.php
 │   └── REST/
-│       ├── PreviewController.php
 │       └── BindingIntrospectionController.php
 ├── blocks/                          Block JS / block.json
 │   ├── rss/
@@ -140,8 +139,7 @@ feedwright/
 │   │   ├── index.js
 │   │   ├── components/
 │   │   │   ├── BindingInput.jsx
-│   │   │   ├── AttributeListEditor.jsx
-│   │   │   └── XmlPreviewPanel.jsx
+│   │   │   └── AttributeListEditor.jsx
 │   │   ├── hooks/
 │   │   │   └── useBindingSuggestions.js
 │   │   └── store/
@@ -232,7 +230,6 @@ final class Plugin {
         ( new BlockRegistry() )->register();
         ( new BlockRestriction() )->register();
         ( new Routing\FeedEndpoint() )->register();
-        ( new REST\PreviewController() )->register();
         ( new REST\BindingIntrospectionController() )->register();
     }
 
@@ -407,14 +404,7 @@ add_action( 'template_redirect', function () {
 }, 5 );
 ```
 
-### 10.3 Preview mode
-
-- URL: `/{base}/{slug}/?feedwright_preview=1&_wpnonce={nonce}`
-- nonce action name: `feedwright_preview_{post_id}`
-- Auth: admin login required
-- Behavior: returns content even for draft / pending / private posts. Bypasses the cache.
-
-### 10.4 Response headers
+### 10.3 Response headers
 
 ```
 HTTP/1.1 200 OK
@@ -429,12 +419,11 @@ Honors `If-Modified-Since` / `If-None-Match` and returns 304 when appropriate.
 
 `X-Robots-Tag: noindex` does not affect feed-consuming aggregators, but prevents Google and others from indexing the feed URL.
 
-### 10.5 Acceptance criteria
+### 10.4 Acceptance criteria
 
 - [ ] `/feedwright/{slug}/` returns 200 + RSS XML
 - [ ] A nonexistent slug returns 404
 - [ ] A draft feed returns 404 from its public URL
-- [ ] The preview URL returns 200 only for administrators
 - [ ] `If-None-Match` returns 304
 - [ ] After changing the URL base, rewrites follow (`flush_rewrite_rules` runs)
 
@@ -1616,22 +1605,7 @@ feedwright:render:{blog_id}:{post_id}:{post_modified_gmt_unix}:{url_base_hash}
 
 ## 16. REST API
 
-### 16.1 Preview endpoint
-
-```
-GET /wp-json/feedwright/v1/preview/{post_id}
-Permission: edit_post( post_id ) → manage_options required
-Response:
-  Content-Type: application/json
-  {
-    "xml": "<?xml ...>...",
-    "warnings": [ "Tag name 'foo bar' is invalid", ... ]
-  }
-```
-
-The editor's XML preview panel polls this (re-fetches on save and debounced during active editing).
-
-### 16.2 Binding autocomplete endpoint
+### 16.1 Binding autocomplete endpoint
 
 ```
 GET /wp-json/feedwright/v1/bindings?context=item|channel
@@ -1657,11 +1631,10 @@ When `context=item`, the response includes `post.*` / `post_raw.*` / `post_meta.
 
 `dynamic: true` indicates that the key is dynamic (driven by the post's actual custom field names or taxonomy names). Clients see this flag and fetch the real list of meta keys / taxonomies separately for the autocomplete UI.
 
-### 16.3 Acceptance criteria
+### 16.2 Acceptance criteria
 
 - [ ] Unauthenticated users get 401 / 403
 - [ ] Editor role gets 403 (admins only)
-- [ ] Preview returns content even for drafts
 - [ ] The binding list is correctly filtered by context
 
 ---
@@ -1689,16 +1662,13 @@ Edits the `attributes` array on the `element` block.
 - Validates name against XML Name rules → red border when invalid
 - When value mode is binding, value is edited via BindingInput
 
-### 17.3 XmlPreviewPanel
+### 17.3 Preview / publish flow
 
-Lives in the editor's right sidebar plugin slot (`PluginSidebar`).
+`feedwright_feed` registers with `public=true` / `publicly_queryable=true`, so the standard Gutenberg preview / publish flow handles XML previewing without a custom sidebar:
 
-- Collapsible
-- "Preview with current query results" button → REST call
-- Auto-update toggle (refreshes on save, or after 2 seconds of editing inactivity)
-- Syntax highlighting (Prism.js loaded lazily, or a lightweight in-house highlighter)
-- Displays the warnings array as a banner at the top
-- "Open public URL" link
+- The editor's "View" / "Preview" buttons resolve via `PostType::filter_permalink`, which redirects to `/{base}/{slug}/`.
+- Published posts are served by `Routing\FeedEndpoint::maybe_serve_feed` as production XML (with `?pretty=1` available to admins / `WP_DEBUG` for human inspection).
+- Drafts / non-published posts return 404 from the public URL — preview UX for unpublished feeds is intentionally left to the standard WordPress preview path that consumers can opt into via filters.
 
 ### 17.4 Acceptance criteria
 
@@ -1706,8 +1676,7 @@ Lives in the editor's right sidebar plugin slot (`PluginSidebar`).
 - [ ] Inside item context, `post.*`, `post_raw.*`, `post_meta.*`, `post_term.*`, `author.*` appear as candidates
 - [ ] Outside item context, those candidates are excluded
 - [ ] XML Name violations in the attribute list display an instant warning
-- [ ] XmlPreviewPanel auto-refreshes 2 seconds after editing pauses
-- [ ] Server-side warnings appear at the top of the panel
+- [ ] The "View" link in the editor opens `/{base}/{slug}/` for published feeds
 
 ---
 
@@ -1866,7 +1835,6 @@ If you change `itemTagName` to `entry`, the `<item>...</item>` blocks above beco
 | Title etc. contains control characters | Strip the control characters and output |
 | Permalinks are set to "Plain" | Warn on the settings screen. Rewrite still registers but won't work |
 | URL base collides with an existing page slug | Warn on save (but save is allowed). Feedwright wins because it registers with `top` priority |
-| Bad preview nonce | 403 |
 | POST to the public URL | 405 Method Not Allowed |
 
 ---
@@ -1934,12 +1902,10 @@ Recommended implementation order. Each phase is independently demoable.
 - [ ] Register block variations (common tags)
 - [ ] **DoD**: A custom namespaced feed (RSS 2.0 + media:* + a vendor namespace) can be built entirely from the GUI
 
-### Phase 5: REST + preview
+### Phase 5: REST
 
-- [ ] `REST\PreviewController`
 - [ ] `REST\BindingIntrospectionController`
-- [ ] `XmlPreviewPanel` component
-- [ ] **DoD**: XML preview is visible in the editor's right sidebar
+- [ ] **DoD**: Binding autocomplete REST returns the catalogue filtered by context. Preview / publish UX is delegated to standard Gutenberg flow (no custom sidebar)
 
 ### Phase 6: Caching, optimization, polish
 

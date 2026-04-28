@@ -96,11 +96,6 @@ final class FeedEndpoint {
 		$resolved = get_page_by_path( $slug, OBJECT, PostType::SLUG );
 		$post     = $resolved instanceof \WP_Post ? $resolved : null;
 
-		if ( $this->is_preview_request() ) {
-			$this->serve_preview( $post );
-			exit;
-		}
-
 		if ( null === $post || 'publish' !== $post->post_status ) {
 			$this->respond_not_found();
 			exit;
@@ -153,47 +148,6 @@ final class FeedEndpoint {
 	}
 
 	/**
-	 * Whether the current request is asking for a preview.
-	 */
-	private function is_preview_request(): bool {
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce verified in serve_preview().
-		if ( ! isset( $_GET['feedwright_preview'] ) ) {
-			return false;
-		}
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$flag = sanitize_text_field( wp_unslash( (string) $_GET['feedwright_preview'] ) );
-		return '1' === $flag;
-	}
-
-	/**
-	 * Serve a preview to logged-in admins regardless of post status.
-	 *
-	 * @param \WP_Post|null $post Resolved post or null.
-	 */
-	private function serve_preview( ?\WP_Post $post ): void {
-		$nonce = isset( $_GET['_wpnonce'] )
-			? sanitize_text_field( wp_unslash( (string) $_GET['_wpnonce'] ) )
-			: '';
-
-		if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
-			$this->respond_forbidden();
-			return;
-		}
-		if ( null === $post ) {
-			$this->respond_not_found();
-			return;
-		}
-		if ( ! wp_verify_nonce( $nonce, 'feedwright_preview_' . $post->ID ) ) {
-			$this->respond_forbidden();
-			return;
-		}
-
-		nocache_headers();
-		// Preview is for human inspection: always pretty-print.
-		( new Renderer( $this->resolver ) )->render_to_output( $post, true );
-	}
-
-	/**
 	 * Emit a 404 with a tiny XML error body.
 	 */
 	private function respond_not_found(): void {
@@ -202,17 +156,6 @@ final class FeedEndpoint {
 		header( 'Content-Type: application/xml; charset=UTF-8' );
 		echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 		echo '<error>Feed not found</error>';
-	}
-
-	/**
-	 * Emit a 403 with a tiny XML error body.
-	 */
-	private function respond_forbidden(): void {
-		status_header( 403 );
-		nocache_headers();
-		header( 'Content-Type: application/xml; charset=UTF-8' );
-		echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-		echo '<error>Forbidden</error>';
 	}
 
 	/**

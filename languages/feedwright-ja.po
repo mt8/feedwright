@@ -131,18 +131,12 @@ msgid "Feeds list"
 msgstr "フィード一覧"
 
 #: src/REST/BindingIntrospectionController.php:64
-#: src/REST/PreviewController.php:65
 msgid "Authentication required."
 msgstr "認証が必要です。"
 
 #: src/REST/BindingIntrospectionController.php:67
-#: src/REST/PreviewController.php:68
 msgid "Insufficient permissions."
 msgstr "権限が不足しています。"
-
-#: src/REST/PreviewController.php:82
-msgid "Feed post not found."
-msgstr "フィード投稿が見つかりません。"
 
 #: src/Settings.php:97
 #: src/Settings.php:119
@@ -665,34 +659,6 @@ msgstr "strip_tags — すべての HTML を除去"
 #: blocks/_shared/processor-suggestions.js:31
 msgid "map — translate value via key=val pairs (* for fallback)"
 msgstr "map — key=val ペアで値を変換（* はフォールバック）"
-
-#: blocks/_shared/XmlPreviewPanel.jsx:123
-msgid "XML preview is only available for Feedwright feed posts."
-msgstr "XML プレビューは Feedwright フィード投稿でのみ利用可能です。"
-
-#: blocks/_shared/XmlPreviewPanel.jsx:131
-msgid "Auto-update preview after editing"
-msgstr "編集後にプレビューを自動更新"
-
-#: blocks/_shared/XmlPreviewPanel.jsx:140
-msgid "Fetching…"
-msgstr "取得中…"
-
-#: blocks/_shared/XmlPreviewPanel.jsx:143
-msgid "Refresh preview"
-msgstr "プレビューを更新"
-
-#: blocks/_shared/XmlPreviewPanel.jsx:155
-msgid "Renderer warnings"
-msgstr "レンダラー警告"
-
-#: blocks/_shared/XmlPreviewPanel.jsx:186
-msgid "Open public URL"
-msgstr "公開 URL を開く"
-
-#: blocks/_shared/XmlPreviewPanel.jsx:206
-msgid "Feedwright XML Preview"
-msgstr "Feedwright XML プレビュー"
 
 #: blocks/channel/block.json
 msgctxt "block description"

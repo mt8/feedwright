@@ -195,8 +195,3 @@
 .feedwright-attribute-row {
 	background: #fafafa;
 }
-
-/* XML preview pane (sidebar). */
-.feedwright-xml-preview {
-	font-family: SFMono-Regular, ui-monospace, Menlo, Consolas, monospace;
-}
