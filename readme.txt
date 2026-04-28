@@ -4,7 +4,7 @@ Tags: rss, feed, atom, mrss, xml
 Requires at least: 6.5
 Tested up to: 6.9
 Requires PHP: 8.3
-Stable tag: 0.1.4
+Stable tag: 0.2.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,6 +35,10 @@ The default URL pattern is `/feedwright/{slug}/`. You can change the prefix in F
 Yes. Declare the namespace prefix and URI on the `<rss>` block, then use prefixed tag names (e.g. `media:thumbnail`) on element blocks and attributes.
 
 == Changelog ==
+
+= 0.2.0 =
+* Playground demo: per-aggregator seed scripts (`seed-goonews.php`, `seed-mediba.php`, `seed-smartnews.php`) plus a 30-post fixture from `posts.xml` and sideloaded Unsplash featured images. Seeds also publish Feedwright wordmark logos for the SmartNews `snf:logo` / `snf:darkModeLogo` channel elements.
+* Playground blueprint: flatten seed paths to `/wordpress/` root so `writeFile` no longer fails on a missing parent directory in the virtual filesystem.
 
 = 0.1.4 =
 * Feature: new `feedwright/when` block wraps inner blocks with a binding-driven gate. Compose with the `eq` / `in` / `map` / `default` / `first` processors to render elements only under specific conditions (e.g. emit `<mdf:deleted/>` only when the post is in the trash).
