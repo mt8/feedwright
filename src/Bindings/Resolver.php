@@ -46,6 +46,8 @@ final class Resolver {
 			'map'        => array( self::class, 'process_map' ),
 			'first'      => array( self::class, 'process_first' ),
 			'default'    => array( self::class, 'process_default' ),
+			'eq'         => array( self::class, 'process_eq' ),
+			'in'         => array( self::class, 'process_in' ),
 		);
 
 		if ( function_exists( 'apply_filters' ) ) {
@@ -246,6 +248,42 @@ final class Resolver {
 		$separator = '' === $arg ? ', ' : $arg;
 		$pos       = strpos( $value, $separator );
 		return false === $pos ? $value : substr( $value, 0, $pos );
+	}
+
+	/**
+	 * Equality gate: return the input unchanged when it equals the argument,
+	 * empty string otherwise. Combines naturally with `feedwright/when`,
+	 * which treats any non-empty value as a truthy gate.
+	 *
+	 * Argument leading / trailing whitespace is trimmed (parity with `map`).
+	 *
+	 * Example:
+	 *   {{post_raw.post_status|eq:trash}}  -> "trash" when status is trash, else ""
+	 *
+	 * @param string $value Input value.
+	 * @param string $arg   Value to compare against.
+	 */
+	public static function process_eq( string $value, string $arg ): string {
+		return trim( $arg ) === $value ? $value : '';
+	}
+
+	/**
+	 * Multi-value equality gate: return the input unchanged when it appears
+	 * in the comma-separated argument list, empty string otherwise. Each list
+	 * entry is trimmed.
+	 *
+	 * Example:
+	 *   {{post_raw.post_status|in:trash,draft}}  -> "trash" or "draft", else ""
+	 *
+	 * @param string $value Input value.
+	 * @param string $arg   Comma-separated list of accepted values.
+	 */
+	public static function process_in( string $value, string $arg ): string {
+		if ( '' === $arg ) {
+			return '';
+		}
+		$candidates = array_map( 'trim', explode( ',', $arg ) );
+		return in_array( $value, $candidates, true ) ? $value : '';
 	}
 
 	/**

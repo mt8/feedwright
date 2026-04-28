@@ -44,6 +44,18 @@ const PROCESSORS = [
 		takesArg: true,
 		argHint: '99',
 	},
+	{
+		name: 'eq',
+		label: __( 'eq — keep value when it equals the argument, else empty', 'feedwright' ),
+		takesArg: true,
+		argHint: 'trash',
+	},
+	{
+		name: 'in',
+		label: __( 'in — keep value when it appears in the comma-separated list, else empty', 'feedwright' ),
+		takesArg: true,
+		argHint: 'trash,draft',
+	},
 ];
 
 /**

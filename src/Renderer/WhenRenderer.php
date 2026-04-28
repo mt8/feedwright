@@ -63,8 +63,10 @@ final class WhenRenderer {
 		$expression = (string) ( $attrs['expression'] ?? '' );
 		$negate     = ! empty( $attrs['negate'] );
 
-		$value     = '' === $expression ? '' : $this->resolver->resolve( $expression, $ctx );
-		$matches   = '' !== $value;
+		$value = '' === $expression ? '' : $this->resolver->resolve( $expression, $ctx );
+		// Whitespace-only resolution counts as empty: a stray trailing space
+		// in the expression must not flip the gate to always-true.
+		$matches   = '' !== trim( $value );
 		$gate_open = $negate ? ! $matches : $matches;
 
 		if ( ! $gate_open ) {

@@ -270,4 +270,46 @@ final class BindingResolverTest extends TestCase {
 			$r->resolve( '{{foo.k|first|map:お役立ち=91,芸能=92|default:99}}', $this->ctx() )
 		);
 	}
+
+	public function test_eq_processor_returns_value_when_equal(): void {
+		$r = new Resolver();
+		$r->add( new FakeProvider( 'foo', array( 'k' => 'trash' ) ) );
+		$this->assertSame( 'trash', $r->resolve( '{{foo.k|eq:trash}}', $this->ctx() ) );
+	}
+
+	public function test_eq_processor_returns_empty_when_not_equal(): void {
+		$r = new Resolver();
+		$r->add( new FakeProvider( 'foo', array( 'k' => 'publish' ) ) );
+		$this->assertSame( '', $r->resolve( '{{foo.k|eq:trash}}', $this->ctx() ) );
+	}
+
+	public function test_eq_processor_trims_argument_whitespace(): void {
+		$r = new Resolver();
+		$r->add( new FakeProvider( 'foo', array( 'k' => 'trash' ) ) );
+		$this->assertSame( 'trash', $r->resolve( '{{foo.k|eq: trash }}', $this->ctx() ) );
+	}
+
+	public function test_in_processor_returns_value_when_in_list(): void {
+		$r = new Resolver();
+		$r->add( new FakeProvider( 'foo', array( 'k' => 'draft' ) ) );
+		$this->assertSame( 'draft', $r->resolve( '{{foo.k|in:trash,draft,pending}}', $this->ctx() ) );
+	}
+
+	public function test_in_processor_returns_empty_when_not_in_list(): void {
+		$r = new Resolver();
+		$r->add( new FakeProvider( 'foo', array( 'k' => 'publish' ) ) );
+		$this->assertSame( '', $r->resolve( '{{foo.k|in:trash,draft}}', $this->ctx() ) );
+	}
+
+	public function test_in_processor_trims_each_list_entry(): void {
+		$r = new Resolver();
+		$r->add( new FakeProvider( 'foo', array( 'k' => 'draft' ) ) );
+		$this->assertSame( 'draft', $r->resolve( '{{foo.k|in: trash , draft , pending }}', $this->ctx() ) );
+	}
+
+	public function test_in_processor_with_empty_list_returns_empty(): void {
+		$r = new Resolver();
+		$r->add( new FakeProvider( 'foo', array( 'k' => 'anything' ) ) );
+		$this->assertSame( '', $r->resolve( '{{foo.k|in:}}', $this->ctx() ) );
+	}
 }
