@@ -8,11 +8,11 @@ const TEMPLATE = [ [ 'feedwright/channel' ] ];
 
 const OUTPUT_MODE_OPTIONS = [
 	{
-		label: __( 'Strict (recommended) — minified, entity-encoded, no CDATA', 'feedwright' ),
+		label: __( 'Strict (recommended) — minified, quotes entity-encoded', 'feedwright' ),
 		value: 'strict',
 	},
 	{
-		label: __( 'Compat — pretty-formatted, CDATA preserved', 'feedwright' ),
+		label: __( 'Compat — pretty-formatted, quotes left as-is', 'feedwright' ),
 		value: 'compat',
 	},
 ];
@@ -43,7 +43,7 @@ export default function Edit( { attributes, setAttributes } ) {
 						selected={ outputMode }
 						options={ OUTPUT_MODE_OPTIONS }
 						onChange={ ( next ) => setAttributes( { outputMode: next } ) }
-						help={ __( 'Strict matches the requirements of most aggregator submission specs (no inter-element whitespace, all five XML entities encoded). Switch to Compat only if a downstream consumer requires CDATA or pretty XML.', 'feedwright' ) }
+						help={ __( 'Strict matches the requirements of most aggregator submission specs: no inter-element whitespace, and quotation marks in regular text are entity-encoded. CDATA-binding elements keep their CDATA wrapper in both modes — that is the spec-blessed way to embed HTML in body fields.', 'feedwright' ) }
 					/>
 				</PanelBody>
 				<PanelBody title={ __( 'Namespaces', 'feedwright' ) } initialOpen={ true }>

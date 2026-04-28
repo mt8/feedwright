@@ -25,17 +25,17 @@
             "namespace(s)": [
                 "\u540d\u524d\u7a7a\u9593"
             ],
-            "Strict (recommended) \u2014 minified, entity-encoded, no CDATA": [
-                "Strict\uff08\u63a8\u5968\uff09\u2014 minify\u3001\u3059\u3079\u3066\u306e XML \u30a8\u30f3\u30c6\u30a3\u30c6\u30a3\u3092\u5b9f\u4f53\u53c2\u7167\u5316\u3001CDATA \u306a\u3057"
-            ],
-            "Compat \u2014 pretty-formatted, CDATA preserved": [
-                "Compat \u2014 \u6574\u5f62\u6e08\u307f\u51fa\u529b\u3001CDATA \u3092\u4fdd\u6301"
-            ],
             "Output mode": [
                 "\u51fa\u529b\u30e2\u30fc\u30c9"
             ],
-            "Strict matches the requirements of most aggregator submission specs (no inter-element whitespace, all five XML entities encoded). Switch to Compat only if a downstream consumer requires CDATA or pretty XML.": [
-                "Strict \u306f\u307b\u3068\u3093\u3069\u306e\u30a2\u30b0\u30ea\u30b2\u30fc\u30bf\u63d0\u51fa\u4ed5\u69d8\u306e\u8981\u4ef6\uff08\u8981\u7d20\u9593\u306e\u7a7a\u767d\u306a\u3057\u3001XML \u5b9f\u4f53 5 \u7a2e\u3059\u3079\u3066\u3092\u5b9f\u4f53\u53c2\u7167\u5316\uff09\u306b\u5408\u81f4\u3057\u307e\u3059\u3002\u4e0b\u6d41\u306e\u53d7\u4fe1\u5074\u304c CDATA \u307e\u305f\u306f\u6574\u5f62\u6e08\u307f XML \u3092\u8981\u6c42\u3059\u308b\u5834\u5408\u306e\u307f Compat \u306b\u5207\u308a\u66ff\u3048\u3066\u304f\u3060\u3055\u3044\u3002"
+            "Strict (recommended) \u2014 minified, quotes entity-encoded": [
+                "Strict\uff08\u63a8\u5968\uff09\u2014 minify\u3001\u5f15\u7528\u7b26\u3092\u5b9f\u4f53\u53c2\u7167\u5316"
+            ],
+            "Compat \u2014 pretty-formatted, quotes left as-is": [
+                "Compat \u2014 \u6574\u5f62\u6e08\u307f\u51fa\u529b\u3001\u5f15\u7528\u7b26\u306f\u305d\u306e\u307e\u307e"
+            ],
+            "Strict matches the requirements of most aggregator submission specs: no inter-element whitespace, and quotation marks in regular text are entity-encoded. CDATA-binding elements keep their CDATA wrapper in both modes \u2014 that is the spec-blessed way to embed HTML in body fields.": [
+                "Strict \u306f\u307b\u3068\u3093\u3069\u306e\u30a2\u30b0\u30ea\u30b2\u30fc\u30bf\u63d0\u51fa\u4ed5\u69d8\u306e\u8981\u4ef6\uff08\u8981\u7d20\u9593\u306e\u7a7a\u767d\u306a\u3057\u3001\u30c6\u30ad\u30b9\u30c8\u4e2d\u306e\u5f15\u7528\u7b26\u3092\u5b9f\u4f53\u53c2\u7167\u5316\uff09\u306b\u5408\u81f4\u3057\u307e\u3059\u3002CDATA \u30d0\u30a4\u30f3\u30c7\u30a3\u30f3\u30b0\u8981\u7d20\u306f\u3069\u3061\u3089\u306e\u30e2\u30fc\u30c9\u3067\u3082 CDATA \u3067\u30e9\u30c3\u30d7\u3055\u308c\u7d9a\u3051\u307e\u3059 \u2014 \u3053\u308c\u304c\u672c\u6587\u30d5\u30a3\u30fc\u30eb\u30c9\u306b HTML \u3092\u57cb\u3081\u8fbc\u3080\u4ed5\u69d8\u6e96\u62e0\u306e\u65b9\u6cd5\u3067\u3059\u3002"
             ]
         }
     }

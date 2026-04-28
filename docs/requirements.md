@@ -560,8 +560,8 @@ add_filter( 'block_categories_all', function ( $categories, $context ) {
 - Inspector contains a "Namespaces" list editor (add/remove prefix / uri pairs)
 - Version is read-only (room to support RSS 1.0 / Atom in the future)
 - "Output mode" radio (default `strict`):
-  - **strict** — minified XML, all five XML entities (`& < > " '`) encoded, `cdata-binding` element mode is downgraded to entity-encoded text. Matches the requirements of most aggregator submission specs (no inter-element whitespace, no CDATA, all quotes entity-encoded).
-  - **compat** — original behavior: `formatOutput=true` (pretty-formatted), CDATA preserved, only `& < >` escaped. Use only when a downstream consumer requires the legacy form.
+  - **strict** — minified XML; in regular text nodes all five XML entities (`& < > " '`) are encoded. The `cdata-binding` element mode keeps its CDATA wrapper — most aggregator specs explicitly permit CDATA for HTML-bearing body fields (e.g. mediba: "CDATAで囲えばHTMLを使用可能"), and entity-encoding the markup would balloon the payload for no semantic gain.
+  - **compat** — original behavior: `formatOutput=true` (pretty-formatted), CDATA preserved, only `& < >` escaped (DOMDocument default; `'` and `"` are passed through literally).
 
 #### Default save lock
 
@@ -1208,7 +1208,7 @@ Each outer item triggers one extra `WP_Query` (N+1). Defaults set `update_post_m
   - **compat**: returns a single `DOMText` (DOMDocument auto-escapes only `& < >`)
   - **strict**: splits on `'` and `"` and returns alternating `DOMText` / `DOMEntityReference` nodes (`apos` / `quot`). The 5 predefined XML entities are always available without a DTD; libxml emits them verbatim through `saveXML()`. `& < >` continue to be auto-escaped.
 - `append_text_node( DOMElement $element, string $value, string $mode )`: convenience wrapper that calls `build_text_nodes` and appends each result.
-- `append_cdata_or_text( DOMElement $element, string $value, string $mode )`: in compat appends a `CDATASection`; in strict downgrades to entity-encoded text via `append_text_node`.
+- `append_cdata( DOMElement $element, string $value )`: appends a CDATA section regardless of mode. The `cdata-binding` element mode is an explicit author choice and most aggregator specs allow CDATA for HTML body fields, so we honor it in both strict and compat.
 
 #### Output mode resolution
 

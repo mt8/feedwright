@@ -114,21 +114,18 @@ final class Sanitize {
 	}
 
 	/**
-	 * Append text content that would normally be wrapped in CDATA. Strict mode
-	 * downgrades to entity-encoded text (semantically equivalent, but matches
-	 * specs that forbid CDATA); compat mode emits the CDATA section as before.
+	 * Append a CDATA section. Honored in both strict and compat modes — most
+	 * aggregator specs explicitly permit CDATA for HTML-bearing body fields
+	 * (e.g. mediba: "CDATAで囲えばHTMLを使用可能"), and entity-encoding the
+	 * markup would balloon the payload for no semantic gain. The `cdata-binding`
+	 * element mode is an explicit author choice; we respect it in both modes.
 	 *
 	 * @param DOMElement $element Element to append to.
 	 * @param string     $value   Already-resolved value.
-	 * @param string     $mode    Output mode.
 	 */
-	public static function append_cdata_or_text( DOMElement $element, string $value, string $mode ): void {
+	public static function append_cdata( DOMElement $element, string $value ): void {
 		$dom = $element->ownerDocument; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOMElement core property.
 		if ( null === $dom ) {
-			return;
-		}
-		if ( self::MODE_STRICT === $mode ) {
-			self::append_text_node( $element, $value, $mode );
 			return;
 		}
 		$element->appendChild( $dom->createCDATASection( self::xml_chars( $value ) ) );

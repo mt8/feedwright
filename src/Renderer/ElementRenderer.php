@@ -149,7 +149,7 @@ final class ElementRenderer {
 
 			case 'cdata-binding':
 				$value = $this->resolver->resolve( (string) ( $attrs['bindingExpression'] ?? '' ), $ctx );
-				Sanitize::append_cdata_or_text( $element, $value, $ctx->output_mode() );
+				Sanitize::append_cdata( $element, $value );
 				break;
 
 			case 'empty':
@@ -191,8 +191,9 @@ final class ElementRenderer {
 	/**
 	 * Render a `feedwright/raw` block as a text / CDATA / fragment node.
 	 *
-	 * Strict mode collapses CDATA into entity-encoded text and may need
-	 * multiple child nodes (text + entity references), so we wrap them in a
+	 * The `asCdata` attribute is the explicit author choice and is honored in
+	 * both modes. Non-CDATA text in strict mode may need multiple child nodes
+	 * (text + entity references for `'` / `"`), so we wrap them in a
 	 * DocumentFragment to keep the single-node return contract callers expect.
 	 *
 	 * @param array<string,mixed> $block Parsed raw block.
@@ -208,9 +209,13 @@ final class ElementRenderer {
 			$value = $this->resolver->resolve( $value, $ctx );
 		}
 
-		$mode = $ctx->output_mode();
-		$dom  = $ctx->dom();
+		$dom = $ctx->dom();
 
+		if ( $as_cdata ) {
+			return $dom->createCDATASection( Sanitize::xml_chars( $value ) );
+		}
+
+		$mode = $ctx->output_mode();
 		if ( Sanitize::MODE_STRICT === $mode ) {
 			$nodes = Sanitize::build_text_nodes( $dom, $value, $mode );
 			if ( empty( $nodes ) ) {
@@ -226,10 +231,7 @@ final class ElementRenderer {
 			return $fragment;
 		}
 
-		$clean = Sanitize::xml_chars( $value );
-		return $as_cdata
-			? $dom->createCDATASection( $clean )
-			: $dom->createTextNode( $clean );
+		return $dom->createTextNode( Sanitize::xml_chars( $value ) );
 	}
 
 	/**

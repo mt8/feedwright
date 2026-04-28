@@ -179,10 +179,10 @@ final class RenderTest extends WP_UnitTestCase {
 		$this->assertLessThan( $pos_b, $pos_a, 'Article A (newer) must come before Article B' );
 
 		$this->assertStringContainsString( '<guid isPermaLink="true">', $xml );
-		// Strict default: cdata-binding mode is downgraded to entity-encoded
-		// text, so no CDATA section appears.
-		$this->assertStringNotContainsString( '<![CDATA[', $xml );
-		$this->assertStringContainsString( '&lt;p&gt;Body A.&lt;/p&gt;', $xml );
+		// Strict default: text nodes are entity-encoded, but cdata-binding
+		// mode is an explicit author choice and CDATA is preserved (specs
+		// permit CDATA for HTML-bearing body fields).
+		$this->assertStringContainsString( '<![CDATA[', $xml );
 		// DOMDocument may add a redundant xmlns:content on the element itself,
 		// so do not require an exact substring without attributes.
 		$this->assertMatchesRegularExpression( '#<content:encoded[^>]*>#', $xml );
@@ -658,6 +658,35 @@ final class RenderTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( '&quot;world&quot;', $xml );
 		$this->assertStringContainsString( '&apos;friends&apos;', $xml );
 		$this->assertStringNotContainsString( '"world"', $xml );
+	}
+
+	public function test_strict_mode_preserves_cdata_for_cdata_binding(): void {
+		// Strict mode entity-encodes regular text but keeps CDATA when the
+		// author opts in via cdata-binding mode (spec-compliant for HTML body).
+		self::factory()->post->create(
+			array(
+				'post_status'  => 'publish',
+				'post_title'   => 'CDATA test',
+				'post_content' => '<p>HTML body with <strong>tags</strong></p>',
+			)
+		);
+
+		$el      = '<!-- wp:feedwright/element {"tagName":"content:encoded","contentMode":"cdata-binding","bindingExpression":"{{post.post_content}}"} /-->';
+		$content = '<!-- wp:feedwright/rss {"namespaces":[{"prefix":"content","uri":"http://purl.org/rss/1.0/modules/content/"}]} -->'
+			. '<!-- wp:feedwright/channel -->'
+			. '<!-- wp:feedwright/item-query {"postsPerPage":1} --><!-- wp:feedwright/item -->'
+			. $el
+			. '<!-- /wp:feedwright/item --><!-- /wp:feedwright/item-query -->'
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		$this->assertStringContainsString( '<![CDATA[', $xml );
+		// HTML markup survives literally inside CDATA — not entity-encoded.
+		$this->assertStringContainsString( '<p>HTML body with <strong>tags</strong></p>', $xml );
+		// And we are still in strict mode: no inter-element whitespace.
+		$this->assertStringNotContainsString( ">\n  <", $xml );
 	}
 
 	public function test_strict_mode_minifies_no_inter_element_whitespace(): void {

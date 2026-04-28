@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-28T05:41:56+00:00\n"
+"POT-Creation-Date: 2026-04-28T06:26:55+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: feedwright\n"
@@ -521,11 +521,11 @@ msgid "Raw"
 msgstr ""
 
 #: blocks/rss/edit.js:11
-msgid "Strict (recommended) — minified, entity-encoded, no CDATA"
+msgid "Strict (recommended) — minified, quotes entity-encoded"
 msgstr ""
 
 #: blocks/rss/edit.js:15
-msgid "Compat — pretty-formatted, CDATA preserved"
+msgid "Compat — pretty-formatted, quotes left as-is"
 msgstr ""
 
 #: blocks/rss/edit.js:34
@@ -541,7 +541,7 @@ msgid "Output mode"
 msgstr ""
 
 #: blocks/rss/edit.js:46
-msgid "Strict matches the requirements of most aggregator submission specs (no inter-element whitespace, all five XML entities encoded). Switch to Compat only if a downstream consumer requires CDATA or pretty XML."
+msgid "Strict matches the requirements of most aggregator submission specs: no inter-element whitespace, and quotation marks in regular text are entity-encoded. CDATA-binding elements keep their CDATA wrapper in both modes — that is the spec-blessed way to embed HTML in body fields."
 msgstr ""
 
 #: blocks/rss/edit.js:49

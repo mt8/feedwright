@@ -993,18 +993,18 @@ msgstr "同じタクソノミーの term（階層型のみ）"
 msgid "No hierarchical taxonomy is registered for the chosen post type."
 msgstr "選択した投稿タイプに対して階層型タクソノミーが登録されていません。"
 
-#: blocks/rss/edit.js:11
-msgid "Strict (recommended) — minified, entity-encoded, no CDATA"
-msgstr "Strict（推奨）— minify、すべての XML エンティティを実体参照化、CDATA なし"
-
-#: blocks/rss/edit.js:15
-msgid "Compat — pretty-formatted, CDATA preserved"
-msgstr "Compat — 整形済み出力、CDATA を保持"
-
 #: blocks/rss/edit.js:42
 msgid "Output mode"
 msgstr "出力モード"
 
+#: blocks/rss/edit.js:11
+msgid "Strict (recommended) — minified, quotes entity-encoded"
+msgstr "Strict（推奨）— minify、引用符を実体参照化"
+
+#: blocks/rss/edit.js:15
+msgid "Compat — pretty-formatted, quotes left as-is"
+msgstr "Compat — 整形済み出力、引用符はそのまま"
+
 #: blocks/rss/edit.js:46
-msgid "Strict matches the requirements of most aggregator submission specs (no inter-element whitespace, all five XML entities encoded). Switch to Compat only if a downstream consumer requires CDATA or pretty XML."
-msgstr "Strict はほとんどのアグリゲータ提出仕様の要件（要素間の空白なし、XML 実体 5 種すべてを実体参照化）に合致します。下流の受信側が CDATA または整形済み XML を要求する場合のみ Compat に切り替えてください。"
+msgid "Strict matches the requirements of most aggregator submission specs: no inter-element whitespace, and quotation marks in regular text are entity-encoded. CDATA-binding elements keep their CDATA wrapper in both modes — that is the spec-blessed way to embed HTML in body fields."
+msgstr "Strict はほとんどのアグリゲータ提出仕様の要件（要素間の空白なし、テキスト中の引用符を実体参照化）に合致します。CDATA バインディング要素はどちらのモードでも CDATA でラップされ続けます — これが本文フィールドに HTML を埋め込む仕様準拠の方法です。"
