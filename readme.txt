@@ -4,7 +4,7 @@ Tags: rss, feed, atom, mrss, xml
 Requires at least: 6.5
 Tested up to: 6.9
 Requires PHP: 8.3
-Stable tag: 0.1.2
+Stable tag: 0.1.3
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,6 +35,11 @@ The default URL pattern is `/feedwright/{slug}/`. You can change the prefix in F
 Yes. Declare the namespace prefix and URI on the `<rss>` block, then use prefixed tag names (e.g. `media:thumbnail`) on element blocks and attributes.
 
 == Changelog ==
+
+= 0.1.3 =
+* Feature: new `feedwright/sub-query` and `feedwright/sub-item` blocks expand related posts inside each item template (taxonomy term match or manual ID list). Useful for `<smp:relation>`, `<mdf:relatedLink>`, `<g:additional_image_link>`-style aggregator requirements.
+* Feature: new `post_term_meta.{taxonomy}.{meta_key}` binding plus `first` / `default` processors for editorial-managed category-ID mapping (e.g. mediba `<category>` numeric IDs).
+* Feature: new `outputMode` attribute on the `<rss>` block (default `strict`). Strict produces minified XML and entity-encodes `'` / `"` in regular text nodes; CDATA-binding elements keep their CDATA wrapper. The new `?pretty=1` query parameter forces formatted XML for admins / `WP_DEBUG` builds.
 
 = 0.1.2 =
 * Fix: item-template can now be placed inside each item-query individually instead of being a global singleton. Multiple item-query blocks each get their own item-template.
