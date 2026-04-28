@@ -24,11 +24,9 @@
       }
     },
 
-    { "step": "mkdir", "path": "/wordpress/seeds" },
-
     {
       "step": "writeFile",
-      "path": "/wordpress/seeds/posts.xml",
+      "path": "/wordpress/posts.xml",
       "data": {
         "resource": "url",
         "url": "https://raw.githubusercontent.com/mt8/feedwright/main/playground/seeds/posts.xml"
@@ -36,7 +34,7 @@
     },
     {
       "step": "writeFile",
-      "path": "/wordpress/seeds/seed-helpers.php",
+      "path": "/wordpress/seed-helpers.php",
       "data": {
         "resource": "url",
         "url": "https://raw.githubusercontent.com/mt8/feedwright/main/playground/seeds/seed-helpers.php"
@@ -44,42 +42,42 @@
     },
     {
       "step": "writeFile",
-      "path": "/wordpress/seeds/seed-shared.php",
+      "path": "/wordpress/seed-shared.php",
       "data": {
         "resource": "url",
         "url": "https://raw.githubusercontent.com/mt8/feedwright/main/playground/seeds/seed-shared.php"
       }
     },
-    { "step": "wp-cli", "command": "wp eval-file seeds/seed-shared.php" },
+    { "step": "wp-cli", "command": "wp eval-file seed-shared.php" },
 
     {
       "step": "writeFile",
-      "path": "/wordpress/seeds/seed-goonews.php",
+      "path": "/wordpress/seed-goonews.php",
       "data": {
         "resource": "url",
         "url": "https://raw.githubusercontent.com/mt8/feedwright/main/playground/seeds/seed-goonews.php"
       }
     },
-    { "step": "wp-cli", "command": "wp eval-file seeds/seed-goonews.php" },
+    { "step": "wp-cli", "command": "wp eval-file seed-goonews.php" },
 
     {
       "step": "writeFile",
-      "path": "/wordpress/seeds/seed-mediba.php",
+      "path": "/wordpress/seed-mediba.php",
       "data": {
         "resource": "url",
         "url": "https://raw.githubusercontent.com/mt8/feedwright/main/playground/seeds/seed-mediba.php"
       }
     },
-    { "step": "wp-cli", "command": "wp eval-file seeds/seed-mediba.php" },
+    { "step": "wp-cli", "command": "wp eval-file seed-mediba.php" },
 
     {
       "step": "writeFile",
-      "path": "/wordpress/seeds/seed-smartnews.php",
+      "path": "/wordpress/seed-smartnews.php",
       "data": {
         "resource": "url",
         "url": "https://raw.githubusercontent.com/mt8/feedwright/main/playground/seeds/seed-smartnews.php"
       }
     },
-    { "step": "wp-cli", "command": "wp eval-file seeds/seed-smartnews.php" }
+    { "step": "wp-cli", "command": "wp eval-file seed-smartnews.php" }
   ]
 }
