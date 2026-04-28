@@ -19,6 +19,11 @@
 			"default": [
 				{ "prefix": "content", "uri": "http://purl.org/rss/1.0/modules/content/" }
 			]
+		},
+		"outputMode": {
+			"type": "string",
+			"default": "strict",
+			"enum": [ "strict", "compat" ]
 		}
 	},
 	"supports": {

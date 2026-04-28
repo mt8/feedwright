@@ -485,23 +485,23 @@ msgstr "Raw（CDATA）"
 msgid "Raw"
 msgstr "Raw"
 
-#: blocks/rss/edit.js:22
+#: blocks/rss/edit.js:34
 msgid "Version"
 msgstr "バージョン"
 
-#: blocks/rss/edit.js:25
+#: blocks/rss/edit.js:37
 msgid "Currently only RSS 2.0 is rendered."
 msgstr "現状は RSS 2.0 のみ出力可能。"
 
-#: blocks/rss/edit.js:30
+#: blocks/rss/edit.js:49
 msgid "Namespaces"
 msgstr "名前空間"
 
-#: blocks/rss/edit.js:41
+#: blocks/rss/edit.js:60
 msgid "version"
 msgstr "version"
 
-#: blocks/rss/edit.js:43
+#: blocks/rss/edit.js:62
 msgid "namespace(s)"
 msgstr "名前空間"
 
@@ -992,3 +992,19 @@ msgstr "同じタクソノミーの term（階層型のみ）"
 #: blocks/sub-query/edit.js:116
 msgid "No hierarchical taxonomy is registered for the chosen post type."
 msgstr "選択した投稿タイプに対して階層型タクソノミーが登録されていません。"
+
+#: blocks/rss/edit.js:42
+msgid "Output mode"
+msgstr "出力モード"
+
+#: blocks/rss/edit.js:11
+msgid "Strict (recommended) — minified, quotes entity-encoded"
+msgstr "Strict（推奨）— minify、引用符を実体参照化"
+
+#: blocks/rss/edit.js:15
+msgid "Compat — pretty-formatted, quotes left as-is"
+msgstr "Compat — 整形済み出力、引用符はそのまま"
+
+#: blocks/rss/edit.js:46
+msgid "Strict matches the requirements of most aggregator submission specs: no inter-element whitespace, and quotation marks in regular text are entity-encoded. CDATA-binding elements keep their CDATA wrapper in both modes — that is the spec-blessed way to embed HTML in body fields."
+msgstr "Strict はほとんどのアグリゲータ提出仕様の要件（要素間の空白なし、テキスト中の引用符を実体参照化）に合致します。CDATA バインディング要素はどちらのモードでも CDATA でラップされ続けます — これが本文フィールドに HTML を埋め込む仕様準拠の方法です。"

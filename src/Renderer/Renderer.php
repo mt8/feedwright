@@ -53,16 +53,21 @@ final class Renderer {
 	/**
 	 * Render a feed post to XML, returning warnings collected along the way.
 	 *
-	 * @param WP_Post $post Feed post (post type `feedwright_feed`).
+	 * @param WP_Post $post   Feed post (post type `feedwright_feed`).
+	 * @param bool    $pretty When true, force human-readable formatting and
+	 *                        bypass the cache (preview / debug only).
 	 * @return array{xml:string,warnings:array<int,string>}
 	 */
-	public function render( WP_Post $post ): array {
+	public function render( WP_Post $post, bool $pretty = false ): array {
+		if ( $pretty ) {
+			return $this->render_uncached( $post, true );
+		}
 		$cached = $this->cache->get( $post );
 		if ( null !== $cached ) {
 			return $cached;
 		}
 
-		$result = $this->render_uncached( $post );
+		$result = $this->render_uncached( $post, false );
 		// Only persist successful renders (no rss/no channel errors must not
 		// poison the cache, but they do still emit an XML error body so OK
 		// to cache for the configured TTL).
@@ -73,29 +78,39 @@ final class Renderer {
 	/**
 	 * The actual render path, without cache lookup.
 	 *
-	 * @param WP_Post $post Feed post.
+	 * @param WP_Post $post   Feed post.
+	 * @param bool    $pretty Force formatted output regardless of mode.
 	 * @return array{xml:string,warnings:array<int,string>}
 	 */
-	private function render_uncached( WP_Post $post ): array {
+	private function render_uncached( WP_Post $post, bool $pretty ): array {
 		$warnings = array();
 
 		$blocks    = parse_blocks( (string) $post->post_content );
 		$rss_block = $this->find_root_rss( $blocks, $warnings );
 
-		$dom               = new DOMDocument( '1.0', 'UTF-8' );
-		$dom->formatOutput = true; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+		$dom = new DOMDocument( '1.0', 'UTF-8' );
 
 		if ( null === $rss_block ) {
-			$warnings[] = 'No <rss> block found in feed post.';
+			// Error documents render with formatting on regardless — they're
+			// for human eyes anyway.
+			$dom->formatOutput = true; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			$warnings[]        = 'No <rss> block found in feed post.';
 			return array(
 				'xml'      => $this->error_document( $dom, 'No rss block in feed post' ),
 				'warnings' => $warnings,
 			);
 		}
 
-		$rss_attrs = (array) ( $rss_block['attrs'] ?? array() );
-		$ns_pairs  = $this->namespace_map( $rss_attrs );
-		$ctx       = new Context( $post, $dom, $ns_pairs );
+		$rss_attrs   = (array) ( $rss_block['attrs'] ?? array() );
+		$output_mode = Sanitize::normalize_mode( (string) ( $rss_attrs['outputMode'] ?? Sanitize::MODE_STRICT ) );
+
+		// Strict mode minifies by default (spec-compliant production output);
+		// compat preserves the original pretty default. `$pretty` overrides
+		// either when forced via preview / `?pretty=1`.
+		$dom->formatOutput = ( Sanitize::MODE_COMPAT === $output_mode ) || $pretty; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+
+		$ns_pairs = $this->namespace_map( $rss_attrs );
+		$ctx      = new Context( $post, $dom, $ns_pairs, $output_mode );
 
 		$rss_el = $dom->createElement( 'rss' );
 		$rss_el->setAttribute( 'version', (string) ( $rss_attrs['version'] ?? '2.0' ) );
@@ -160,17 +175,20 @@ final class Renderer {
 	/**
 	 * Render and stream the XML body to the response.
 	 *
-	 * @param WP_Post $post Feed post.
+	 * @param WP_Post $post   Feed post.
+	 * @param bool    $pretty Force pretty XML formatting (preview / debug only).
 	 */
-	public function render_to_output( WP_Post $post ): void {
-		$result = $this->render( $post );
+	public function render_to_output( WP_Post $post, bool $pretty = false ): void {
+		$result = $this->render( $post, $pretty );
 		$body   = $result['xml'];
 		$ttl    = (int) get_option( 'feedwright_cache_ttl', 300 );
 
 		$last_modified = mysql2date( 'D, d M Y H:i:s', $post->post_modified_gmt, false ) . ' GMT';
-		$etag          = '"' . md5( $post->ID . '|' . $post->post_modified_gmt . '|' . (string) get_option( 'feedwright_url_base', 'feedwright' ) ) . '"';
+		$etag          = '"' . md5( $post->ID . '|' . $post->post_modified_gmt . '|' . (string) get_option( 'feedwright_url_base', 'feedwright' ) . '|' . ( $pretty ? 'pretty' : 'min' ) ) . '"';
 
-		if ( $this->client_has_fresh_copy( $etag, $post->post_modified_gmt ) ) {
+		// Pretty output bypasses cache (and shouldn't piggyback on the
+		// production cache control either) — it's a debug surface.
+		if ( ! $pretty && $this->client_has_fresh_copy( $etag, $post->post_modified_gmt ) ) {
 			status_header( 304 );
 			header( 'ETag: ' . $etag );
 			header( 'Last-Modified: ' . $last_modified );
@@ -181,7 +199,11 @@ final class Renderer {
 		header( 'Content-Type: application/rss+xml; charset=UTF-8' );
 		header( 'Last-Modified: ' . $last_modified );
 		header( 'ETag: ' . $etag );
-		header( 'Cache-Control: public, max-age=' . $ttl );
+		if ( $pretty ) {
+			header( 'Cache-Control: no-store' );
+		} else {
+			header( 'Cache-Control: public, max-age=' . $ttl );
+		}
 		header( 'X-Robots-Tag: noindex' );
 
 		echo $body; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- DOMDocument escapes for us.

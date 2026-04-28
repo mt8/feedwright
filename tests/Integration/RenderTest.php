@@ -179,10 +179,15 @@ final class RenderTest extends WP_UnitTestCase {
 		$this->assertLessThan( $pos_b, $pos_a, 'Article A (newer) must come before Article B' );
 
 		$this->assertStringContainsString( '<guid isPermaLink="true">', $xml );
+		// Strict default: text nodes are entity-encoded, but cdata-binding
+		// mode is an explicit author choice and CDATA is preserved (specs
+		// permit CDATA for HTML-bearing body fields).
 		$this->assertStringContainsString( '<![CDATA[', $xml );
 		// DOMDocument may add a redundant xmlns:content on the element itself,
 		// so do not require an exact substring without attributes.
 		$this->assertMatchesRegularExpression( '#<content:encoded[^>]*>#', $xml );
+		// Strict default also minifies: no inter-element whitespace.
+		$this->assertStringNotContainsString( ">\n  <", $xml );
 		$this->assertEmpty( $result['warnings'], 'No warnings for valid feed: ' . implode( ', ', $result['warnings'] ) );
 	}
 
@@ -627,6 +632,123 @@ final class RenderTest extends WP_UnitTestCase {
 		// Whichever term comes first must map to its own ID; never both joined.
 		$this->assertMatchesRegularExpression( '#<category>(10|20)</category>#', $xml );
 		$this->assertStringNotContainsString( '<category>99</category>', $xml );
+	}
+
+	public function test_strict_mode_encodes_quotes_and_apostrophes(): void {
+		self::factory()->post->create(
+			array(
+				'post_status' => 'publish',
+				// Single + double quote in title to exercise both entity refs.
+				// Use post_raw to bypass wptexturize (which would replace
+				// straight quotes with curly Unicode quotes before we see them).
+				'post_title'  => 'Hello "world" and \'friends\'',
+			)
+		);
+
+		$el      = '<!-- wp:feedwright/element {"tagName":"title","contentMode":"binding","bindingExpression":"{{post_raw.post_title}}"} /-->';
+		$content = '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
+			. '<!-- wp:feedwright/item-query {"postsPerPage":1} --><!-- wp:feedwright/item -->'
+			. $el
+			. '<!-- /wp:feedwright/item --><!-- /wp:feedwright/item-query -->'
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		$this->assertStringContainsString( '&quot;world&quot;', $xml );
+		$this->assertStringContainsString( '&apos;friends&apos;', $xml );
+		$this->assertStringNotContainsString( '"world"', $xml );
+	}
+
+	public function test_strict_mode_preserves_cdata_for_cdata_binding(): void {
+		// Strict mode entity-encodes regular text but keeps CDATA when the
+		// author opts in via cdata-binding mode (spec-compliant for HTML body).
+		self::factory()->post->create(
+			array(
+				'post_status'  => 'publish',
+				'post_title'   => 'CDATA test',
+				'post_content' => '<p>HTML body with <strong>tags</strong></p>',
+			)
+		);
+
+		$el      = '<!-- wp:feedwright/element {"tagName":"content:encoded","contentMode":"cdata-binding","bindingExpression":"{{post.post_content}}"} /-->';
+		$content = '<!-- wp:feedwright/rss {"namespaces":[{"prefix":"content","uri":"http://purl.org/rss/1.0/modules/content/"}]} -->'
+			. '<!-- wp:feedwright/channel -->'
+			. '<!-- wp:feedwright/item-query {"postsPerPage":1} --><!-- wp:feedwright/item -->'
+			. $el
+			. '<!-- /wp:feedwright/item --><!-- /wp:feedwright/item-query -->'
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		$this->assertStringContainsString( '<![CDATA[', $xml );
+		// HTML markup survives literally inside CDATA — not entity-encoded.
+		$this->assertStringContainsString( '<p>HTML body with <strong>tags</strong></p>', $xml );
+		// And we are still in strict mode: no inter-element whitespace.
+		$this->assertStringNotContainsString( ">\n  <", $xml );
+	}
+
+	public function test_strict_mode_minifies_no_inter_element_whitespace(): void {
+		self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'X' ) );
+
+		$el      = '<!-- wp:feedwright/element {"tagName":"title","contentMode":"binding","bindingExpression":"{{post.post_title}}"} /-->';
+		$content = '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
+			. '<!-- wp:feedwright/item-query {"postsPerPage":1} --><!-- wp:feedwright/item -->'
+			. $el
+			. '<!-- /wp:feedwright/item --><!-- /wp:feedwright/item-query -->'
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		// Adjacent tags must touch — no LF / spaces between them.
+		$this->assertStringContainsString( '<channel><item><title>X</title></item></channel>', $xml );
+	}
+
+	public function test_compat_mode_preserves_cdata_and_pretty_formatting(): void {
+		self::factory()->post->create(
+			array(
+				'post_status'  => 'publish',
+				'post_title'   => 'Compat',
+				'post_content' => '<p>body</p>',
+			)
+		);
+
+		$rss_attrs   = wp_json_encode( array( 'outputMode' => 'compat' ) );
+		$el_title    = '<!-- wp:feedwright/element {"tagName":"title","contentMode":"binding","bindingExpression":"{{post.post_title}}"} /-->';
+		$el_encoded  = '<!-- wp:feedwright/element {"tagName":"content:encoded","contentMode":"cdata-binding","bindingExpression":"{{post.post_content}}"} /-->';
+		$content     = "<!-- wp:feedwright/rss {$rss_attrs} -->"
+			. '<!-- wp:feedwright/channel -->'
+			. '<!-- wp:feedwright/item-query {"postsPerPage":1} --><!-- wp:feedwright/item -->'
+			. $el_title . $el_encoded
+			. '<!-- /wp:feedwright/item --><!-- /wp:feedwright/item-query -->'
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		// Compat keeps CDATA and inter-element whitespace.
+		$this->assertStringContainsString( '<![CDATA[', $xml );
+		$this->assertMatchesRegularExpression( '#>\s+<#', $xml );
+	}
+
+	public function test_pretty_flag_overrides_strict_minification(): void {
+		self::factory()->post->create( array( 'post_status' => 'publish', 'post_title' => 'P' ) );
+
+		$el      = '<!-- wp:feedwright/element {"tagName":"title","contentMode":"binding","bindingExpression":"{{post.post_title}}"} /-->';
+		$content = '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
+			. '<!-- wp:feedwright/item-query {"postsPerPage":1} --><!-- wp:feedwright/item -->'
+			. $el
+			. '<!-- /wp:feedwright/item --><!-- /wp:feedwright/item-query -->'
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post, true )['xml'];
+
+		// Pretty: inter-element whitespace returns even in strict mode (entity
+		// encoding still applies to text content).
+		$this->assertMatchesRegularExpression( '#>\s+<#', $xml );
 	}
 
 	public function test_no_rss_block_returns_error_xml(): void {

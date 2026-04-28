@@ -57,17 +57,33 @@ final class Context {
 	private bool $in_item_context;
 
 	/**
+	 * Output mode (`strict` / `compat`). Carried via context so renderers and
+	 * sanitizers can pick the right encoding strategy without re-parsing the
+	 * rss block.
+	 *
+	 * @var string
+	 */
+	private string $output_mode;
+
+	/**
 	 * Build a render-time context.
 	 *
-	 * @param WP_Post              $feed_post  The feedwright_feed post being rendered.
-	 * @param DOMDocument          $dom        Shared DOMDocument.
-	 * @param array<string,string> $namespaces Map of prefix => uri.
+	 * @param WP_Post              $feed_post   The feedwright_feed post being rendered.
+	 * @param DOMDocument          $dom         Shared DOMDocument.
+	 * @param array<string,string> $namespaces  Map of prefix => uri.
+	 * @param string               $output_mode `strict` (default) or `compat`.
 	 */
-	public function __construct( WP_Post $feed_post, DOMDocument $dom, array $namespaces = array() ) {
+	public function __construct(
+		WP_Post $feed_post,
+		DOMDocument $dom,
+		array $namespaces = array(),
+		string $output_mode = Sanitize::MODE_STRICT
+	) {
 		$this->feed_post       = $feed_post;
 		$this->dom             = $dom;
 		$this->namespaces      = $namespaces;
 		$this->in_item_context = false;
+		$this->output_mode     = Sanitize::normalize_mode( $output_mode );
 	}
 
 	/**
@@ -108,6 +124,13 @@ final class Context {
 	 */
 	public function in_item_context(): bool {
 		return $this->in_item_context;
+	}
+
+	/**
+	 * Output encoding mode for this render pass.
+	 */
+	public function output_mode(): string {
+		return $this->output_mode;
 	}
 
 	/**
