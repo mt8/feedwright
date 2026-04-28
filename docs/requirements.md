@@ -1216,7 +1216,7 @@ Each outer item triggers one extra `WP_Query` (N+1). Defaults set `update_post_m
 
 #### Pretty override
 
-The `?fw_pretty=1` query parameter on the public feed URL toggles `formatOutput=true` regardless of the feed's `outputMode`. It is gated to logged-in admins (`current_user_can('manage_options')`) or builds with `WP_DEBUG=true`, to avoid leaking the formatted variant to scrapers. Pretty responses bypass the render cache and emit `Cache-Control: no-store`. The REST preview endpoint and the in-editor "View Feed" preview also force pretty mode internally.
+The `?pretty=1` query parameter on the public feed URL toggles `formatOutput=true` regardless of the feed's `outputMode`. It is gated to logged-in admins (`current_user_can('manage_options')`) or builds with `WP_DEBUG=true`, to avoid leaking the formatted variant to scrapers. Pretty responses bypass the render cache and emit `Cache-Control: no-store`. The REST preview endpoint and the in-editor "View Feed" preview also force pretty mode internally.
 
 ### 13.8 Acceptance criteria
 

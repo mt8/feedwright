@@ -106,7 +106,7 @@ final class Renderer {
 
 		// Strict mode minifies by default (spec-compliant production output);
 		// compat preserves the original pretty default. `$pretty` overrides
-		// either when forced via preview / `?fw_pretty=1`.
+		// either when forced via preview / `?pretty=1`.
 		$dom->formatOutput = ( Sanitize::MODE_COMPAT === $output_mode ) || $pretty; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 
 		$ns_pairs = $this->namespace_map( $rss_attrs );

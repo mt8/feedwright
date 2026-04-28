@@ -118,11 +118,11 @@ final class FeedEndpoint {
 	 */
 	private function is_pretty_request(): bool {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only debug flag.
-		if ( ! isset( $_GET['fw_pretty'] ) ) {
+		if ( ! isset( $_GET['pretty'] ) ) {
 			return false;
 		}
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( '1' !== sanitize_text_field( wp_unslash( (string) $_GET['fw_pretty'] ) ) ) {
+		if ( '1' !== sanitize_text_field( wp_unslash( (string) $_GET['pretty'] ) ) ) {
 			return false;
 		}
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
