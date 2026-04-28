@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-28T09:42:42+00:00\n"
+"POT-Creation-Date: 2026-04-28T10:21:09+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: feedwright\n"
@@ -44,100 +44,100 @@ msgstr ""
 msgid "Unsupported blocks were detected and will be ignored when rendering this feed:"
 msgstr ""
 
-#: src/PostType.php:89
+#: src/PostType.php:102
 msgctxt "post type general name"
 msgid "Feeds"
 msgstr ""
 
-#: src/PostType.php:90
+#: src/PostType.php:103
 msgctxt "post type singular name"
 msgid "Feed"
 msgstr ""
 
-#: src/PostType.php:91
+#: src/PostType.php:104
 msgctxt "admin menu"
 msgid "Feedwright"
 msgstr ""
 
-#: src/PostType.php:92
+#: src/PostType.php:105
 msgctxt "add new on admin bar"
 msgid "Feed"
 msgstr ""
 
-#: src/PostType.php:93
+#: src/PostType.php:106
 msgctxt "feed"
 msgid "Add Feed"
 msgstr ""
 
-#: src/PostType.php:94
+#: src/PostType.php:107
 msgid "Add New Feed"
 msgstr ""
 
-#: src/PostType.php:95
+#: src/PostType.php:108
 msgid "New Feed"
 msgstr ""
 
-#: src/PostType.php:96
+#: src/PostType.php:109
 msgid "Edit Feed"
 msgstr ""
 
-#: src/PostType.php:97
+#: src/PostType.php:110
 msgid "View Feed"
 msgstr ""
 
-#: src/PostType.php:98
+#: src/PostType.php:111
 msgid "All Feeds"
 msgstr ""
 
-#: src/PostType.php:99
+#: src/PostType.php:112
 msgid "Search Feeds"
 msgstr ""
 
-#: src/PostType.php:100
+#: src/PostType.php:113
 msgid "No feeds found."
 msgstr ""
 
-#: src/PostType.php:101
+#: src/PostType.php:114
 msgid "No feeds found in Trash."
 msgstr ""
 
-#: src/PostType.php:102
+#: src/PostType.php:115
 msgid "Feed Image"
 msgstr ""
 
-#: src/PostType.php:103
+#: src/PostType.php:116
 msgid "Set feed image"
 msgstr ""
 
-#: src/PostType.php:104
+#: src/PostType.php:117
 msgid "Remove feed image"
 msgstr ""
 
-#: src/PostType.php:105
+#: src/PostType.php:118
 msgid "Use as feed image"
 msgstr ""
 
-#: src/PostType.php:106
+#: src/PostType.php:119
 msgid "Feed archives"
 msgstr ""
 
-#: src/PostType.php:107
+#: src/PostType.php:120
 msgid "Insert into feed"
 msgstr ""
 
-#: src/PostType.php:108
+#: src/PostType.php:121
 msgid "Uploaded to this feed"
 msgstr ""
 
-#: src/PostType.php:109
+#: src/PostType.php:122
 msgid "Filter feeds list"
 msgstr ""
 
-#: src/PostType.php:110
+#: src/PostType.php:123
 msgid "Feeds list navigation"
 msgstr ""
 
-#: src/PostType.php:111
+#: src/PostType.php:124
 msgid "Feeds list"
 msgstr ""
 
@@ -275,7 +275,7 @@ msgid "Element"
 msgstr ""
 
 #: blocks/element/edit.js:116
-#: blocks/item-query/edit.js:196
+#: blocks/item-query/edit.js:200
 msgid "Tag name"
 msgstr ""
 
@@ -368,117 +368,125 @@ msgid "None"
 msgstr ""
 
 #. translators: 1: post type list, 2: count, 3: orderBy field, 4: ASC/DESC
-#: blocks/item-query/edit.js:150
+#: blocks/item-query/edit.js:154
 #, js-format
 msgid "Latest %2$d %1$s (%3$s %4$s)"
 msgstr ""
 
-#: blocks/item-query/edit.js:162
+#: blocks/item-query/edit.js:166
 msgid "Basics"
 msgstr ""
 
-#: blocks/item-query/edit.js:164
+#: blocks/item-query/edit.js:168
 #: blocks/sub-query/edit.js:85
 msgid "Editor label"
 msgstr ""
 
-#: blocks/item-query/edit.js:167
+#: blocks/item-query/edit.js:171
 #: blocks/sub-query/edit.js:88
 msgid "Used in the editor only; not emitted in XML."
 msgstr ""
 
-#: blocks/item-query/edit.js:172
+#: blocks/item-query/edit.js:176
 #: blocks/sub-query/edit.js:142
 msgid "Post types (comma-separated)"
 msgstr ""
 
-#: blocks/item-query/edit.js:186
+#: blocks/item-query/edit.js:190
 msgid "Posts per page"
 msgstr ""
 
-#: blocks/item-query/edit.js:194
+#: blocks/item-query/edit.js:198
 msgid "Item element name"
 msgstr ""
 
-#: blocks/item-query/edit.js:199
+#: blocks/item-query/edit.js:203
 msgid "Default \"item\" (RSS 2.0). Use \"entry\" for Atom, or any prefix:local declared on the rss block."
 msgstr ""
 
-#: blocks/item-query/edit.js:205
+#: blocks/item-query/edit.js:209
 msgid "Item tag name is not a valid XML Name."
 msgstr ""
 
-#: blocks/item-query/edit.js:210
+#: blocks/item-query/edit.js:214
 #: blocks/sub-query/edit.js:179
 msgid "Sorting"
 msgstr ""
 
-#: blocks/item-query/edit.js:212
+#: blocks/item-query/edit.js:216
 #: blocks/sub-query/edit.js:181
 msgid "Order by"
 msgstr ""
 
-#: blocks/item-query/edit.js:220
+#: blocks/item-query/edit.js:224
 #: blocks/sub-query/edit.js:189
 msgid "Order"
 msgstr ""
 
-#: blocks/item-query/edit.js:223
+#: blocks/item-query/edit.js:227
 #: blocks/sub-query/edit.js:192
 msgid "Descending (newest first)"
 msgstr ""
 
-#: blocks/item-query/edit.js:224
+#: blocks/item-query/edit.js:228
 #: blocks/sub-query/edit.js:193
 msgid "Ascending (oldest first)"
 msgstr ""
 
-#: blocks/item-query/edit.js:230
+#: blocks/item-query/edit.js:234
 msgid "Random ordering is cached together with the rendered XML. Set Cache TTL to 0 in Feedwright settings if you need fresh randomization."
 msgstr ""
 
-#: blocks/item-query/edit.js:235
+#: blocks/item-query/edit.js:239
 msgid "Filtering"
 msgstr ""
 
-#: blocks/item-query/edit.js:237
+#: blocks/item-query/edit.js:241
 msgid "Post status"
 msgstr ""
 
-#: blocks/item-query/edit.js:252
+#: blocks/item-query/edit.js:257
+msgid "Include trashed posts modified within N days"
+msgstr ""
+
+#: blocks/item-query/edit.js:258
+msgid "0 = no time limit. Caps trash entries to recently-deleted ones; published posts are unaffected."
+msgstr ""
+
+#: blocks/item-query/edit.js:269
 msgid "Include sticky posts"
 msgstr ""
 
-#: blocks/item-query/edit.js:259
+#: blocks/item-query/edit.js:276
 msgid "Taxonomy filter"
 msgstr ""
 
-#: blocks/item-query/edit.js:262
+#: blocks/item-query/edit.js:279
 #: blocks/sub-query/edit.js:101
 msgid "Taxonomy"
 msgstr ""
 
-#: blocks/item-query/edit.js:265
+#: blocks/item-query/edit.js:282
 msgid "— None —"
 msgstr ""
 
-#: blocks/item-query/edit.js:277
+#: blocks/item-query/edit.js:294
 msgid "Terms"
 msgstr ""
 
-#: blocks/item-query/edit.js:290
+#: blocks/item-query/edit.js:307
 msgid "No terms with posts yet."
 msgstr ""
 
-#: blocks/item-query/edit.js:291
+#: blocks/item-query/edit.js:308
 msgid "Select terms…"
 msgstr ""
 
-#: blocks/item-query/edit.js:297
+#: blocks/item-query/edit.js:314
 msgid "Only terms with at least one post are listed."
 msgstr ""
 
-#: blocks/item-query/edit.js:304
+#: blocks/item-query/edit.js:321
 msgid "Item Query"
 msgstr ""
 

@@ -82,7 +82,34 @@ final class ItemQueryRenderer {
 		global $post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		$saved_post = $post;
 
+		// Trash window: when the user includes `trash` in post_status and sets
+		// trashWithinDays > 0, only trashed posts modified within the window
+		// stay in the result. Implemented via a one-shot posts_where filter
+		// because WP_Query date_query is unconditional and would also exclude
+		// old published posts.
+		$trash_window_days  = isset( $attrs['trashWithinDays'] ) ? (int) $attrs['trashWithinDays'] : 0;
+		$apply_trash_window = $trash_window_days > 0
+			&& is_array( $args['post_status'] ?? null )
+			&& in_array( 'trash', $args['post_status'], true );
+		$where_filter       = null;
+		if ( $apply_trash_window ) {
+			$cutoff_gmt   = gmdate( 'Y-m-d H:i:s', time() - $trash_window_days * DAY_IN_SECONDS );
+			$where_filter = static function ( string $where ) use ( $cutoff_gmt ): string {
+				global $wpdb;
+				return $where . $wpdb->prepare(
+					" AND ( {$wpdb->posts}.post_status <> %s OR {$wpdb->posts}.post_modified_gmt > %s )",
+					'trash',
+					$cutoff_gmt
+				);
+			};
+			add_filter( 'posts_where', $where_filter );
+		}
+
 		$query = new \WP_Query( $args );
+
+		if ( null !== $where_filter ) {
+			remove_filter( 'posts_where', $where_filter );
+		}
 		while ( $query->have_posts() ) {
 			$query->the_post();
 			$current = get_post();

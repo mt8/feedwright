@@ -36,6 +36,7 @@ const POST_STATUS_OPTIONS = [
 	{ label: 'publish', value: 'publish' },
 	{ label: 'private', value: 'private' },
 	{ label: 'future', value: 'future' },
+	{ label: 'trash', value: 'trash' },
 ];
 
 const XML_NAME_REGEX = /^[A-Za-z_][A-Za-z0-9._-]*(:[A-Za-z_][A-Za-z0-9._-]*)?$/;
@@ -62,10 +63,13 @@ export default function Edit( { attributes, setAttributes } ) {
 		orderBy = 'date',
 		order = 'DESC',
 		postStatus = [ 'publish' ],
+		trashWithinDays = 0,
 		itemTagName = 'item',
 		includeStickyPosts = false,
 		taxQuery = [],
 	} = attributes;
+
+	const includesTrash = Array.isArray( postStatus ) && postStatus.includes( 'trash' );
 
 	const taxonomies = useSelect(
 		( select ) => {
@@ -248,6 +252,19 @@ export default function Edit( { attributes, setAttributes } ) {
 							}
 						/>
 					) ) }
+					{ includesTrash && (
+						<NumberControl
+							label={ __( 'Include trashed posts modified within N days', 'feedwright' ) }
+							help={ __( '0 = no time limit. Caps trash entries to recently-deleted ones; published posts are unaffected.', 'feedwright' ) }
+							min={ 0 }
+							max={ 365 }
+							value={ trashWithinDays }
+							onChange={ ( next ) => {
+								const parsed = parseInt( next, 10 );
+								setAttributes( { trashWithinDays: Number.isFinite( parsed ) && parsed > 0 ? parsed : 0 } );
+							} }
+						/>
+					) }
 					<CheckboxControl
 						label={ __( 'Include sticky posts', 'feedwright' ) }
 						checked={ !! includeStickyPosts }

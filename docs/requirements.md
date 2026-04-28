@@ -703,6 +703,7 @@ Use cases:
   "orderBy":      { "type": "string", "default": "date" },
   "order":        { "type": "string", "default": "DESC" },
   "postStatus":   { "type": "array",  "default": [ "publish" ] },
+  "trashWithinDays": { "type": "number", "default": 0 },
   "taxQuery":     { "type": "array",  "default": [] },
   "metaQuery":    { "type": "array",  "default": [] },
   "dateQuery":    { "type": "object", "default": {} },
@@ -747,7 +748,8 @@ The "publish-date / modified-date ascending or descending" requirement maps to:
 - `postsPerPage`: 1–500 (clamped to 500 on save when exceeded)
 - `orderBy`: must be one of the values in the table above
 - `order`: `ASC` / `DESC` (case-insensitive, normalized internally)
-- `postStatus`: only `publish` / `private` / `future` accepted (`draft` / `trash` rejected)
+- `postStatus`: only `publish` / `private` / `future` / `trash` accepted (`draft` rejected). `trash` is opt-in for delete-notification feeds (e.g. mediba `<mdf:deleted/>`)
+- `trashWithinDays`: integer ≥ 0. When > 0 **and** `postStatus` includes `trash`, only trashed posts whose `post_modified_gmt` is within the last N days are kept. Other (non-trashed) posts are unaffected. Implemented via a one-shot `posts_where` filter scoped to the WP_Query call, since WP_Query's `date_query` is unconditional and would also exclude old published posts. 0 / unset = no time limit
 - `label`: at most 100 characters; XML control characters stripped
 - `itemTagName`: must satisfy XML Name rules (`is_valid_xml_name`). Empty or invalid values fall back to default `item` with a warning
 
