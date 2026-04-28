@@ -4,7 +4,7 @@ Tags: rss, feed, atom, mrss, xml
 Requires at least: 6.5
 Tested up to: 6.9
 Requires PHP: 8.3
-Stable tag: 0.1.3
+Stable tag: 0.1.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,6 +35,16 @@ The default URL pattern is `/feedwright/{slug}/`. You can change the prefix in F
 Yes. Declare the namespace prefix and URI on the `<rss>` block, then use prefixed tag names (e.g. `media:thumbnail`) on element blocks and attributes.
 
 == Changelog ==
+
+= 0.1.4 =
+* Feature: new `feedwright/when` block wraps inner blocks with a binding-driven gate. Compose with the `eq` / `in` / `map` / `default` / `first` processors to render elements only under specific conditions (e.g. emit `<mdf:deleted/>` only when the post is in the trash).
+* Feature: `item-query` now accepts the `trash` post status, plus a `trashWithinDays` cap that keeps trashed posts in the feed only for a configurable window. Live (non-trashed) posts are unaffected.
+* Feature: new `eq` / `in` binding processors for direct equality and list-membership checks (`{{post_raw.post_status|eq:trash}}`, `{{post_raw.post_status|in:trash,draft}}`). Both compose naturally with `feedwright/when`.
+* Feature: `first` and `default` processors are now surfaced in the editor's binding autocomplete.
+* Feature: in admin contexts (editor, post list, admin bar) the `feedwright_feed` permalink auto-appends `?pretty=1` so the "View" link opens formatted XML by default. Front-end and REST contexts keep the canonical clean URL.
+* Feature: the element block's editor preview now wraps `cdata-binding` expressions with `<![CDATA[ ... ]]>` markers so the CDATA intent is visible at a glance.
+* Improvement: `feedwright/when` truthiness check is whitespace-tolerant — a stray trailing space in the expression no longer flips the gate to always-true.
+* Cleanup: removed the dedicated "Feedwright XML Preview" sidebar panel and its REST endpoint; the standard Gutenberg preview / publish flow handles XML preview natively.
 
 = 0.1.3 =
 * Feature: new `feedwright/sub-query` and `feedwright/sub-item` blocks expand related posts inside each item template (taxonomy term match or manual ID list). Useful for `<smp:relation>`, `<mdf:relatedLink>`, `<g:additional_image_link>`-style aggregator requirements.
