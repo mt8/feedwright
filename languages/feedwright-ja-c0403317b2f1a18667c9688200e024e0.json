@@ -117,6 +117,12 @@
             ],
             "Only terms with at least one post are listed.": [
                 "\u6295\u7a3f\u304c 1 \u4ef6\u4ee5\u4e0a\u7d10\u3065\u304f\u30bf\u30fc\u30e0\u306e\u307f\u8868\u793a\u3002"
+            ],
+            "Include trashed posts modified within N days": [
+                "\u30b4\u30df\u7bb1\u306e\u6295\u7a3f\u306f\u76f4\u8fd1 N \u65e5\u4ee5\u5185\u306b\u5909\u66f4\u3055\u308c\u305f\u3082\u306e\u3060\u3051\u542b\u3081\u308b"
+            ],
+            "0 = no time limit. Caps trash entries to recently-deleted ones; published posts are unaffected.": [
+                "0 \u3067\u7121\u5236\u9650\u3002\u30b4\u30df\u7bb1\u306e\u6295\u7a3f\u306e\u307f\u76f4\u8fd1\u306b\u524a\u9664\u3055\u308c\u305f\u3082\u306e\u306b\u7d5e\u308a\u3001\u516c\u958b\u6e08\u307f\u306e\u6295\u7a3f\u306b\u306f\u5f71\u97ff\u3057\u307e\u305b\u3093\u3002"
             ]
         }
     }

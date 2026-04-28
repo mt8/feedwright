@@ -30,7 +30,7 @@ final class ArgsBuilder {
 		'none',
 	);
 
-	private const ALLOWED_POST_STATUS = array( 'publish', 'private', 'future' );
+	private const ALLOWED_POST_STATUS = array( 'publish', 'private', 'future', 'trash' );
 
 	public const MAX_POSTS_PER_PAGE = 500;
 

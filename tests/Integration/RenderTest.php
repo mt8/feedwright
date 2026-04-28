@@ -751,6 +751,117 @@ final class RenderTest extends WP_UnitTestCase {
 		$this->assertMatchesRegularExpression( '#>\s+<#', $xml );
 	}
 
+	public function test_item_query_includes_trashed_posts_when_status_selected(): void {
+		$published = self::factory()->post->create(
+			array( 'post_status' => 'publish', 'post_title' => 'Live Article' )
+		);
+		$trashed = self::factory()->post->create(
+			array( 'post_status' => 'publish', 'post_title' => 'Doomed Article' )
+		);
+		wp_trash_post( $trashed );
+
+		$query_attrs = wp_json_encode(
+			array(
+				'postsPerPage' => 10,
+				'postStatus'   => array( 'publish', 'trash' ),
+			)
+		);
+		$el_title = '<!-- wp:feedwright/element {"tagName":"title","contentMode":"binding","bindingExpression":"{{post.post_title}}"} /-->';
+		$item     = "<!-- wp:feedwright/item -->{$el_title}<!-- /wp:feedwright/item -->";
+		$content  = '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
+			. "<!-- wp:feedwright/item-query {$query_attrs} -->{$item}<!-- /wp:feedwright/item-query -->"
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		$this->assertStringContainsString( 'Live Article', $xml );
+		$this->assertStringContainsString( 'Doomed Article', $xml );
+		unset( $published );
+	}
+
+	public function test_trash_within_days_filter_excludes_old_trashed_posts(): void {
+		$old_trashed = self::factory()->post->create(
+			array( 'post_status' => 'publish', 'post_title' => 'Old Trash' )
+		);
+		$recent_trashed = self::factory()->post->create(
+			array( 'post_status' => 'publish', 'post_title' => 'Recent Trash' )
+		);
+		$live = self::factory()->post->create(
+			array( 'post_status' => 'publish', 'post_title' => 'Live' )
+		);
+		wp_trash_post( $old_trashed );
+		wp_trash_post( $recent_trashed );
+
+		// Backdate the "old" trash to 30 days ago. wp_trash_post sets
+		// post_modified to now; we override directly.
+		global $wpdb;
+		$cutoff = gmdate( 'Y-m-d H:i:s', time() - 30 * DAY_IN_SECONDS );
+		$wpdb->update(
+			$wpdb->posts,
+			array( 'post_modified' => $cutoff, 'post_modified_gmt' => $cutoff ),
+			array( 'ID' => $old_trashed )
+		);
+		clean_post_cache( $old_trashed );
+
+		$query_attrs = wp_json_encode(
+			array(
+				'postsPerPage'    => 10,
+				'postStatus'      => array( 'publish', 'trash' ),
+				'trashWithinDays' => 7,
+			)
+		);
+		$el_title = '<!-- wp:feedwright/element {"tagName":"title","contentMode":"binding","bindingExpression":"{{post.post_title}}"} /-->';
+		$item     = "<!-- wp:feedwright/item -->{$el_title}<!-- /wp:feedwright/item -->";
+		$content  = '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
+			. "<!-- wp:feedwright/item-query {$query_attrs} -->{$item}<!-- /wp:feedwright/item-query -->"
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		$this->assertStringContainsString( 'Live', $xml );
+		$this->assertStringContainsString( 'Recent Trash', $xml );
+		$this->assertStringNotContainsString( 'Old Trash', $xml );
+	}
+
+	public function test_trash_within_days_does_not_filter_when_trash_not_in_status(): void {
+		// Trash window only kicks in when trash is selected; otherwise the
+		// posts_where filter must not be added (would erroneously hit live posts).
+		$old_post = self::factory()->post->create(
+			array( 'post_status' => 'publish', 'post_title' => 'Ancient Live' )
+		);
+		// Backdate it to 100 days ago; with a 7-day trashWithinDays window
+		// pretending to be active, it should still appear because post_status
+		// excludes trash.
+		global $wpdb;
+		$cutoff = gmdate( 'Y-m-d H:i:s', time() - 100 * DAY_IN_SECONDS );
+		$wpdb->update(
+			$wpdb->posts,
+			array( 'post_modified' => $cutoff, 'post_modified_gmt' => $cutoff ),
+			array( 'ID' => $old_post )
+		);
+		clean_post_cache( $old_post );
+
+		$query_attrs = wp_json_encode(
+			array(
+				'postsPerPage'    => 10,
+				'postStatus'      => array( 'publish' ),
+				'trashWithinDays' => 7,
+			)
+		);
+		$el_title = '<!-- wp:feedwright/element {"tagName":"title","contentMode":"binding","bindingExpression":"{{post.post_title}}"} /-->';
+		$item     = "<!-- wp:feedwright/item -->{$el_title}<!-- /wp:feedwright/item -->";
+		$content  = '<!-- wp:feedwright/rss --><!-- wp:feedwright/channel -->'
+			. "<!-- wp:feedwright/item-query {$query_attrs} -->{$item}<!-- /wp:feedwright/item-query -->"
+			. '<!-- /wp:feedwright/channel --><!-- /wp:feedwright/rss -->';
+
+		$feed_post = $this->make_feed_post( $content );
+		$xml       = ( new Renderer( Plugin::build_resolver() ) )->render( $feed_post )['xml'];
+
+		$this->assertStringContainsString( 'Ancient Live', $xml );
+	}
+
 	public function test_no_rss_block_returns_error_xml(): void {
 		$post_id = self::factory()->post->create(
 			array(

@@ -23,6 +23,7 @@
 		"orderBy": { "type": "string", "default": "date" },
 		"order": { "type": "string", "default": "DESC" },
 		"postStatus": { "type": "array", "default": [ "publish" ] },
+		"trashWithinDays": { "type": "number", "default": 0 },
 		"taxQuery": { "type": "array", "default": [] },
 		"metaQuery": { "type": "array", "default": [] },
 		"dateQuery": { "type": "object", "default": {} },

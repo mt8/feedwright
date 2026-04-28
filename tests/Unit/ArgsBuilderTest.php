@@ -54,12 +54,19 @@ final class ArgsBuilderTest extends TestCase {
 	}
 
 	public function test_post_status_filters_disallowed(): void {
+		// 'draft' is not allowed; 'trash' was added as part of the deleted-feed
+		// pattern (e.g. mediba <mdf:deleted/>).
 		$args = $this->builder->build( array( 'postStatus' => array( 'publish', 'draft', 'trash', 'private' ) ) );
-		$this->assertSame( array( 'publish', 'private' ), $args['post_status'] );
+		$this->assertSame( array( 'publish', 'trash', 'private' ), $args['post_status'] );
+	}
+
+	public function test_post_status_allows_trash(): void {
+		$args = $this->builder->build( array( 'postStatus' => array( 'publish', 'trash' ) ) );
+		$this->assertSame( array( 'publish', 'trash' ), $args['post_status'] );
 	}
 
 	public function test_post_status_falls_back_to_publish(): void {
-		$args = $this->builder->build( array( 'postStatus' => array( 'draft', 'trash' ) ) );
+		$args = $this->builder->build( array( 'postStatus' => array( 'draft', 'pending' ) ) );
 		$this->assertSame( array( 'publish' ), $args['post_status'] );
 	}
 
