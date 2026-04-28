@@ -3,7 +3,7 @@
  * Plugin Name:       Feedwright
  * Plugin URI:        https://github.com/mt8/feedwright
  * Description:       Edit custom RSS / Atom / XML feeds visually in the WordPress block editor.
- * Version:           0.2.0
+ * Version:           0.2.1
  * Requires at least: 6.5
  * Requires PHP:      8.3
  * Author:            mt8
@@ -18,7 +18,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'FEEDWRIGHT_VERSION', '0.2.0' );
+define( 'FEEDWRIGHT_VERSION', '0.2.1' );
 define( 'FEEDWRIGHT_PLUGIN_FILE', __FILE__ );
 define( 'FEEDWRIGHT_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'FEEDWRIGHT_PLUGIN_URL', plugin_dir_url( __FILE__ ) );

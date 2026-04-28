@@ -4,7 +4,7 @@ Tags: rss, feed, atom, mrss, xml
 Requires at least: 6.5
 Tested up to: 6.9
 Requires PHP: 8.3
-Stable tag: 0.2.0
+Stable tag: 0.2.1
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,6 +35,9 @@ The default URL pattern is `/feedwright/{slug}/`. You can change the prefix in F
 Yes. Declare the namespace prefix and URI on the `<rss>` block, then use prefixed tag names (e.g. `media:thumbnail`) on element blocks and attributes.
 
 == Changelog ==
+
+= 0.2.1 =
+* Improvement: the editor's List View now labels each `feedwright/element` row with its configured `tagName` (e.g. `title`, `media:thumbnail`) instead of a uniform "Element", making it easy to navigate large feeds at a glance. Empty tag names still fall back to the default block title.
 
 = 0.2.0 =
 * Playground demo: per-aggregator seed scripts (`seed-goonews.php`, `seed-mediba.php`, `seed-smartnews.php`) plus a 30-post fixture from `posts.xml` and sideloaded Unsplash featured images. Seeds also publish Feedwright wordmark logos for the SmartNews `snf:logo` / `snf:darkModeLogo` channel elements.
