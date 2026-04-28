@@ -1,0 +1,102 @@
+{
+    "translation-revision-date": "2026-04-27 18:00+0900",
+    "generator": "WP-CLI\/2.12.0",
+    "source": "blocks\/sub-query\/edit.js",
+    "domain": "messages",
+    "locale_data": {
+        "messages": {
+            "": {
+                "domain": "messages",
+                "lang": "ja",
+                "plural-forms": "nplurals=1; plural=0;"
+            },
+            "Publish date": [
+                "\u516c\u958b\u65e5"
+            ],
+            "Modified date": [
+                "\u66f4\u65b0\u65e5"
+            ],
+            "Title": [
+                "\u30bf\u30a4\u30c8\u30eb"
+            ],
+            "Menu order": [
+                "\u30e1\u30cb\u30e5\u30fc\u9806"
+            ],
+            "Random": [
+                "\u30e9\u30f3\u30c0\u30e0"
+            ],
+            "Comment count": [
+                "\u30b3\u30e1\u30f3\u30c8\u6570"
+            ],
+            "Editor label": [
+                "\u30a8\u30c7\u30a3\u30bf\u30e9\u30d9\u30eb"
+            ],
+            "Used in the editor only; not emitted in XML.": [
+                "\u30a8\u30c7\u30a3\u30bf\u8868\u793a\u5c02\u7528\u3002XML \u306b\u306f\u51fa\u529b\u3055\u308c\u307e\u305b\u3093\u3002"
+            ],
+            "Post types (comma-separated)": [
+                "\u6295\u7a3f\u30bf\u30a4\u30d7\uff08\u30ab\u30f3\u30de\u533a\u5207\u308a\uff09"
+            ],
+            "Sorting": [
+                "\u4e26\u3073\u66ff\u3048"
+            ],
+            "Order by": [
+                "\u4e26\u3073\u66ff\u3048\u30ad\u30fc"
+            ],
+            "Order": [
+                "\u9806\u5e8f"
+            ],
+            "Descending (newest first)": [
+                "\u964d\u9806\uff08\u65b0\u3057\u3044\u9806\uff09"
+            ],
+            "Ascending (oldest first)": [
+                "\u6607\u9806\uff08\u53e4\u3044\u9806\uff09"
+            ],
+            "Taxonomy": [
+                "\u30bf\u30af\u30bd\u30ce\u30df\u30fc"
+            ],
+            "Manual ID list": [
+                "ID \u3092\u624b\u52d5\u6307\u5b9a"
+            ],
+            "%1$s \u00b7 up to %2$d related": [
+                "%1$s \u00b7 \u6700\u5927 %2$d \u4ef6"
+            ],
+            "Relation": [
+                "\u95a2\u9023\u4ed8\u3051"
+            ],
+            "Match by": [
+                "\u5224\u5b9a\u65b9\u6cd5"
+            ],
+            "\u2014 Select \u2014": [
+                "\u2014 \u9078\u629e \u2014"
+            ],
+            "Post IDs (comma-separated)": [
+                "\u6295\u7a3f ID\uff08\u30ab\u30f3\u30de\u533a\u5207\u308a\uff09"
+            ],
+            "Order is preserved (post__in).": [
+                "\u6307\u5b9a\u9806\u5e8f\u3092\u4fdd\u6301\u3057\u307e\u3059 (post__in)\u3002"
+            ],
+            "Limits": [
+                "\u5236\u9650"
+            ],
+            "Max posts per item": [
+                "1 \u30a2\u30a4\u30c6\u30e0\u3042\u305f\u308a\u306e\u6700\u5927\u4ef6\u6570"
+            ],
+            "Exclude the current item": [
+                "\u73fe\u5728\u306e\u30a2\u30a4\u30c6\u30e0\u3092\u9664\u5916"
+            ],
+            "Spec-mandated caps (e.g. 3 \/ 5) should be enforced via the feedwright\/sub_query\/hard_max filter.": [
+                "\u4ed5\u69d8\u3067\u6c7a\u307e\u3063\u3066\u3044\u308b\u4e0a\u9650 (3 \u4ef6 \/ 5 \u4ef6\u306a\u3069) \u306f feedwright\/sub_query\/hard_max \u30d5\u30a3\u30eb\u30bf\u3067\u5f37\u5236\u3057\u3066\u304f\u3060\u3055\u3044\u3002"
+            ],
+            "Sub Query": [
+                "\u30b5\u30d6\u30af\u30a8\u30ea"
+            ],
+            "Same taxonomy term (hierarchical only)": [
+                "\u540c\u3058\u30bf\u30af\u30bd\u30ce\u30df\u30fc\u306e term\uff08\u968e\u5c64\u578b\u306e\u307f\uff09"
+            ],
+            "No hierarchical taxonomy is registered for the chosen post type.": [
+                "\u9078\u629e\u3057\u305f\u6295\u7a3f\u30bf\u30a4\u30d7\u306b\u5bfe\u3057\u3066\u968e\u5c64\u578b\u30bf\u30af\u30bd\u30ce\u30df\u30fc\u304c\u767b\u9332\u3055\u308c\u3066\u3044\u307e\u305b\u3093\u3002"
+            ]
+        }
+    }
+}

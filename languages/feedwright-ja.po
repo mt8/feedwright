@@ -16,7 +16,7 @@ msgstr ""
 
 #. Plugin Name of the plugin
 #: feedwright.php
-#: src/BlockRegistry.php:247
+#: src/BlockRegistry.php:249
 msgid "Feedwright"
 msgstr ""
 
@@ -33,100 +33,100 @@ msgstr "Feedwright:"
 msgid "Unsupported blocks were detected and will be ignored when rendering this feed:"
 msgstr "未対応のブロックが検出されました。フィード生成時には無視されます:"
 
-#: src/PostType.php:61
+#: src/PostType.php:89
 msgctxt "post type general name"
 msgid "Feeds"
 msgstr "フィード"
 
-#: src/PostType.php:62
+#: src/PostType.php:90
 msgctxt "post type singular name"
 msgid "Feed"
 msgstr "フィード"
 
-#: src/PostType.php:63
+#: src/PostType.php:91
 msgctxt "admin menu"
 msgid "Feedwright"
 msgstr ""
 
-#: src/PostType.php:64
+#: src/PostType.php:92
 msgctxt "add new on admin bar"
 msgid "Feed"
 msgstr "フィード"
 
-#: src/PostType.php:65
+#: src/PostType.php:93
 msgctxt "feed"
 msgid "Add Feed"
 msgstr "フィードを追加"
 
-#: src/PostType.php:66
+#: src/PostType.php:94
 msgid "Add New Feed"
 msgstr "新規フィードを追加"
 
-#: src/PostType.php:67
+#: src/PostType.php:95
 msgid "New Feed"
 msgstr "新規フィード"
 
-#: src/PostType.php:68
+#: src/PostType.php:96
 msgid "Edit Feed"
 msgstr "フィードを編集"
 
-#: src/PostType.php:69
+#: src/PostType.php:97
 msgid "View Feed"
 msgstr "フィードを表示"
 
-#: src/PostType.php:70
+#: src/PostType.php:98
 msgid "All Feeds"
 msgstr "すべてのフィード"
 
-#: src/PostType.php:71
+#: src/PostType.php:99
 msgid "Search Feeds"
 msgstr "フィードを検索"
 
-#: src/PostType.php:72
+#: src/PostType.php:100
 msgid "No feeds found."
 msgstr "フィードが見つかりません。"
 
-#: src/PostType.php:73
+#: src/PostType.php:101
 msgid "No feeds found in Trash."
 msgstr "ゴミ箱にフィードはありません。"
 
-#: src/PostType.php:74
+#: src/PostType.php:102
 msgid "Feed Image"
 msgstr "フィード画像"
 
-#: src/PostType.php:75
+#: src/PostType.php:103
 msgid "Set feed image"
 msgstr "フィード画像を設定"
 
-#: src/PostType.php:76
+#: src/PostType.php:104
 msgid "Remove feed image"
 msgstr "フィード画像を削除"
 
-#: src/PostType.php:77
+#: src/PostType.php:105
 msgid "Use as feed image"
 msgstr "フィード画像として使用"
 
-#: src/PostType.php:78
+#: src/PostType.php:106
 msgid "Feed archives"
 msgstr "フィードアーカイブ"
 
-#: src/PostType.php:79
+#: src/PostType.php:107
 msgid "Insert into feed"
 msgstr "フィードに挿入"
 
-#: src/PostType.php:80
+#: src/PostType.php:108
 msgid "Uploaded to this feed"
 msgstr "このフィードにアップロード済み"
 
-#: src/PostType.php:81
+#: src/PostType.php:109
 msgid "Filter feeds list"
 msgstr "フィード一覧を絞り込み"
 
-#: src/PostType.php:82
+#: src/PostType.php:110
 msgid "Feeds list navigation"
 msgstr "フィード一覧ナビゲーション"
 
-#: src/PostType.php:83
+#: src/PostType.php:111
 msgid "Feeds list"
 msgstr "フィード一覧"
 
@@ -300,26 +300,32 @@ msgid "Attributes"
 msgstr "属性"
 
 #: blocks/item-query/edit.js:24
+#: blocks/sub-query/edit.js:28
 msgid "Publish date"
 msgstr "公開日"
 
 #: blocks/item-query/edit.js:25
+#: blocks/sub-query/edit.js:29
 msgid "Modified date"
 msgstr "更新日"
 
 #: blocks/item-query/edit.js:26
+#: blocks/sub-query/edit.js:30
 msgid "Title"
 msgstr "タイトル"
 
 #: blocks/item-query/edit.js:27
+#: blocks/sub-query/edit.js:31
 msgid "Menu order"
 msgstr "メニュー順"
 
 #: blocks/item-query/edit.js:28
+#: blocks/sub-query/edit.js:32
 msgid "Random"
 msgstr "ランダム"
 
 #: blocks/item-query/edit.js:29
+#: blocks/sub-query/edit.js:33
 msgid "Comment count"
 msgstr "コメント数"
 
@@ -346,14 +352,17 @@ msgid "Basics"
 msgstr "基本"
 
 #: blocks/item-query/edit.js:164
+#: blocks/sub-query/edit.js:85
 msgid "Editor label"
 msgstr "エディタラベル"
 
 #: blocks/item-query/edit.js:167
+#: blocks/sub-query/edit.js:88
 msgid "Used in the editor only; not emitted in XML."
 msgstr "エディタ表示専用。XML には出力されません。"
 
 #: blocks/item-query/edit.js:172
+#: blocks/sub-query/edit.js:142
 msgid "Post types (comma-separated)"
 msgstr "投稿タイプ（カンマ区切り）"
 
@@ -374,22 +383,27 @@ msgid "Item tag name is not a valid XML Name."
 msgstr "item タグ名が XML Name 規則に違反しています。"
 
 #: blocks/item-query/edit.js:210
+#: blocks/sub-query/edit.js:179
 msgid "Sorting"
 msgstr "並び替え"
 
 #: blocks/item-query/edit.js:212
+#: blocks/sub-query/edit.js:181
 msgid "Order by"
 msgstr "並び替えキー"
 
 #: blocks/item-query/edit.js:220
+#: blocks/sub-query/edit.js:189
 msgid "Order"
 msgstr "順序"
 
 #: blocks/item-query/edit.js:223
+#: blocks/sub-query/edit.js:192
 msgid "Descending (newest first)"
 msgstr "降順（新しい順）"
 
 #: blocks/item-query/edit.js:224
+#: blocks/sub-query/edit.js:193
 msgid "Ascending (oldest first)"
 msgstr "昇順（古い順）"
 
@@ -414,6 +428,7 @@ msgid "Taxonomy filter"
 msgstr "タクソノミーフィルタ"
 
 #: blocks/item-query/edit.js:262
+#: blocks/sub-query/edit.js:101
 msgid "Taxonomy"
 msgstr "タクソノミー"
 
@@ -437,7 +452,7 @@ msgstr "タームを選択…"
 msgid "Item Query"
 msgstr "アイテムクエリ"
 
-#: blocks/item/edit.js:13
+#: blocks/item/edit.js:17
 msgid "Item Template"
 msgstr "アイテムテンプレート"
 
@@ -758,6 +773,7 @@ msgid "Query posts and expand each result inside the channel as an <item>."
 msgstr "投稿を検索し、結果ごとにチャンネル内で <item> として展開します。"
 
 #: blocks/item-query/block.json
+#: blocks/sub-query/block.json
 msgctxt "block keyword"
 msgid "query"
 msgstr "query"
@@ -788,6 +804,7 @@ msgid "item"
 msgstr "item"
 
 #: blocks/item/block.json
+#: blocks/sub-item/block.json
 msgctxt "block keyword"
 msgid "template"
 msgstr "template"
@@ -876,3 +893,102 @@ msgstr ""
 #: feedwright.php
 msgid "Edit custom RSS / Atom / XML feeds visually in the WordPress block editor."
 msgstr ""
+
+#: blocks/sub-item/edit.js:13
+msgid "Sub Item Template"
+msgstr "サブアイテムテンプレート"
+
+#: blocks/sub-query/edit.js:24
+msgid "Manual ID list"
+msgstr "ID を手動指定"
+
+#. translators: 1: relation mode, 2: max count
+#: blocks/sub-query/edit.js:75
+#, js-format
+msgid "%1$s · up to %2$d related"
+msgstr "%1$s · 最大 %2$d 件"
+
+#: blocks/sub-query/edit.js:83
+msgid "Relation"
+msgstr "関連付け"
+
+#: blocks/sub-query/edit.js:93
+msgid "Match by"
+msgstr "判定方法"
+
+#: blocks/sub-query/edit.js:104
+msgid "— Select —"
+msgstr "— 選択 —"
+
+#: blocks/sub-query/edit.js:123
+msgid "Post IDs (comma-separated)"
+msgstr "投稿 ID（カンマ区切り）"
+
+#: blocks/sub-query/edit.js:133
+msgid "Order is preserved (post__in)."
+msgstr "指定順序を保持します (post__in)。"
+
+#: blocks/sub-query/edit.js:140
+msgid "Limits"
+msgstr "制限"
+
+#: blocks/sub-query/edit.js:156
+msgid "Max posts per item"
+msgstr "1 アイテムあたりの最大件数"
+
+#: blocks/sub-query/edit.js:165
+msgid "Exclude the current item"
+msgstr "現在のアイテムを除外"
+
+#: blocks/sub-query/edit.js:171
+msgid "Spec-mandated caps (e.g. 3 / 5) should be enforced via the feedwright/sub_query/hard_max filter."
+msgstr "仕様で決まっている上限 (3 件 / 5 件など) は feedwright/sub_query/hard_max フィルタで強制してください。"
+
+#: blocks/sub-query/edit.js:201
+msgid "Sub Query"
+msgstr "サブクエリ"
+
+#: blocks/sub-item/block.json
+msgctxt "block title"
+msgid "Sub Item Template"
+msgstr "サブアイテムテンプレート"
+
+#: blocks/sub-item/block.json
+msgctxt "block description"
+msgid "Template applied to each related post returned by the parent Sub Query."
+msgstr "親のサブクエリが返す関連投稿ごとに適用されるテンプレート。"
+
+#: blocks/sub-item/block.json
+#: blocks/sub-query/block.json
+msgctxt "block keyword"
+msgid "sub"
+msgstr "サブ"
+
+#: blocks/sub-item/block.json
+#: blocks/sub-query/block.json
+msgctxt "block keyword"
+msgid "related"
+msgstr "関連"
+
+#: blocks/sub-query/block.json
+msgctxt "block title"
+msgid "Sub Query"
+msgstr "サブクエリ"
+
+#: blocks/sub-query/block.json
+msgctxt "block description"
+msgid "Inside an item template, expand related posts into N sibling nodes."
+msgstr "アイテムテンプレートの中で、関連投稿を N 個の兄弟ノードとして展開します。"
+
+#: blocks/sub-query/block.json
+msgctxt "block keyword"
+msgid "loop"
+msgstr "ループ"
+
+#: blocks/sub-query/edit.js:23
+msgid "Same taxonomy term (hierarchical only)"
+msgstr "同じタクソノミーの term（階層型のみ）"
+
+#: blocks/sub-query/edit.js:116
+msgid "No hierarchical taxonomy is registered for the chosen post type."
+msgstr "選択した投稿タイプに対して階層型タクソノミーが登録されていません。"

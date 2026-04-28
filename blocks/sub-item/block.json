@@ -1,0 +1,25 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "feedwright/sub-item",
+	"version": "0.1.0",
+	"title": "Sub Item Template",
+	"category": "feedwright",
+	"icon": "media-document",
+	"description": "Template applied to each related post returned by the parent Sub Query.",
+	"keywords": [ "sub", "related", "template" ],
+	"textdomain": "feedwright",
+	"parent": [ "feedwright/sub-query" ],
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"inserter": false
+	},
+	"attributes": {
+		"inItemContext": { "type": "boolean", "default": true }
+	},
+	"providesContext": {
+		"feedwright/inItemContext": "inItemContext"
+	},
+	"editorScript": "file:./index.js"
+}

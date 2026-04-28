@@ -27,12 +27,32 @@ final class ElementRenderer {
 	private Resolver $resolver;
 
 	/**
+	 * Sub-query renderer used to expand `feedwright/sub-query` children.
+	 *
+	 * Lazily injected by the renderer facade; rendering still works without one
+	 * (sub-query blocks then produce zero nodes and emit a warning log).
+	 *
+	 * @var SubQueryRenderer|null
+	 */
+	private ?SubQueryRenderer $sub_query_renderer = null;
+
+	/**
 	 * Wire the element renderer with the configured binding resolver.
 	 *
 	 * @param Resolver $resolver Binding resolver to use for `{{...}}` substitution.
 	 */
 	public function __construct( Resolver $resolver ) {
 		$this->resolver = $resolver;
+	}
+
+	/**
+	 * Inject the sub-query renderer. Kept setter-based to avoid a constructor
+	 * cycle (SubQueryRenderer needs an ElementRenderer to render its template).
+	 *
+	 * @param SubQueryRenderer $renderer Sub-query renderer.
+	 */
+	public function set_sub_query_renderer( SubQueryRenderer $renderer ): void {
+		$this->sub_query_renderer = $renderer;
 	}
 
 	/**
@@ -107,8 +127,7 @@ final class ElementRenderer {
 					if ( ! is_array( $child ) ) {
 						continue;
 					}
-					$node = $this->render_child( $child, $ctx );
-					if ( null !== $node ) {
+					foreach ( $this->render_child( $child, $ctx ) as $node ) {
 						$element->appendChild( $node );
 					}
 				}
@@ -140,22 +159,33 @@ final class ElementRenderer {
 	}
 
 	/**
-	 * Dispatch a child block (element / raw / comment) inside `children` mode.
+	 * Dispatch a child block and return every produced DOM node in document
+	 * order. Single-node block kinds (element / raw / comment) return at most
+	 * one entry; `feedwright/sub-query` may return many.
 	 *
 	 * @param array<string,mixed> $block Parsed child block.
 	 * @param Context             $ctx   Render context.
+	 * @return array<int,\DOMNode>
 	 */
-	public function render_child( array $block, Context $ctx ): ?\DOMNode {
+	public function render_child( array $block, Context $ctx ): array {
 		$name = (string) ( $block['blockName'] ?? '' );
 		switch ( $name ) {
 			case 'feedwright/element':
-				return $this->render( $block, $ctx );
+				$node = $this->render( $block, $ctx );
+				return null === $node ? array() : array( $node );
 			case 'feedwright/raw':
-				return $this->render_raw( $block, $ctx );
+				$node = $this->render_raw( $block, $ctx );
+				return null === $node ? array() : array( $node );
 			case 'feedwright/comment':
-				return $this->render_comment( $block, $ctx );
+				return array( $this->render_comment( $block, $ctx ) );
+			case 'feedwright/sub-query':
+				if ( null === $this->sub_query_renderer ) {
+					\Feedwright\Plugin::log( 'feedwright/sub-query encountered without a sub-query renderer wired in.' );
+					return array();
+				}
+				return $this->sub_query_renderer->render( $block, $ctx );
 		}
-		return null;
+		return array();
 	}
 
 	/**

@@ -1,1 +1,60 @@
-{"translation-revision-date":"2026-04-27 18:00+0900","generator":"WP-CLI\/2.12.0","source":"blocks\/_shared\/modifier-suggestions.js","domain":"messages","locale_data":{"messages":{"":{"domain":"messages","lang":"ja","plural-forms":"nplurals=1; plural=0;"},"RFC 2822 (Mon, 27 Apr 2026 10:00:00 +0900)":["RFC 2822 (Mon, 27 Apr 2026 10:00:00 +0900)"],"ISO 8601 (2026-04-27T10:00:00+09:00)":["ISO 8601 (2026-04-27T10:00:00+09:00)"],"Unix timestamp":["Unix \u30bf\u30a4\u30e0\u30b9\u30bf\u30f3\u30d7"],"Date (2026-04-27)":["\u65e5\u4ed8 (2026-04-27)"],"Date + time (2026-04-27 10:00:00)":["\u65e5\u4ed8\uff0b\u6642\u523b (2026-04-27 10:00:00)"],"Slash date (2026\/04\/27)":["\u30b9\u30e9\u30c3\u30b7\u30e5\u533a\u5207\u308a\u65e5\u4ed8 (2026\/04\/27)"],"thumbnail (default 150\u00d7150)":["thumbnail\uff08\u30c7\u30d5\u30a9\u30eb\u30c8 150\u00d7150\uff09"],"medium (default 300px wide)":["medium\uff08\u30c7\u30d5\u30a9\u30eb\u30c8\u5e45 300px\uff09"],"medium_large (default 768px wide)":["medium_large\uff08\u30c7\u30d5\u30a9\u30eb\u30c8\u5e45 768px\uff09"],"large (default 1024px wide)":["large\uff08\u30c7\u30d5\u30a9\u30eb\u30c8\u5e45 1024px\uff09"],"full (original size)":["full\uff08\u30aa\u30ea\u30b8\u30ca\u30eb\u30b5\u30a4\u30ba\uff09"],"slug (slugs joined by \", \")":["slug\uff08\u30b9\u30e9\u30c3\u30b0\u3092\u300c, \u300d\u3067\u7d50\u5408\uff09"],"separator: | (names joined by |)":["\u533a\u5207\u308a\u6587\u5b57: |\uff08\u540d\u79f0\u3092 | \u3067\u7d50\u5408\uff09"],"slug + separator |":["slug + \u533a\u5207\u308a\u6587\u5b57 |"],"separator: \", \" (default)":["\u533a\u5207\u308a\u6587\u5b57: \", \"\uff08\u30c7\u30d5\u30a9\u30eb\u30c8\uff09"]}}}
+{
+    "translation-revision-date": "2026-04-27 18:00+0900",
+    "generator": "WP-CLI\/2.12.0",
+    "source": "blocks\/_shared\/modifier-suggestions.js",
+    "domain": "messages",
+    "locale_data": {
+        "messages": {
+            "": {
+                "domain": "messages",
+                "lang": "ja",
+                "plural-forms": "nplurals=1; plural=0;"
+            },
+            "RFC 2822 (Mon, 27 Apr 2026 10:00:00 +0900)": [
+                "RFC 2822 (Mon, 27 Apr 2026 10:00:00 +0900)"
+            ],
+            "ISO 8601 (2026-04-27T10:00:00+09:00)": [
+                "ISO 8601 (2026-04-27T10:00:00+09:00)"
+            ],
+            "Unix timestamp": [
+                "Unix \u30bf\u30a4\u30e0\u30b9\u30bf\u30f3\u30d7"
+            ],
+            "Date (2026-04-27)": [
+                "\u65e5\u4ed8 (2026-04-27)"
+            ],
+            "Date + time (2026-04-27 10:00:00)": [
+                "\u65e5\u4ed8\uff0b\u6642\u523b (2026-04-27 10:00:00)"
+            ],
+            "Slash date (2026\/04\/27)": [
+                "\u30b9\u30e9\u30c3\u30b7\u30e5\u533a\u5207\u308a\u65e5\u4ed8 (2026\/04\/27)"
+            ],
+            "thumbnail (default 150\u00d7150)": [
+                "thumbnail\uff08\u30c7\u30d5\u30a9\u30eb\u30c8 150\u00d7150\uff09"
+            ],
+            "medium (default 300px wide)": [
+                "medium\uff08\u30c7\u30d5\u30a9\u30eb\u30c8\u5e45 300px\uff09"
+            ],
+            "medium_large (default 768px wide)": [
+                "medium_large\uff08\u30c7\u30d5\u30a9\u30eb\u30c8\u5e45 768px\uff09"
+            ],
+            "large (default 1024px wide)": [
+                "large\uff08\u30c7\u30d5\u30a9\u30eb\u30c8\u5e45 1024px\uff09"
+            ],
+            "full (original size)": [
+                "full\uff08\u30aa\u30ea\u30b8\u30ca\u30eb\u30b5\u30a4\u30ba\uff09"
+            ],
+            "slug (slugs joined by \", \")": [
+                "slug\uff08\u30b9\u30e9\u30c3\u30b0\u3092\u300c, \u300d\u3067\u7d50\u5408\uff09"
+            ],
+            "separator: | (names joined by |)": [
+                "\u533a\u5207\u308a\u6587\u5b57: |\uff08\u540d\u79f0\u3092 | \u3067\u7d50\u5408\uff09"
+            ],
+            "slug + separator |": [
+                "slug + \u533a\u5207\u308a\u6587\u5b57 |"
+            ],
+            "separator: \", \" (default)": [
+                "\u533a\u5207\u308a\u6587\u5b57: \", \"\uff08\u30c7\u30d5\u30a9\u30eb\u30c8\uff09"
+            ]
+        }
+    }
+}

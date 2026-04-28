@@ -101,8 +101,7 @@ final class ItemQueryRenderer {
 				if ( ! is_array( $child ) ) {
 					continue;
 				}
-				$node = $this->element_renderer->render_child( $child, $item_ctx );
-				if ( null !== $node ) {
+				foreach ( $this->element_renderer->render_child( $child, $item_ctx ) as $node ) {
 					$item_el->appendChild( $node );
 				}
 			}

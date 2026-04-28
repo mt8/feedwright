@@ -1,1 +1,30 @@
-{"translation-revision-date":"2026-04-27 18:00+0900","generator":"WP-CLI\/2.12.0","source":"blocks\/rss\/edit.js","domain":"messages","locale_data":{"messages":{"":{"domain":"messages","lang":"ja","plural-forms":"nplurals=1; plural=0;"},"Version":["\u30d0\u30fc\u30b8\u30e7\u30f3"],"Currently only RSS 2.0 is rendered.":["\u73fe\u72b6\u306f RSS 2.0 \u306e\u307f\u51fa\u529b\u53ef\u80fd\u3002"],"Namespaces":["\u540d\u524d\u7a7a\u9593"],"version":["version"],"namespace(s)":["\u540d\u524d\u7a7a\u9593"]}}}
+{
+    "translation-revision-date": "2026-04-27 18:00+0900",
+    "generator": "WP-CLI\/2.12.0",
+    "source": "blocks\/rss\/edit.js",
+    "domain": "messages",
+    "locale_data": {
+        "messages": {
+            "": {
+                "domain": "messages",
+                "lang": "ja",
+                "plural-forms": "nplurals=1; plural=0;"
+            },
+            "Version": [
+                "\u30d0\u30fc\u30b8\u30e7\u30f3"
+            ],
+            "Currently only RSS 2.0 is rendered.": [
+                "\u73fe\u72b6\u306f RSS 2.0 \u306e\u307f\u51fa\u529b\u53ef\u80fd\u3002"
+            ],
+            "Namespaces": [
+                "\u540d\u524d\u7a7a\u9593"
+            ],
+            "version": [
+                "version"
+            ],
+            "namespace(s)": [
+                "\u540d\u524d\u7a7a\u9593"
+            ]
+        }
+    }
+}

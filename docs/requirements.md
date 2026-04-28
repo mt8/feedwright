@@ -827,7 +827,82 @@ Children: only one `feedwright/item`.
 }
 ```
 
-No attributes (acts as a template). Children: `feedwright/element`, `feedwright/comment`.
+No attributes (acts as a template). Children: `feedwright/element`, `feedwright/sub-query`, `feedwright/comment`.
+
+### 12.6.1 `feedwright/sub-query`
+
+Inside an `feedwright/item` template, expand related posts into N sibling DOM nodes per outer item. Resolves the "related links" pattern that several aggregator specs require — goo `smp:relation` (max 3), mediba `mdf:relatedLink` (max 5), Google Merchant `g:additional_image_link` (max 10), etc.
+
+#### attributes
+
+```json
+{
+  "label":          { "type": "string",  "default": "" },
+  "relationMode":   { "type": "string",  "default": "taxonomy",
+                      "enum": [ "taxonomy", "manual" ] },
+  "taxonomy":       { "type": "string",  "default": "" },
+  "manualIds":      { "type": "array",   "default": [] },
+  "postType":       { "type": "array",   "default": [ "post" ] },
+  "postStatus":     { "type": "array",   "default": [ "publish" ] },
+  "postsPerPage":   { "type": "number",  "default": 3 },
+  "orderBy":        { "type": "string",  "default": "date" },
+  "order":          { "type": "string",  "default": "DESC" },
+  "excludeCurrent": { "type": "boolean", "default": true }
+}
+```
+
+#### block.json
+
+```json
+{
+  "apiVersion": 3,
+  "name": "feedwright/sub-query",
+  "title": "Sub Query",
+  "category": "feedwright",
+  "icon": "networking",
+  "ancestor": [ "feedwright/item" ],
+  "providesContext": {
+    "feedwright/inItemContext": "feedwright/inItemContext"
+  },
+  "supports": { "html": false, "reusable": false, "multiple": true }
+}
+```
+
+#### Relation modes
+
+| Mode | Behavior |
+|---|---|
+| `taxonomy` | Fetch posts that share at least one term with the current item in `taxonomy`. **Hierarchical taxonomies only** (`category`-like). Flat taxonomies (`post_tag` etc.) are user-typed free input where exact-term matches are noise; non-hierarchical selections are skipped at render time and emit no nodes. Also falls through when the current item has no terms in that taxonomy. |
+| `manual` | `post__in` against `manualIds`. Order is preserved (`orderby = post__in`); `order` is ignored. `excludeCurrent` filters the ID list directly. |
+
+The current item is excluded by default (`excludeCurrent = true`). `postsPerPage` is clamped to `[1, ArgsBuilder::MAX_POSTS_PER_PAGE]` like the top-level query.
+
+#### Hard-cap filter
+
+```php
+add_filter( 'feedwright/sub_query/hard_max', function ( int $max, array $block, $ctx ): int {
+    // goo: smp:relation 最大 3
+    return 3;
+}, 10, 3 );
+```
+
+Use this filter to enforce spec-mandated caps. A return value `<= 0` disables the cap (default).
+
+### 12.6.2 `feedwright/sub-item`
+
+Template applied to each related post returned by `feedwright/sub-query`. Children are rendered with `Context::current_post()` switched to the related post for the duration of the iteration. Allowed children: `feedwright/element`, `feedwright/raw`, `feedwright/comment`.
+
+```json
+{
+  "apiVersion": 3,
+  "name": "feedwright/sub-item",
+  "title": "Sub Item Template",
+  "category": "feedwright",
+  "icon": "media-document",
+  "parent": [ "feedwright/sub-query" ],
+  "supports": { "html": false, "reusable": false, "inserter": false }
+}
+```
 
 ### 12.7 `feedwright/raw`
 
@@ -1059,6 +1134,61 @@ foreach ( $channel_block['innerBlocks'] as $child ) {
 Each `WP_Query` runs independently, with `wp_reset_postdata()` called at the end of each. To avoid polluting `global $post`, save it before the loop with `$original = $post;` and restore it afterwards.
 
 **No deduplication is performed.** If the same post matches multiple queries, it appears as multiple `<item>` elements (resulting in multiple elements with the same `<guid>`). This is by design; the user controls it by setting `excludeIds` on subsequent queries.
+
+### 13.6.1 SubQueryRenderer
+
+Runs once per outer item, producing the inner DOM nodes for a `feedwright/sub-query`.
+
+```php
+public function render( array $block, Context $ctx ): array {
+    $current = $ctx->current_post();
+    if ( ! $current instanceof \WP_Post ) {
+        return [];   // sub-query outside item scope -> no nodes
+    }
+
+    $args = ( new ArgsBuilder() )->build_sub( $block['attrs'], $current );
+    if ( null === $args ) {
+        return [];   // no terms / missing meta key / empty manualIds
+    }
+
+    $args     = apply_filters( 'feedwright/sub_query_args', $args, $block, $current, $ctx );
+    $hard_max = (int) apply_filters( 'feedwright/sub_query/hard_max', 0, $block, $ctx );
+
+    $template = $this->find_sub_item_template( $block );
+    if ( null === $template ) return [];
+
+    $nodes = [];
+    $count = 0;
+    $query = new \WP_Query( $args );
+    while ( $query->have_posts() ) {
+        $query->the_post();
+        $related     = get_post();
+        $related_ctx = $ctx->with_post( $related );
+
+        foreach ( $template['innerBlocks'] as $child ) {
+            foreach ( $this->element_renderer->render_child( $child, $related_ctx ) as $node ) {
+                $nodes[] = $node;
+            }
+        }
+
+        if ( $hard_max > 0 && ++$count >= $hard_max ) break;
+    }
+    wp_reset_postdata();
+    return $nodes;
+}
+```
+
+#### Context isolation
+
+`Context` is immutable. `with_post()` returns a clone with the related post bound, so siblings of the `feedwright/sub-query` block (other elements of the same outer item) continue to see the original `current_post`. No explicit stack is required — the call chain *is* the stack.
+
+#### `render_child` contract
+
+To allow a single child block to expand to multiple nodes (sub-query), `ElementRenderer::render_child()` returns `array<\DOMNode>` rather than a nullable single node. Single-node block kinds (`element` / `raw` / `comment`) return at most one entry; sub-query may return many. Callers always iterate.
+
+#### Performance
+
+Each outer item triggers one extra `WP_Query` (N+1). Defaults set `update_post_meta_cache = false` to keep the cost bounded; the rendered XML is cached at the feed level by `RenderCache`. Spec-imposed caps (3 / 5 / 10) are applied **after** the query via `feedwright/sub_query/hard_max`, since most aggregator specs cap related links per item rather than per feed.
 
 ### 13.7 Sanitization
 
